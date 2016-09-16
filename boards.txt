@@ -1,0 +1,25 @@
+# See: http://code.google.com/p/arduino/wiki/Platforms
+
+################################################################################
+# NUCLEO-F103RB board
+
+NUCLEO-F103RB.name=NUCLEO-F103RB
+
+NUCLEO-F103RB.vid.0=0x0483
+NUCLEO-F103RB.pid.0=0x374b
+NUCLEO-F103RB.node=NODE_F103RB
+
+NUCLEO-F103RB.upload.tool=nucleoFlasher
+NUCLEO-F103RB.upload.protocol=nucleoFlasher
+NUCLEO-F103RB.upload.maximum_size=131071
+NUCLEO-F103RB.upload.maximum_data_size=20479
+
+NUCLEO-F103RB.build.mcu=cortex-m3
+NUCLEO-F103RB.build.board=NUCLEO-F103RB
+NUCLEO-F103RB.build.core=arduino
+NUCLEO-F103RB.build.ldscript=linker_scripts/gcc/STM32F103RB_FLASH.ld
+NUCLEO-F103RB.build.variant=STM32F103RB-Nucleo
+NUCLEO-F103RB.build.variant_system_lib=libstm32f1_nucleo-f103rb_gcc_rel.a
+NUCLEO-F103RB.build.extra_flags=-mthumb -DSTM32F103xB
+
+################################################################################
