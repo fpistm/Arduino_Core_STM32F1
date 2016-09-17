@@ -148,7 +148,7 @@ void hw_config_init(void)
   HAL_Init();
 
   __HAL_RCC_AFIO_CLK_ENABLE();
-#ifndef __BLUEPILL_F103C8__
+#if 0 // we like being able to debug :)
   __HAL_AFIO_REMAP_SWJ_DISABLE();
 #endif
 
