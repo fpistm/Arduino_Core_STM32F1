@@ -1,11 +1,11 @@
 /**
   ******************************************************************************
-  * @file    STM32F103RB_FLASH.h
+  * @file    STM32F103CB_FLASH.h
   * @author  WI6LABS
   * @version V1.0.0
   * @date    22-July-2016
-  * @brief   Linker script for STM32F103RB Device with
-  *          128KByte FLASH, 20KByte RAM
+  * @brief   Linker script for STM32F103CB Device with
+  *          64KByte FLASH, 20KByte RAM
   *
   *          Set heap size, stack size and stack location according
   *          to application requirements.
