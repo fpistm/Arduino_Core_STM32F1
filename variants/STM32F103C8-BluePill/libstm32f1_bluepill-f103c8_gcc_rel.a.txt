@@ -559,22 +559,6 @@ system_stm32f1xx.o:
 00000000 T SystemCoreClockUpdate
 00000000 T SystemInit
 
-hw_config.o:
-00000000 T BusFault_Handler
-00000000 T DebugMon_Handler
-         U HAL_Init
-         U HAL_NVIC_SetPriority
-         U HAL_RCC_ClockConfig
-         U HAL_RCC_GetHCLKFreq
-         U HAL_RCC_OscConfig
-         U HAL_SYSTICK_CLKSourceConfig
-         U HAL_SYSTICK_Config
-00000000 T HardFault_Handler
-00000000 T hw_config_init
-00000000 T MemManage_Handler
-00000000 T NMI_Handler
-00000000 T UsageFault_Handler
-
 uart.o:
          U attachIntHandle
 00000000 T get_uart_id_from_handle

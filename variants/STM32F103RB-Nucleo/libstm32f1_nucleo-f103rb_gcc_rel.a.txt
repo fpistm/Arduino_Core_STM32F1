@@ -1,7 +1,7 @@
 
 stm32f1xx_hal_cec.o:
 
-stm32f1xx_hal_sd.o:
+stm32f1xx_hal_sram.o:
 
 stm32f1xx_hal_rcc.o:
          U AHBPrescTable
@@ -40,17 +40,11 @@ stm32f1xx_hal_flash_ex.o:
 00000000 T HAL_FLASHEx_OBProgram
          U pFlash
 
-stm32f1xx_hal_msp_template.o:
-00000000 T HAL_MspDeInit
-00000000 T HAL_MspInit
-00000000 T HAL_PPP_MspDeInit
-00000000 T HAL_PPP_MspInit
+stm32f1xx_hal_dac_ex.o:
 
 stm32f1xx_hal_rtc_ex.o:
 
-stm32f1xx_hal_sram.o:
-
-stm32f1xx_hal_dac.o:
+stm32f1xx_hal_smartcard.o:
 
 stm32f1xx_hal_crc.o:
 
@@ -162,52 +156,50 @@ stm32f1xx_hal_tim.o:
 
 stm32f1xx_hal_usart.o:
 
-stm32f1xx_hal_dac_ex.o:
-
 stm32f1xx_hal_pcd.o:
 
 stm32f1xx_hal_irda.o:
 
+stm32f1xx_hal_wwdg.o:
+
+stm32f1xx_hal_rtc.o:
+
 stm32f1xx_ll_fsmc.o:
 
-stm32f1xx_hal_adc.o:
-00000000 T ADC_ConversionStop_Disable
-00000000 T ADC_DMAConvCplt
-00000000 T ADC_DMAError
-00000000 T ADC_DMAHalfConvCplt
-00000000 T ADC_Enable
-00000000 T HAL_ADC_AnalogWDGConfig
-00000000 T HAL_ADC_ConfigChannel
-00000000 W HAL_ADC_ConvCpltCallback
-00000000 W HAL_ADC_ConvHalfCpltCallback
-00000000 T HAL_ADC_DeInit
-00000000 W HAL_ADC_ErrorCallback
-         U HAL_ADCEx_InjectedConvCpltCallback
-00000000 T HAL_ADC_GetError
-00000000 T HAL_ADC_GetState
-00000000 T HAL_ADC_GetValue
-00000000 T HAL_ADC_Init
-00000000 T HAL_ADC_IRQHandler
-00000000 W HAL_ADC_LevelOutOfWindowCallback
-00000000 W HAL_ADC_MspDeInit
-00000000 W HAL_ADC_MspInit
-00000000 T HAL_ADC_PollForConversion
-00000000 T HAL_ADC_PollForEvent
-00000000 T HAL_ADC_Start
-00000000 T HAL_ADC_Start_DMA
-00000000 T HAL_ADC_Start_IT
-00000000 T HAL_ADC_Stop
-00000000 T HAL_ADC_Stop_DMA
-00000000 T HAL_ADC_Stop_IT
-         U HAL_DMA_Abort
-         U HAL_DMA_Start_IT
+stm32f1xx_hal_rcc_ex.o:
          U HAL_GetTick
-         U HAL_RCCEx_GetPeriphCLKFreq
-         U SystemCoreClock
+00000000 T HAL_RCCEx_GetPeriphCLKConfig
+00000000 T HAL_RCCEx_GetPeriphCLKFreq
+00000000 T HAL_RCCEx_PeriphCLKConfig
+         U HAL_RCC_GetPCLK2Freq
 
-stm32f1xx_ll_usb.o:
+stm32f1xx_hal_dac.o:
 
-stm32f1xx_hal_smartcard.o:
+stm32f1xx_hal.o:
+00000000 T HAL_DBGMCU_DisableDBGSleepMode
+00000000 T HAL_DBGMCU_DisableDBGStandbyMode
+00000000 T HAL_DBGMCU_DisableDBGStopMode
+00000000 T HAL_DBGMCU_EnableDBGSleepMode
+00000000 T HAL_DBGMCU_EnableDBGStandbyMode
+00000000 T HAL_DBGMCU_EnableDBGStopMode
+00000000 T HAL_DeInit
+00000000 W HAL_Delay
+00000000 T HAL_GetDEVID
+00000000 T HAL_GetHalVersion
+00000000 T HAL_GetREVID
+00000000 W HAL_GetTick
+00000000 W HAL_IncTick
+00000000 T HAL_Init
+00000000 W HAL_InitTick
+00000000 W HAL_MspDeInit
+00000000 W HAL_MspInit
+         U HAL_NVIC_SetPriority
+         U HAL_NVIC_SetPriorityGrouping
+         U HAL_RCC_GetHCLKFreq
+00000000 W HAL_ResumeTick
+00000000 W HAL_SuspendTick
+         U HAL_SYSTICK_Config
+00000000 b uwTick
 
 stm32f1xx_hal_flash.o:
          U __aeabi_llsr
@@ -228,12 +220,6 @@ stm32f1xx_hal_flash.o:
          U HAL_GetTick
          U HAL_NVIC_SystemReset
 00000020 C pFlash
-
-stm32f1xx_hal_rtc.o:
-
-stm32f1xx_hal_wwdg.o:
-
-stm32f1xx_hal_pcd_ex.o:
 
 stm32f1xx_hal_uart.o:
          U HAL_DMA_Abort
@@ -278,45 +264,44 @@ stm32f1xx_hal_uart.o:
 00000000 t UART_SetConfig
 00000000 t UART_WaitOnFlagUntilTimeout.constprop.1
 
-stm32f1xx_hal.o:
-00000000 T HAL_DBGMCU_DisableDBGSleepMode
-00000000 T HAL_DBGMCU_DisableDBGStandbyMode
-00000000 T HAL_DBGMCU_DisableDBGStopMode
-00000000 T HAL_DBGMCU_EnableDBGSleepMode
-00000000 T HAL_DBGMCU_EnableDBGStandbyMode
-00000000 T HAL_DBGMCU_EnableDBGStopMode
-00000000 T HAL_DeInit
-00000000 W HAL_Delay
-00000000 T HAL_GetDEVID
-00000000 T HAL_GetHalVersion
-00000000 T HAL_GetREVID
-00000000 W HAL_GetTick
-00000000 W HAL_IncTick
-00000000 T HAL_Init
-00000000 W HAL_InitTick
-00000000 W HAL_MspDeInit
-00000000 W HAL_MspInit
-         U HAL_NVIC_SetPriority
-         U HAL_NVIC_SetPriorityGrouping
-         U HAL_RCC_GetHCLKFreq
-00000000 W HAL_ResumeTick
-00000000 W HAL_SuspendTick
-         U HAL_SYSTICK_Config
-00000000 b uwTick
-
-stm32f1xx_hal_gpio.o:
-00000000 T HAL_GPIO_DeInit
-00000000 W HAL_GPIO_EXTI_Callback
-00000000 T HAL_GPIO_EXTI_IRQHandler
-00000000 T HAL_GPIO_Init
-00000000 T HAL_GPIO_LockPin
-00000000 T HAL_GPIO_ReadPin
-00000000 T HAL_GPIO_TogglePin
-00000000 T HAL_GPIO_WritePin
-
 stm32f1xx_hal_hcd.o:
 
-stm32f1xx_hal_nand.o:
+stm32f1xx_hal_pcd_ex.o:
+
+stm32f1xx_hal_adc.o:
+00000000 T ADC_ConversionStop_Disable
+00000000 T ADC_DMAConvCplt
+00000000 T ADC_DMAError
+00000000 T ADC_DMAHalfConvCplt
+00000000 T ADC_Enable
+00000000 T HAL_ADC_AnalogWDGConfig
+00000000 T HAL_ADC_ConfigChannel
+00000000 W HAL_ADC_ConvCpltCallback
+00000000 W HAL_ADC_ConvHalfCpltCallback
+00000000 T HAL_ADC_DeInit
+00000000 W HAL_ADC_ErrorCallback
+         U HAL_ADCEx_InjectedConvCpltCallback
+00000000 T HAL_ADC_GetError
+00000000 T HAL_ADC_GetState
+00000000 T HAL_ADC_GetValue
+00000000 T HAL_ADC_Init
+00000000 T HAL_ADC_IRQHandler
+00000000 W HAL_ADC_LevelOutOfWindowCallback
+00000000 W HAL_ADC_MspDeInit
+00000000 W HAL_ADC_MspInit
+00000000 T HAL_ADC_PollForConversion
+00000000 T HAL_ADC_PollForEvent
+00000000 T HAL_ADC_Start
+00000000 T HAL_ADC_Start_DMA
+00000000 T HAL_ADC_Start_IT
+00000000 T HAL_ADC_Stop
+00000000 T HAL_ADC_Stop_DMA
+00000000 T HAL_ADC_Stop_IT
+         U HAL_DMA_Abort
+         U HAL_DMA_Start_IT
+         U HAL_GetTick
+         U HAL_RCCEx_GetPeriphCLKFreq
+         U SystemCoreClock
 
 stm32f1xx_hal_spi.o:
          U HAL_DMA_Abort
@@ -362,14 +347,21 @@ stm32f1xx_hal_spi.o:
 00000000 t SPI_TxISR
 00000000 t SPI_WaitOnFlagUntilTimeout
 
-stm32f1xx_hal_pccard.o:
+stm32f1xx_hal_gpio.o:
+00000000 T HAL_GPIO_DeInit
+00000000 W HAL_GPIO_EXTI_Callback
+00000000 T HAL_GPIO_EXTI_IRQHandler
+00000000 T HAL_GPIO_Init
+00000000 T HAL_GPIO_LockPin
+00000000 T HAL_GPIO_ReadPin
+00000000 T HAL_GPIO_TogglePin
+00000000 T HAL_GPIO_WritePin
 
-stm32f1xx_hal_rcc_ex.o:
-         U HAL_GetTick
-00000000 T HAL_RCCEx_GetPeriphCLKConfig
-00000000 T HAL_RCCEx_GetPeriphCLKFreq
-00000000 T HAL_RCCEx_PeriphCLKConfig
-         U HAL_RCC_GetPCLK2Freq
+stm32f1xx_hal_nand.o:
+
+stm32f1xx_hal_pwr.o:
+
+stm32f1xx_hal_pccard.o:
 
 stm32f1xx_hal_cortex.o:
 00000000 T HAL_NVIC_ClearPendingIRQ
@@ -492,7 +484,15 @@ stm32f1xx_hal_can.o:
 
 stm32f1xx_hal_nor.o:
 
-stm32f1xx_hal_pwr.o:
+stm32f1xx_hal_sd.o:
+
+stm32f1xx_hal_msp_template.o:
+00000000 T HAL_MspDeInit
+00000000 T HAL_MspInit
+00000000 T HAL_PPP_MspDeInit
+00000000 T HAL_PPP_MspInit
+
+stm32f1xx_ll_usb.o:
 
 stm32f1xx_hal_i2c.o:
          U HAL_DMA_Start_IT
@@ -558,22 +558,6 @@ system_stm32f1xx.o:
 00000000 D SystemCoreClock
 00000000 T SystemCoreClockUpdate
 00000000 T SystemInit
-
-hw_config.o:
-00000000 T BusFault_Handler
-00000000 T DebugMon_Handler
-         U HAL_Init
-         U HAL_NVIC_SetPriority
-         U HAL_RCC_ClockConfig
-         U HAL_RCC_GetHCLKFreq
-         U HAL_RCC_OscConfig
-         U HAL_SYSTICK_CLKSourceConfig
-         U HAL_SYSTICK_Config
-00000000 T HardFault_Handler
-00000000 T hw_config_init
-00000000 T MemManage_Handler
-00000000 T NMI_Handler
-00000000 T UsageFault_Handler
 
 uart.o:
          U attachIntHandle
@@ -688,13 +672,19 @@ twi.o:
 00000000 T i2c_setTiming
 00000000 T i2c_slave_write_IT
 
-digital_io.o:
-00000000 T digital_io_init
-00000000 T digital_io_read
-00000000 T digital_io_write
-         U HAL_GPIO_Init
-         U HAL_GPIO_ReadPin
-         U HAL_GPIO_WritePin
+clock.o:
+00000000 T delayInsideIT
+00000000 d g_current_ms
+00000000 T GetCurrentMicro
+00000000 T GetCurrentMilli
+         U HAL_GetTick
+         U HAL_IncTick
+00000000 T HAL_InitTick
+         U HAL_NVIC_SetPriority
+         U HAL_RCC_GetHCLKFreq
+         U HAL_SYSTICK_Config
+         U SystemCoreClock
+00000000 T SysTick_Handler
 
 interrupt.o:
 00000000 T EXTI0_IRQHandler
@@ -733,6 +723,14 @@ spi_com.o:
 00000000 d spi_init_info
 00000000 T spi_send
 00000000 T spi_transfer
+
+digital_io.o:
+00000000 T digital_io_init
+00000000 T digital_io_read
+00000000 T digital_io_write
+         U HAL_GPIO_Init
+         U HAL_GPIO_ReadPin
+         U HAL_GPIO_WritePin
 
 uart_emul.o:
          U attachIntHandle
@@ -805,20 +803,6 @@ analog.o:
 00000000 t TIM4_AF_NoRemap
          U timer_disable_clock
          U timer_enable_clock
-
-clock.o:
-00000000 T delayInsideIT
-00000000 d g_current_ms
-00000000 T GetCurrentMicro
-00000000 T GetCurrentMilli
-         U HAL_GetTick
-         U HAL_IncTick
-00000000 T HAL_InitTick
-         U HAL_NVIC_SetPriority
-         U HAL_RCC_GetHCLKFreq
-         U HAL_SYSTICK_Config
-         U SystemCoreClock
-00000000 T SysTick_Handler
 
 timer.o:
 00000000 T attachIntHandle
