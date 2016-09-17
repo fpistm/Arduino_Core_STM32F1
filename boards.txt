@@ -23,3 +23,25 @@ NUCLEO-F103RB.build.variant_system_lib=libstm32f1_nucleo-f103rb_gcc_rel.a
 NUCLEO-F103RB.build.extra_flags=-mthumb -DSTM32F103xB
 
 ################################################################################
+# BluePill-F103C8 board
+
+BluePill-F103C8.name=BluePill-F103C8
+
+BluePill-F103C8.vid.0=0x0483
+BluePill-F103C8.pid.0=0x374b
+BluePill-F103C8.node=NODE_F103C8
+
+BluePill-F103C8.upload.tool=nucleoFlasher
+BluePill-F103C8.upload.protocol=nucleoFlasher
+BluePill-F103C8.upload.maximum_size=65536
+BluePill-F103C8.upload.maximum_data_size=20480
+
+BluePill-F103C8.build.mcu=cortex-m3
+BluePill-F103C8.build.board=NUCLEO_F103C8
+BluePill-F103C8.build.core=arduino
+BluePill-F103C8.build.ldscript=linker_scripts/gcc/STM32F103C8_FLASH.ld
+BluePill-F103C8.build.variant=STM32F103C8-BluePill
+BluePill-F103C8.build.variant_system_lib=libstm32f1_bluepill-f103c8_gcc_rel.a
+BluePill-F103C8.build.extra_flags=-mthumb -DSTM32F103xB
+
+################################################################################
