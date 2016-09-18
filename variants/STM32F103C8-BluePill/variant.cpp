@@ -51,19 +51,6 @@
   PB13        |
   PB14        |
   PB15        |
-  PC0         | A5
-  PC1         | A4
-  PC2         |
-  PC3         |
-  PC4         |
-  PC5         |
-  PC6         |
-  PC7         | D9/PWM
-  PC8         |
-  PC9         |
-  PC10        |
-  PC11        |
-  PC12        |
   PC13        |
   PC14        |
   PC15        |
@@ -81,55 +68,42 @@ extern const PinDescription g_APinDescription[]=
 
 //  arduino_id  |     ulPin    |   ulPort | mode               |          configured
 {
-  { ARDUINO_PIN_A0,   GPIO_PIN_0,  GPIOA, GPIO_PIN_IO|GPIO_PIN_ADC ,                    false },
-  { ARDUINO_PIN_A1,   GPIO_PIN_1,  GPIOA, GPIO_PIN_IO|GPIO_PIN_ADC ,                    false },
-  { ARDUINO_PIN_D1,   GPIO_PIN_2,  GPIOA, GPIO_PIN_IO|GPIO_PIN_UART_TX ,                false },
-  { ARDUINO_PIN_D0,   GPIO_PIN_3,  GPIOA, GPIO_PIN_IO|GPIO_PIN_UART_RX ,                false },
-  { ARDUINO_PIN_A2,   GPIO_PIN_4,  GPIOA, GPIO_PIN_IO|GPIO_PIN_ADC ,                    false },
+  { ARDUINO_PIN_A0,   GPIO_PIN_0,  GPIOA, GPIO_PIN_IO|GPIO_PIN_ADC,                     false },
+  { ARDUINO_PIN_A1,   GPIO_PIN_1,  GPIOA, GPIO_PIN_IO|GPIO_PIN_ADC,                     false },
+  { ARDUINO_PIN_D1,   GPIO_PIN_2,  GPIOA, GPIO_PIN_IO|GPIO_PIN_UART_TX,                 false },
+  { ARDUINO_PIN_D0,   GPIO_PIN_3,  GPIOA, GPIO_PIN_IO|GPIO_PIN_UART_RX,                 false },
+  { ARDUINO_PIN_A2,   GPIO_PIN_4,  GPIOA, GPIO_PIN_IO|GPIO_PIN_ADC,                     false },
   { ARDUINO_PIN_D13,  GPIO_PIN_5,  GPIOA, GPIO_PIN_IO|GPIO_PIN_SPI_SCK,                 false },
-  { ARDUINO_PIN_D12,  GPIO_PIN_6,  GPIOA, GPIO_PIN_IO|GPIO_PIN_SPI_MISO ,               false },
+  { ARDUINO_PIN_D12,  GPIO_PIN_6,  GPIOA, GPIO_PIN_IO|GPIO_PIN_SPI_MISO,                false },
   { ARDUINO_PIN_D11,  GPIO_PIN_7,  GPIOA, GPIO_PIN_IO|GPIO_PIN_SPI_MOSI|GPIO_PIN_PWM,   false },
   { ARDUINO_PIN_D7,   GPIO_PIN_8,  GPIOA, GPIO_PIN_IO,                                  false },
   { ARDUINO_PIN_D8,   GPIO_PIN_9,  GPIOA, GPIO_PIN_IO,                                  false },
   { ARDUINO_PIN_D2,   GPIO_PIN_10, GPIOA, GPIO_PIN_IO,                                  false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_11, GPIOA, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_12, GPIOA, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_13, GPIOA, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_14, GPIOA, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_15, GPIOA, GPIO_PIN_MORPHO_ONLY ,                        false },
+  { ARDUINO_PIN_EXT,  GPIO_PIN_11, GPIOA, GPIO_PIN_IO,                                  false },
+  { ARDUINO_PIN_EXT,  GPIO_PIN_12, GPIOA, GPIO_PIN_IO,                                  false },
+  { ARDUINO_PIN_EXT,  GPIO_PIN_13, GPIOA, GPIO_PIN_IO,                                  false },
+  { ARDUINO_PIN_EXT,  GPIO_PIN_14, GPIOA, GPIO_PIN_IO,                                  false },
+  { ARDUINO_PIN_EXT,  GPIO_PIN_15, GPIOA, GPIO_PIN_IO,                                  false },
   { ARDUINO_PIN_A3,   GPIO_PIN_0,  GPIOB, GPIO_PIN_ADC,                                 false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_1,  GPIOB, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_2,  GPIOB, GPIO_PIN_MORPHO_ONLY,                         false },
+  { ARDUINO_PIN_EXT,  GPIO_PIN_1,  GPIOB, GPIO_PIN_IO,                                  false },
+  { ARDUINO_PIN_EXT,  GPIO_PIN_2,  GPIOB, GPIO_PIN_IO,                                  false },
   { ARDUINO_PIN_D3,   GPIO_PIN_3,  GPIOB, GPIO_PIN_IO|GPIO_PIN_PWM,                     false },
   { ARDUINO_PIN_D5,   GPIO_PIN_4,  GPIOB, GPIO_PIN_IO|GPIO_PIN_PWM,                     false },
   { ARDUINO_PIN_D4,   GPIO_PIN_5,  GPIOB, GPIO_PIN_IO,                                  false },
   { ARDUINO_PIN_D10,  GPIO_PIN_6,  GPIOB, GPIO_PIN_IO|GPIO_PIN_PWM|GPIO_PIN_SPI_CS,     false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_7,  GPIOB, GPIO_PIN_MORPHO_ONLY,                         false },
+  { PB7,              GPIO_PIN_7,  GPIOB, GPIO_PIN_IO,                                  false },
   { ARDUINO_PIN_D15,  GPIO_PIN_8,  GPIOB, GPIO_PIN_IO|GPIO_PIN_I2C_SCL,                 false },
   { ARDUINO_PIN_D14,  GPIO_PIN_9,  GPIOB, GPIO_PIN_IO|GPIO_PIN_I2C_SDA,                 false },
   { ARDUINO_PIN_D6,   GPIO_PIN_10, GPIOB, GPIO_PIN_IO|GPIO_PIN_PWM,                     false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_11, GPIOB, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_12, GPIOB, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_13, GPIOB, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_14, GPIOB, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_15, GPIOB, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_A5,   GPIO_PIN_0,  GPIOC, GPIO_PIN_IO|GPIO_PIN_ADC,                     false },
-  { ARDUINO_PIN_A4,   GPIO_PIN_1,  GPIOC, GPIO_PIN_IO|GPIO_PIN_ADC,                     false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_2,  GPIOC, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_3,  GPIOC, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_4,  GPIOC, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_5,  GPIOC, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_6,  GPIOC, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_D9,   GPIO_PIN_7,  GPIOC, GPIO_PIN_IO|GPIO_PIN_PWM,                     false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_8,  GPIOC, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_9,  GPIOC, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_10, GPIOC, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_11, GPIOC, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_12, GPIOC, GPIO_PIN_MORPHO_ONLY,                         false },
+  { PB11,             GPIO_PIN_11, GPIOB, GPIO_PIN_IO,                                  false },
+  { PB12,             GPIO_PIN_12, GPIOB, GPIO_PIN_IO,                                  false },
+  { PB13,             GPIO_PIN_13, GPIOB, GPIO_PIN_IO,                                  false },
+  { PB14,             GPIO_PIN_14, GPIOB, GPIO_PIN_IO,                                  false },
+  { PB15,             GPIO_PIN_15, GPIOB, GPIO_PIN_IO,                                  false },
   { PC13,             GPIO_PIN_13, GPIOC, GPIO_PIN_IO,                                  false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_14, GPIOC, GPIO_PIN_MORPHO_ONLY,                         false },
-  { ARDUINO_PIN_EXT,  GPIO_PIN_15, GPIOC, GPIO_PIN_MORPHO_ONLY,                         false }
-} ;
+  { PC14,             GPIO_PIN_14, GPIOC, GPIO_PIN_IO,                                  false },
+  { PC15,             GPIO_PIN_15, GPIOC, GPIO_PIN_IO,                                  false }
+};
 
 #ifdef __cplusplus
 }
