@@ -24,9 +24,10 @@ SUBMAKE_OPTIONS=--no-builtin-rules --no-builtin-variables --no-print-directory
 # Rules
 #-------------------------------------------------------------------------------
 
-all : NUCLEO-F103RB
+all : NUCLEO-F103RB BluePill-F103C8
 
 .PHONY: all
+
 NUCLEO-F103RB:
 	@echo ------------------------------------------------------------------------
 	@echo --- Making $@
@@ -34,9 +35,17 @@ NUCLEO-F103RB:
 	@$(MAKE) CHIP=__NUCLEO_F103RB__ $(SUBMAKE_OPTIONS) -f stm32f1.mk
 	@echo ------------------------------------------------------------------------
 
+BluePill-F103C8:
+	@echo ------------------------------------------------------------------------
+	@echo --- Making $@
+	@echo ---
+	@$(MAKE) CHIP=__BLUEPILL_F103C8__ $(SUBMAKE_OPTIONS) -f stm32f1.mk
+	@echo ------------------------------------------------------------------------
+
 .PHONY: clean
 clean:
 	@echo ------------------------------------------------------------------------
 	@echo --- Cleaning lib release and debug
 	@$(MAKE) CHIP=__NUCLEO_F103RB__ $(SUBMAKE_OPTIONS) -f stm32f1.mk $@
+	@$(MAKE) CHIP=__BLUEPILL_F103C8__ $(SUBMAKE_OPTIONS) -f stm32f1.mk $@
 	@echo ------------------------------------------------------------------------

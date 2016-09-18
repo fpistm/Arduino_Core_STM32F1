@@ -49,6 +49,14 @@ CFLAGS += -DSTM32F103xB
 OUTPUT_BIN = ../../../variants/STM32F103RB-Nucleo
 #Startup file
 CHIP_STARTUP_FILE=startup_stm32f103xb.s
+else ifeq ($(CHIP), __BLUEPILL_F103C8__)
+CHIP_NAME=bluepill-f103c8
+CHIP_SERIE=STM32F1xx
+CFLAGS += -DSTM32F103xB
+# Output directories
+OUTPUT_BIN = ../../../variants/STM32F103C8-BluePill
+#Startup file
+CHIP_STARTUP_FILE=startup_stm32f103xb.s
 else
 $(error CHIP not recognized)
 endif
