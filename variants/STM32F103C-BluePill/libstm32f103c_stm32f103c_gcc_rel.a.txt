@@ -251,8 +251,65 @@ stm32f1xx_hal_nor.o:
 stm32f1xx_hal_pccard.o:
 
 stm32f1xx_hal_pcd.o:
+00000000 T HAL_PCD_ActivateRemoteWakeup
+00000000 W HAL_PCD_ConnectCallback
+00000000 W HAL_PCD_DataInStageCallback
+00000000 W HAL_PCD_DataOutStageCallback
+00000000 T HAL_PCD_DeActivateRemoteWakeup
+00000000 T HAL_PCD_DeInit
+00000000 T HAL_PCD_DevConnect
+00000000 T HAL_PCD_DevDisconnect
+00000000 W HAL_PCD_DisconnectCallback
+00000000 T HAL_PCD_EP_Close
+00000000 T HAL_PCD_EP_ClrStall
+00000000 T HAL_PCD_EP_Flush
+00000000 T HAL_PCD_EP_GetRxCount
+00000000 T HAL_PCD_EP_Open
+00000000 T HAL_PCD_EP_Receive
+00000000 T HAL_PCD_EP_SetStall
+00000000 T HAL_PCD_EP_Transmit
+00000000 T HAL_PCD_GetState
+00000000 T HAL_PCD_Init
+00000000 T HAL_PCD_IRQHandler
+00000000 W HAL_PCD_ISOINIncompleteCallback
+00000000 W HAL_PCD_ISOOUTIncompleteCallback
+00000000 W HAL_PCD_MspDeInit
+00000000 W HAL_PCD_MspInit
+00000000 W HAL_PCD_ResetCallback
+00000000 W HAL_PCD_ResumeCallback
+00000000 T HAL_PCD_SetAddress
+00000000 W HAL_PCD_SetupStageCallback
+00000000 W HAL_PCD_SOFCallback
+00000000 T HAL_PCD_Start
+00000000 T HAL_PCD_Stop
+00000000 W HAL_PCD_SuspendCallback
+         U HAL_PCDEx_SetConnectionState
+         U USB_ActivateEndpoint
+         U USB_ActivateRemoteWakeup
+         U USB_CoreInit
+         U USB_DeactivateEndpoint
+         U USB_DeActivateRemoteWakeup
+         U USB_DevConnect
+         U USB_DevDisconnect
+         U USB_DevInit
+         U USB_DisableGlobalInt
+         U USB_EnableGlobalInt
+         U USB_EP0_OutStart
+         U USB_EPClearStall
+         U USB_EPSetStall
+         U USB_EPStartXfer
+         U USB_FlushRxFifo
+         U USB_FlushTxFifo
+         U USB_ReadInterrupts
+         U USB_ReadPMA
+         U USB_SetCurrentMode
+         U USB_SetDevAddress
+         U USB_StopDevice
+         U USB_WritePMA
 
 stm32f1xx_hal_pcd_ex.o:
+00000000 T HAL_PCDEx_PMAConfig
+00000000 W HAL_PCDEx_SetConnectionState
 
 stm32f1xx_hal_pwr.o:
 
@@ -551,6 +608,35 @@ stm32f1xx_ll_fsmc.o:
 stm32f1xx_ll_sdmmc.o:
 
 stm32f1xx_ll_usb.o:
+00000000 T USB_ActivateEndpoint
+00000000 T USB_ActivateRemoteWakeup
+00000000 T USB_ClearInterrupts
+00000000 T USB_CoreInit
+00000000 T USB_DeactivateEndpoint
+00000000 T USB_DeActivateRemoteWakeup
+00000000 T USB_DevConnect
+00000000 T USB_DevDisconnect
+00000000 T USB_DevInit
+00000000 T USB_DisableGlobalInt
+00000000 T USB_EnableGlobalInt
+00000000 T USB_EP0_OutStart
+00000000 T USB_EPClearStall
+00000000 T USB_EPSetStall
+00000000 T USB_EPStartXfer
+00000000 T USB_FlushRxFifo
+00000000 T USB_FlushTxFifo
+00000000 T USB_ReadDevAllInEpInterrupt
+00000000 T USB_ReadDevAllOutEpInterrupt
+00000000 T USB_ReadDevInEPInterrupt
+00000000 T USB_ReadDevOutEPInterrupt
+00000000 T USB_ReadInterrupts
+00000000 T USB_ReadPacket
+00000000 T USB_ReadPMA
+00000000 T USB_SetCurrentMode
+00000000 T USB_SetDevAddress
+00000000 T USB_StopDevice
+00000000 T USB_WritePacket
+00000000 T USB_WritePMA
 
 analog.o:
 00000000 T adc_read_value
@@ -947,3 +1033,109 @@ f108f85f a BootRAM
 00000000 W USB_LP_CAN1_RX0_IRQHandler
 00000000 W USBWakeUp_IRQHandler
 00000000 W WWDG_IRQHandler
+
+usb_device.o:
+         U FS_Desc
+00000224 C hUsbDeviceFS
+00000000 T MX_USB_DEVICE_Init
+         U USBD_CDC
+         U USBD_CDC_RegisterInterface
+         U USBD_Init
+         U USBD_Interface_fops_FS
+         U USBD_RegisterClass
+         U USBD_Start
+
+usbd_cdc_if.o:
+00000000 t CDC_Control_FS
+00000000 t CDC_DeInit_FS
+00000000 t CDC_Init_FS
+00000000 t CDC_Receive_FS
+00000000 T CDC_Transmit_FS
+         U hUsbDeviceFS
+         U USBD_CDC_ReceivePacket
+         U USBD_CDC_SetRxBuffer
+         U USBD_CDC_SetTxBuffer
+         U USBD_CDC_TransmitPacket
+00000000 D USBD_Interface_fops_FS
+00000004 C UserRxBufferFS
+00000004 C UserTxBufferFS
+
+usbd_conf.o:
+         U Error_Handler
+         U HAL_Delay
+         U HAL_NVIC_DisableIRQ
+         U HAL_NVIC_EnableIRQ
+         U HAL_NVIC_SetPriority
+00000000 T HAL_PCD_ConnectCallback
+00000000 T HAL_PCD_DataInStageCallback
+00000000 T HAL_PCD_DataOutStageCallback
+         U HAL_PCD_DeInit
+00000000 T HAL_PCD_DisconnectCallback
+         U HAL_PCD_EP_Close
+         U HAL_PCD_EP_ClrStall
+         U HAL_PCD_EP_Flush
+         U HAL_PCD_EP_GetRxCount
+         U HAL_PCD_EP_Open
+         U HAL_PCD_EP_Receive
+         U HAL_PCD_EP_SetStall
+         U HAL_PCD_EP_Transmit
+         U HAL_PCD_Init
+00000000 T HAL_PCD_ISOINIncompleteCallback
+00000000 T HAL_PCD_ISOOUTIncompleteCallback
+00000000 T HAL_PCD_MspDeInit
+00000000 T HAL_PCD_MspInit
+00000000 T HAL_PCD_ResetCallback
+00000000 T HAL_PCD_ResumeCallback
+         U HAL_PCD_SetAddress
+00000000 T HAL_PCD_SetupStageCallback
+00000000 T HAL_PCD_SOFCallback
+         U HAL_PCD_Start
+         U HAL_PCD_Stop
+00000000 T HAL_PCD_SuspendCallback
+         U HAL_PCDEx_PMAConfig
+00000000 T HAL_PCDEx_SetConnectionState
+00000420 C hpcd_USB_FS
+00000000 b mem.7789
+00000000 T USBD_LL_ClearStallEP
+00000000 T USBD_LL_CloseEP
+         U USBD_LL_DataInStage
+         U USBD_LL_DataOutStage
+00000000 T USBD_LL_DeInit
+00000000 T USBD_LL_Delay
+         U USBD_LL_DevConnected
+         U USBD_LL_DevDisconnected
+00000000 T USBD_LL_FlushEP
+00000000 T USBD_LL_GetRxDataSize
+00000000 T USBD_LL_Init
+         U USBD_LL_IsoINIncomplete
+         U USBD_LL_IsoOUTIncomplete
+00000000 T USBD_LL_IsStallEP
+00000000 T USBD_LL_OpenEP
+00000000 T USBD_LL_PrepareReceive
+         U USBD_LL_Reset
+         U USBD_LL_Resume
+         U USBD_LL_SetSpeed
+         U USBD_LL_SetupStage
+00000000 T USBD_LL_SetUSBAddress
+         U USBD_LL_SOF
+00000000 T USBD_LL_StallEP
+00000000 T USBD_LL_Start
+00000000 T USBD_LL_Stop
+         U USBD_LL_Suspend
+00000000 T USBD_LL_Transmit
+00000000 T USBD_static_free
+00000000 T USBD_static_malloc
+
+usbd_desc.o:
+00000000 D FS_Desc
+00000000 T USBD_FS_ConfigStrDescriptor
+00000000 D USBD_FS_DeviceDesc
+00000000 T USBD_FS_DeviceDescriptor
+00000000 T USBD_FS_InterfaceStrDescriptor
+00000000 T USBD_FS_LangIDStrDescriptor
+00000000 T USBD_FS_ManufacturerStrDescriptor
+00000000 T USBD_FS_ProductStrDescriptor
+00000000 T USBD_FS_SerialStrDescriptor
+         U USBD_GetString
+00000000 D USBD_LangIDDesc
+00000200 C USBD_StrDesc

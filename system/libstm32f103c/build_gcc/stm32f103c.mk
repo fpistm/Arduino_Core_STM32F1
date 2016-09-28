@@ -62,6 +62,7 @@ CMSIS_ARM_PATH=$(CMSIS_ROOT_PATH)/Include
 CMSIS_ST_PATH=$(CMSIS_ROOT_PATH)/Device/ST/
 CMSIS_CHIP_PATH=$(CMSIS_ROOT_PATH)/Device/ST/$(CHIP_SERIE)
 STARTUP_FILE_PATH=$(CMSIS_CHIP_PATH)/Source/Templates/gcc
+STM32_USB_Device_Library = $(PROJECT_BASE_PATH)/../Middlewares/ST/STM32_USB_Device_Library
 
 #-------------------------------------------------------------------------------
 # Files
@@ -83,6 +84,8 @@ INCLUDES += -I$(CMSIS_ARM_PATH)
 INCLUDES += -I$(CMSIS_ST_PATH)
 INCLUDES += -I$(CMSIS_CHIP_PATH)/Include
 INCLUDES += -I$(STARTUP_FILE_PATH)
+INCLUDES += -I$(STM32_USB_Device_Library)/Core/Inc
+INCLUDES += -I$(STM32_USB_Device_Library)/Class/CDC/Inc
 
 #-------------------------------------------------------------------------------
 ifdef DEBUG
