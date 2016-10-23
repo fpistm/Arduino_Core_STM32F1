@@ -33,7 +33,7 @@ CC = $(CROSS_COMPILE)gcc
 AS = $(CROSS_COMPILE)as
 NM = $(CROSS_COMPILE)nm
 ifeq ($(OS),Windows_NT)
-RM=cs-rm -Rf
+RM=rm -Rf
 #RM=del /s /f
 else
 RM=rm -Rf
@@ -69,7 +69,7 @@ CFLAGS += -Os
 CFLAGS += -Dprintf=iprintf
 
 CFLAGS += --param max-inline-insns-single=500 -mcpu=cortex-m3 -mthumb -mlong-calls -ffunction-sections -fdata-sections -std=c99 -msoft-float -mfloat-abi=soft
-CFLAGS += $(OPTIMIZATION) $(INCLUDES) -D$(CHIP)
+CFLAGS += $(OPTIMIZATION) $(INCLUDES) -D$(CHIP) -DVECT_TAB_OFFSET=0x2000
 
 
 # ---------------------------------------------------------------------------------------
