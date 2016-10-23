@@ -24,7 +24,7 @@ LIBNAME=libstm32f1
 TOOLCHAIN=gcc
 
 ifeq ($(OS),Windows_NT)
-DEV_NUL=nul.txt
+DEV_NUL=null.txt
 else
 DEV_NUL=/dev/null
 endif

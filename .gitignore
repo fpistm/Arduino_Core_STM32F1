@@ -1,4 +1,5 @@
-NULL
+NUL
 null.txt
+nul.txt
 system/libstm32f103c/build_gcc/release_stm32f103c
 system/libstm32f1/build_gcc/release_nucleo-f103rb
