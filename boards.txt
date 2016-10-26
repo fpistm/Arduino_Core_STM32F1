@@ -27,6 +27,8 @@ NUCLEO-F103RB.build.variant=STM32F103RB-Nucleo
 NUCLEO-F103RB.build.variant_system_lib=libstm32f1_nucleo-f103rb_gcc_rel.a
 NUCLEO-F103RB.build.extra_flags=-mthumb -DSTM32F103xB
 
+NUCLEO-F103RB.build.vect-offset=
+
 ################################################################################
 
 ################################################################################
@@ -49,7 +51,7 @@ BluePill-F103C8.build.ldscript=linker_scripts/STM32F103C8_FLASH.ld
 BluePill-F103C8.build.variant=STM32F103C-BluePill
 BluePill-F103C8.build.variant_system_lib=libstm32f103c_stm32f103c_gcc_rel.a
 BluePill-F103C8.build.extra_flags=-mthumb -DSTM32F103xB
-BluePill-F103C8.build.vect-offset=VECT_TAB_OFFSET=0x0
+BluePill-F103C8.build.vect-offset=-DVECT_TAB_OFFSET=0x0
 
 #---------------------------- UPLOAD METHODS ---------------------------
 

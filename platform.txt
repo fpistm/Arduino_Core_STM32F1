@@ -19,7 +19,7 @@ compiler.warning_flags.all=-Wall -Wextra
 
 compiler.path={runtime.tools.arm-none-eabi-gcc.path}/bin/
 compiler.c.cmd=arm-none-eabi-gcc
-compiler.c.flags=-c -Os -g {compiler.warning_flags} -std=gnu11 -ffunction-sections -fdata-sections --param max-inline-insns-single=500 -MMD {compiler.libstm.c.flags} -D{build.vect-offset}
+compiler.c.flags=-c -Os -g {compiler.warning_flags} -std=gnu11 -ffunction-sections -fdata-sections --param max-inline-insns-single=500 -MMD {compiler.libstm.c.flags} {build.vect-offset}
 compiler.c.elf.cmd=arm-none-eabi-gcc
 compiler.c.elf.flags=-Os -g -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--entry=Reset_Handler -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--warn-section-align
 compiler.S.cmd=arm-none-eabi-gcc
@@ -109,7 +109,7 @@ tools.maple_upload.cmd.windows=maple_upload.bat
 tools.maple_upload.path={runtime.hardware.path}/tools/win
 tools.maple_upload.path.macosx={runtime.hardware.path}/tools/macosx
 tools.maple_upload.path.linux={runtime.hardware.path}/tools/linux
-tools.maple_upload.path.linux64={runtime.hardware.path}/tools/linux64    
+tools.maple_upload.path.linux64={runtime.hardware.path}/tools/linux64
 tools.maple_upload.upload.params.verbose=-d
 tools.maple_upload.upload.params.quiet=
 tools.maple_upload.upload.pattern="{path}/{cmd}" {serial.port.file} {upload.altID} {upload.usbID} "{build.path}/{build.project_name}.bin"
@@ -138,7 +138,7 @@ tools.stlink_upload.path.linux64={runtime.hardware.path}/tools/linux64
 tools.stlink_upload.upload.params.verbose=-d
 tools.stlink_upload.upload.params.quiet=
 tools.stlink_upload.upload.pattern="{path}/{cmd}" {serial.port.file} {upload.altID} {upload.usbID} "{build.path}/{build.project_name}.bin"
- 
+
 # blackmagic probe upload
 tools.bmp_upload.cmd=arm-none-eabi-gdb
 tools.bmp_upload.path={runtime.tools.arm-none-eabi-gcc.path}/bin/
