@@ -22,17 +22,17 @@
 /*
  * Core and peripherals registers definitions
  */
-#include "include/hw_config.h"
-#include "include/digital_io.h"
-#include "include/clock.h"
-#include "include/uart_emul.h"
-#include "include/uart.h"
-#include "include/analog.h"
-#include "include/interrupt.h"
-#include "include/spi_com.h"
-#include "include/timer.h"
-#include "include/twi.h"
-#include "include/stm32_eeprom.h"
+#include "libstm32f1/hw_config.h"
+#include "libstm32f1/digital_io.h"
+#include "libstm32f1/clock.h"
+#include "libstm32f1/uart_emul.h"
+#include "libstm32f1/uart.h"
+#include "libstm32f1/analog.h"
+#include "libstm32f1/interrupt.h"
+#include "libstm32f1/spi_com.h"
+#include "libstm32f1/timer.h"
+#include "libstm32f1/twi.h"
+#include "libstm32f1/stm32_eeprom.h"
 
 /* Define attribute */
 #if defined (  __GNUC__  ) /* GCC CS3 */
