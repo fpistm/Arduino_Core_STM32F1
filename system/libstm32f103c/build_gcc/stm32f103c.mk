@@ -20,7 +20,6 @@
 .SUFFIXES: .o .a .c .s
 SUB_MAKEFILES= debug.mk gcc.mk release.mk stm32f1.mk
 
-LIBNAME=libstm32f103c
 TOOLCHAIN=gcc
 
 ifeq ($(OS),Windows_NT)
@@ -41,17 +40,8 @@ endif
 #-------------------------------------------------------------------------------
 
 # Board options
-ifeq ($(CHIP), __STM32F103C__)
-CHIP_NAME=stm32f103c
 CHIP_SERIE=STM32F1xx
-CFLAGS += -DSTM32F103xB
-# Output directories
-OUTPUT_BIN = ../../../variants/STM32F103C-BluePill
-#Startup file
-CHIP_STARTUP_FILE=startup_stm32f103xb.s
-else
-$(error CHIP not recognized)
-endif
+CFLAGS += -D$(CHIP)
 
 # Libraries
 PROJECT_BASE_PATH = ..
