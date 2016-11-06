@@ -4,8 +4,8 @@
   * @author  WI6LABS
   * @version V1.0.1
   * @date    21-September-2016
-  * @brief   Linker script for STM32F103RB Device with
-  *          128KByte FLASH, 20KByte RAM
+  * @brief   Linker script for STM32F100RB Device with
+  *          128KByte FLASH, 8KByte RAM
   *
   *          Set heap size, stack size and stack location according
   *          to application requirements.
@@ -54,7 +54,7 @@
   /* Specify the memory areas */
   MEMORY
   {
-  RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 20K
+  RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 8K
   FLASH (rx)      : ORIGIN = 0x8000000, LENGTH = 128K
   }
 
