@@ -32,6 +32,7 @@ STM32F103C:
 	@echo --- Making $@
 	@echo ---
 	@$(MAKE) CHIP=STM32F103xB CHIP_STARTUP_FILE=startup_stm32f103xb.s LIBNAME=libstm32f103c CHIP_NAME=stm32f103c OUTPUT_BIN=../../../variants/STM32F103C-BluePill $(SUBMAKE_OPTIONS) -f stm32f103c.mk
+	@$(MAKE) CHIP=STM32F103xB CHIP_STARTUP_FILE=startup_stm32f103xb.s LIBNAME=libstm32f1 CHIP_NAME=nucleo-f103rb OUTPUT_BIN=../../../variants/STM32F103RB-Nucleo $(SUBMAKE_OPTIONS) -f stm32f103c.mk
 	@echo ------------------------------------------------------------------------
 
 .PHONY: clean
@@ -40,4 +41,5 @@ clean:
 	@echo --- Cleaning lib release and debug
 	@$(MAKE) CHIP=__STM32F103C__ $(SUBMAKE_OPTIONS) -f stm32f103c.mk $@
 	@$(MAKE) CHIP=STM32F103xB CHIP_STARTUP_FILE=startup_stm32f103xb.s LIBNAME=libstm32f103c CHIP_NAME=stm32f103c OUTPUT_BIN=../../../variants/STM32F103C-BluePill $(SUBMAKE_OPTIONS) -f stm32f103c.mk $@
+	@$(MAKE) CHIP=STM32F103xB CHIP_STARTUP_FILE=startup_stm32f103xb.s LIBNAME=libstm32f1 CHIP_NAME=nucleo-f103rb OUTPUT_BIN=../../../variants/STM32F103RB-Nucleo $(SUBMAKE_OPTIONS) -f stm32f103c.mk $@
 	@echo ------------------------------------------------------------------------
