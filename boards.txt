@@ -64,7 +64,7 @@ BluePill-F103C8.menu.upload_method.DFUUploadMethod=STM32duino bootloader
 BluePill-F103C8.menu.upload_method.DFUUploadMethod.upload.protocol=maple_dfu
 BluePill-F103C8.menu.upload_method.DFUUploadMethod.upload.tool=maple_upload
 BluePill-F103C8.menu.upload_method.DFUUploadMethod.build.upload_flags=-DSERIAL_USB -DGENERIC_BOOTLOADER
-BluePill-F103C8.menu.upload_method.DFUUploadMethod.build.vect-offset=VECT_TAB_OFFSET=0x2000
+BluePill-F103C8.menu.upload_method.DFUUploadMethod.build.vect-offset=-DVECT_TAB_OFFSET=0x2000
 BluePill-F103C8.menu.upload_method.DFUUploadMethod.build.ldscript=linker_scripts/STM32F103C8_FLASH_bootloader.ld
 BluePill-F103C8.menu.upload_method.DFUUploadMethod.upload.usbID=1EAF:0003
 BluePill-F103C8.menu.upload_method.DFUUploadMethod.upload.altID=2
