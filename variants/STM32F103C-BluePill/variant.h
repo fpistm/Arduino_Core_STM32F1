@@ -35,6 +35,12 @@
 
 #include "Arduino.h"
 #ifdef __cplusplus
+
+#ifdef SERIAL_USB 
+#include "USBSerial.h" 
+#define USBDP_PIN PA12 //USB Plus (+) pin number. That pin is normally pulled up to 3.3v by a 1.5k resistor 
+#endif 
+ 
 #include "UARTClass.h"
 #include "USARTClass.h"
 #endif
@@ -168,10 +174,17 @@ static const uint8_t SCK  = 13;
  *----------------------------------------------------------------------------*/
 
 #ifdef __cplusplus
-extern UARTClass Serial;
-extern UARTClass Serial1;
+//extern UARTClass Serial;
+
+extern UARTClass  Serial1;
 extern USARTClass Serial2;
 
+#ifdef SERIAL_USB 
+extern USBSerial Serial; 
+#else 
+#define Serial Serial1 
+#endif 
+ 
 #endif
 
 #endif /* _VARIANT_ARDUINO_STM32_ */

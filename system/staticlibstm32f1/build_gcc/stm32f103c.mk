@@ -47,6 +47,7 @@ CFLAGS += -D$(CHIP)
 PROJECT_BASE_PATH = ..
 CMSIS_ROOT_PATH = $(PROJECT_BASE_PATH)/../Drivers/CMSIS
 HAL_ROOT_PATH = $(PROJECT_BASE_PATH)/../Drivers/STM32F1xx_HAL_Driver
+USB_CDC_ROOT_PATH = $(PROJECT_BASE_PATH)/../Middlewares/ST/STM32_USB_Device_Library
 
 CMSIS_ARM_PATH=$(CMSIS_ROOT_PATH)/Include
 CMSIS_ST_PATH=$(CMSIS_ROOT_PATH)/Device/ST/
@@ -65,6 +66,8 @@ VPATH+=$(CMSIS_ARM_PATH)
 VPATH+=$(CMSIS_CHIP_PATH)/Include
 VPATH+=$(CMSIS_CHIP_PATH)/Source/
 VPATH+=$(STARTUP_FILE_PATH)
+VPATH+=$(USB_CDC_ROOT_PATH)/Class/CDC/Src
+VPATH+=$(USB_CDC_ROOT_PATH)/Core/Src
 
 INCLUDES = -I$(PROJECT_BASE_PATH)
 INCLUDES += -I$(HAL_ROOT_PATH)/Inc
@@ -73,6 +76,8 @@ INCLUDES += -I$(CMSIS_ARM_PATH)
 INCLUDES += -I$(CMSIS_ST_PATH)
 INCLUDES += -I$(CMSIS_CHIP_PATH)/Include
 INCLUDES += -I$(STARTUP_FILE_PATH)
+INCLUDES += -I$(USB_CDC_ROOT_PATH)/Class/CDC/Inc
+INCLUDES += -I$(USB_CDC_ROOT_PATH)/Core/Inc
 
 #-------------------------------------------------------------------------------
 ifdef DEBUG
@@ -105,6 +110,8 @@ C_SRC=$(wildcard $(HAL_ROOT_PATH)/Src/*.c)
 C_SRC+=$(wildcard $(PROJECT_BASE_PATH)/source/*.c)
 C_SRC+=$(wildcard $(CMSIS_CHIP_PATH)/source/*.c)
 C_SRC+=$(wildcard $(CMSIS_CHIP_PATH)/source/gcc/*.c)
+C_SRC+=$(wildcard $(USB_CDC_ROOT_PATH)/Class/CDC/Src/*.c)
+C_SRC+=$(wildcard $(USB_CDC_ROOT_PATH)/Core/Src/*.c)
 
 C_OBJ_TEMP=$(patsubst %.c, %.o, $(notdir $(C_SRC)))
 
