@@ -92,7 +92,11 @@ recipe.size.regex.eeprom=^(?:\.eeprom)\s+([0-9]+).*
 # -------------------
 
 #Upload to Nucleo via mass storage
-tools.nucleoFlasher.path={runtime.tools.nucleoFlasher.path}
+//tools.nucleoFlasher.path={runtime.tools.nucleoFlasher.path}
+tools.nucleoFlasher.path={runtime.hardware.path}/tools/win/nucleoFlasher
+tools.nucleoFlasher.path.macosx={runtime.hardware.path}/tools/macosx/nucleoFlasher
+tools.nucleoFlasher.path.linux={runtime.hardware.path}/tools/linux/nucleoFlasher
+
 tools.nucleoFlasher.cmd.linux=nucleoFlasher
 tools.nucleoFlasher.cmd.windows=nucleoFlasher.bat
 tools.nucleoFlasher.cmd.macosx=nucleoFlasherMacOsX
