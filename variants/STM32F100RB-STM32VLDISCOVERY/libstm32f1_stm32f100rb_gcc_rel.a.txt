@@ -62,9 +62,6 @@ stm32f1xx_hal_adc.o:
 
 stm32f1xx_hal_adc_ex.o:
          U ADC_ConversionStop_Disable
-         U ADC_DMAConvCplt
-         U ADC_DMAError
-         U ADC_DMAHalfConvCplt
          U ADC_Enable
 00000000 T HAL_ADCEx_Calibration_Start
 00000000 T HAL_ADCEx_InjectedConfigChannel
@@ -75,12 +72,6 @@ stm32f1xx_hal_adc_ex.o:
 00000000 T HAL_ADCEx_InjectedStart_IT
 00000000 T HAL_ADCEx_InjectedStop
 00000000 T HAL_ADCEx_InjectedStop_IT
-00000000 T HAL_ADCEx_MultiModeConfigChannel
-00000000 T HAL_ADCEx_MultiModeGetValue
-00000000 T HAL_ADCEx_MultiModeStart_DMA
-00000000 T HAL_ADCEx_MultiModeStop_DMA
-         U HAL_DMA_Abort
-         U HAL_DMA_Start_IT
          U HAL_GetTick
          U HAL_RCCEx_GetPeriphCLKFreq
          U SystemCoreClock
@@ -109,8 +100,52 @@ stm32f1xx_hal_cortex.o:
 stm32f1xx_hal_crc.o:
 
 stm32f1xx_hal_dac.o:
+00000000 T DAC_DMAConvCpltCh1
+         U DAC_DMAConvCpltCh2
+00000000 T DAC_DMAErrorCh1
+         U DAC_DMAErrorCh2
+00000000 T DAC_DMAHalfConvCpltCh1
+         U DAC_DMAHalfConvCpltCh2
+00000000 T HAL_DAC_ConfigChannel
+00000000 W HAL_DAC_ConvCpltCallbackCh1
+00000000 W HAL_DAC_ConvHalfCpltCallbackCh1
+00000000 T HAL_DAC_DeInit
+00000000 W HAL_DAC_ErrorCallbackCh1
+00000000 T HAL_DAC_GetError
+00000000 T HAL_DAC_GetState
+00000000 T HAL_DAC_GetValue
+00000000 T HAL_DAC_Init
+00000000 W HAL_DAC_MspDeInit
+00000000 W HAL_DAC_MspInit
+00000000 T HAL_DAC_SetValue
+00000000 T HAL_DAC_Start
+00000000 W HAL_DAC_Start_DMA
+00000000 T HAL_DAC_Stop
+00000000 W HAL_DAC_Stop_DMA
+         U HAL_DMA_Abort
+         U HAL_DMA_Start_IT
 
 stm32f1xx_hal_dac_ex.o:
+         U DAC_DMAConvCpltCh1
+00000000 T DAC_DMAConvCpltCh2
+         U DAC_DMAErrorCh1
+00000000 T DAC_DMAErrorCh2
+         U DAC_DMAHalfConvCpltCh1
+00000000 T DAC_DMAHalfConvCpltCh2
+00000000 W HAL_DAC_DMAUnderrunCallbackCh1
+00000000 T HAL_DAC_IRQHandler
+00000000 T HAL_DAC_Start_DMA
+00000000 T HAL_DAC_Stop_DMA
+00000000 W HAL_DACEx_ConvCpltCallbackCh2
+00000000 W HAL_DACEx_ConvHalfCpltCallbackCh2
+00000000 W HAL_DACEx_DMAUnderrunCallbackCh2
+00000000 T HAL_DACEx_DualGetValue
+00000000 T HAL_DACEx_DualSetValue
+00000000 W HAL_DACEx_ErrorCallbackCh2
+00000000 T HAL_DACEx_NoiseWaveGenerate
+00000000 T HAL_DACEx_TriangleWaveGenerate
+         U HAL_DMA_Abort
+         U HAL_DMA_Start_IT
 
 stm32f1xx_hal_dma.o:
 00000000 T HAL_DMA_Abort
@@ -251,65 +286,8 @@ stm32f1xx_hal_nor.o:
 stm32f1xx_hal_pccard.o:
 
 stm32f1xx_hal_pcd.o:
-00000000 T HAL_PCD_ActivateRemoteWakeup
-00000000 W HAL_PCD_ConnectCallback
-00000000 W HAL_PCD_DataInStageCallback
-00000000 W HAL_PCD_DataOutStageCallback
-00000000 T HAL_PCD_DeActivateRemoteWakeup
-00000000 T HAL_PCD_DeInit
-00000000 T HAL_PCD_DevConnect
-00000000 T HAL_PCD_DevDisconnect
-00000000 W HAL_PCD_DisconnectCallback
-00000000 T HAL_PCD_EP_Close
-00000000 T HAL_PCD_EP_ClrStall
-00000000 T HAL_PCD_EP_Flush
-00000000 T HAL_PCD_EP_GetRxCount
-00000000 T HAL_PCD_EP_Open
-00000000 T HAL_PCD_EP_Receive
-00000000 T HAL_PCD_EP_SetStall
-00000000 T HAL_PCD_EP_Transmit
-00000000 T HAL_PCD_GetState
-00000000 T HAL_PCD_Init
-00000000 T HAL_PCD_IRQHandler
-00000000 W HAL_PCD_ISOINIncompleteCallback
-00000000 W HAL_PCD_ISOOUTIncompleteCallback
-00000000 W HAL_PCD_MspDeInit
-00000000 W HAL_PCD_MspInit
-00000000 W HAL_PCD_ResetCallback
-00000000 W HAL_PCD_ResumeCallback
-00000000 T HAL_PCD_SetAddress
-00000000 W HAL_PCD_SetupStageCallback
-00000000 W HAL_PCD_SOFCallback
-00000000 T HAL_PCD_Start
-00000000 T HAL_PCD_Stop
-00000000 W HAL_PCD_SuspendCallback
-         U HAL_PCDEx_SetConnectionState
-         U USB_ActivateEndpoint
-         U USB_ActivateRemoteWakeup
-         U USB_CoreInit
-         U USB_DeactivateEndpoint
-         U USB_DeActivateRemoteWakeup
-         U USB_DevConnect
-         U USB_DevDisconnect
-         U USB_DevInit
-         U USB_DisableGlobalInt
-         U USB_EnableGlobalInt
-         U USB_EP0_OutStart
-         U USB_EPClearStall
-         U USB_EPSetStall
-         U USB_EPStartXfer
-         U USB_FlushRxFifo
-         U USB_FlushTxFifo
-         U USB_ReadInterrupts
-         U USB_ReadPMA
-         U USB_SetCurrentMode
-         U USB_SetDevAddress
-         U USB_StopDevice
-         U USB_WritePMA
 
 stm32f1xx_hal_pcd_ex.o:
-00000000 T HAL_PCDEx_PMAConfig
-00000000 W HAL_PCDEx_SetConnectionState
 
 stm32f1xx_hal_pwr.o:
 
@@ -608,252 +586,8 @@ stm32f1xx_ll_fsmc.o:
 stm32f1xx_ll_sdmmc.o:
 
 stm32f1xx_ll_usb.o:
-00000000 T USB_ActivateEndpoint
-00000000 T USB_ActivateRemoteWakeup
-00000000 T USB_ClearInterrupts
-00000000 T USB_CoreInit
-00000000 T USB_DeactivateEndpoint
-00000000 T USB_DeActivateRemoteWakeup
-00000000 T USB_DevConnect
-00000000 T USB_DevDisconnect
-00000000 T USB_DevInit
-00000000 T USB_DisableGlobalInt
-00000000 T USB_EnableGlobalInt
-00000000 T USB_EP0_OutStart
-00000000 T USB_EPClearStall
-00000000 T USB_EPSetStall
-00000000 T USB_EPStartXfer
-00000000 T USB_FlushRxFifo
-00000000 T USB_FlushTxFifo
-00000000 T USB_ReadDevAllInEpInterrupt
-00000000 T USB_ReadDevAllOutEpInterrupt
-00000000 T USB_ReadDevInEPInterrupt
-00000000 T USB_ReadDevOutEPInterrupt
-00000000 T USB_ReadInterrupts
-00000000 T USB_ReadPacket
-00000000 T USB_ReadPMA
-00000000 T USB_SetCurrentMode
-00000000 T USB_SetDevAddress
-00000000 T USB_StopDevice
-00000000 T USB_WritePacket
-00000000 T USB_WritePMA
 
-usb_device.o:
-         U FS_Desc
-00000224 C hUsbDeviceFS
-00000000 T MX_USB_DEVICE_Init
-         U USBD_CDC
-         U USBD_CDC_RegisterInterface
-         U USBD_Init
-         U USBD_Interface_fops_FS
-         U USBD_RegisterClass
-         U USBD_Start
-
-usbd_cdc_if.o:
-00000000 t CDC_Control_FS
-00000000 t CDC_DeInit_FS
-00000000 t CDC_Init_FS
-00000000 t CDC_Receive_FS
-00000000 T CDC_Transmit_FS
-00000000 B dtr_pin
-         U HAL_NVIC_SystemReset
-         U hUsbDeviceFS
-         U USBD_CDC_ReceivePacket
-         U USBD_CDC_SetRxBuffer
-         U USBD_CDC_SetTxBuffer
-         U USBD_CDC_TransmitPacket
-00000000 D USBD_Interface_fops_FS
-         U USBSerial_Rx_Handler
-00000080 C UserRxBufferFS
-00000080 C UserTxBufferFS
-
-usbd_conf.o:
-         U Error_Handler
-         U HAL_Delay
-         U HAL_NVIC_DisableIRQ
-         U HAL_NVIC_EnableIRQ
-         U HAL_NVIC_SetPriority
-00000000 T HAL_PCD_ConnectCallback
-00000000 T HAL_PCD_DataInStageCallback
-00000000 T HAL_PCD_DataOutStageCallback
-         U HAL_PCD_DeInit
-00000000 T HAL_PCD_DisconnectCallback
-         U HAL_PCD_EP_Close
-         U HAL_PCD_EP_ClrStall
-         U HAL_PCD_EP_Flush
-         U HAL_PCD_EP_GetRxCount
-         U HAL_PCD_EP_Open
-         U HAL_PCD_EP_Receive
-         U HAL_PCD_EP_SetStall
-         U HAL_PCD_EP_Transmit
-         U HAL_PCD_Init
-00000000 T HAL_PCD_ISOINIncompleteCallback
-00000000 T HAL_PCD_ISOOUTIncompleteCallback
-00000000 T HAL_PCD_MspDeInit
-00000000 T HAL_PCD_MspInit
-00000000 T HAL_PCD_ResetCallback
-00000000 T HAL_PCD_ResumeCallback
-         U HAL_PCD_SetAddress
-00000000 T HAL_PCD_SetupStageCallback
-00000000 T HAL_PCD_SOFCallback
-         U HAL_PCD_Start
-         U HAL_PCD_Stop
-00000000 T HAL_PCD_SuspendCallback
-         U HAL_PCDEx_PMAConfig
-00000000 T HAL_PCDEx_SetConnectionState
-00000420 C hpcd_USB_FS
-00000000 b mem.7789
-00000000 T USBD_LL_ClearStallEP
-00000000 T USBD_LL_CloseEP
-         U USBD_LL_DataInStage
-         U USBD_LL_DataOutStage
-00000000 T USBD_LL_DeInit
-00000000 T USBD_LL_Delay
-         U USBD_LL_DevConnected
-         U USBD_LL_DevDisconnected
-00000000 T USBD_LL_FlushEP
-00000000 T USBD_LL_GetRxDataSize
-00000000 T USBD_LL_Init
-         U USBD_LL_IsoINIncomplete
-         U USBD_LL_IsoOUTIncomplete
-00000000 T USBD_LL_IsStallEP
-00000000 T USBD_LL_OpenEP
-00000000 T USBD_LL_PrepareReceive
-         U USBD_LL_Reset
-         U USBD_LL_Resume
-         U USBD_LL_SetSpeed
-         U USBD_LL_SetupStage
-00000000 T USBD_LL_SetUSBAddress
-         U USBD_LL_SOF
-00000000 T USBD_LL_StallEP
-00000000 T USBD_LL_Start
-00000000 T USBD_LL_Stop
-         U USBD_LL_Suspend
-00000000 T USBD_LL_Transmit
-00000000 T USBD_static_free
-00000000 T USBD_static_malloc
-
-usbd_desc.o:
-00000000 D FS_Desc
-00000000 T USBD_FS_ConfigStrDescriptor
-00000000 D USBD_FS_DeviceDesc
-00000000 T USBD_FS_DeviceDescriptor
-00000000 T USBD_FS_InterfaceStrDescriptor
-00000000 T USBD_FS_LangIDStrDescriptor
-00000000 T USBD_FS_ManufacturerStrDescriptor
-00000000 T USBD_FS_ProductStrDescriptor
-00000000 T USBD_FS_SerialStrDescriptor
-         U USBD_GetString
-00000000 D USBD_LangIDDesc
-00000200 C USBD_StrDesc
-
-usbd_cdc.o:
-00000000 b ifalt.7719
-00000000 D USBD_CDC
-00000000 D USBD_CDC_CfgFSDesc
-00000000 D USBD_CDC_CfgHSDesc
-00000000 t USBD_CDC_DataIn
-00000000 t USBD_CDC_DataOut
-00000000 t USBD_CDC_DeInit
-00000000 d USBD_CDC_DeviceQualifierDesc
-00000000 t USBD_CDC_EP0_RxReady
-00000000 T USBD_CDC_GetDeviceQualifierDescriptor
-00000000 t USBD_CDC_GetFSCfgDesc
-00000000 t USBD_CDC_GetHSCfgDesc
-00000000 t USBD_CDC_GetOtherSpeedCfgDesc
-00000000 t USBD_CDC_Init
-00000000 D USBD_CDC_OtherSpeedCfgDesc
-00000000 T USBD_CDC_ReceivePacket
-00000000 T USBD_CDC_RegisterInterface
-00000000 T USBD_CDC_SetRxBuffer
-00000000 T USBD_CDC_SetTxBuffer
-00000000 t USBD_CDC_Setup
-00000000 T USBD_CDC_TransmitPacket
-         U USBD_CtlPrepareRx
-         U USBD_CtlSendData
-         U USBD_LL_CloseEP
-         U USBD_LL_GetRxDataSize
-         U USBD_LL_OpenEP
-         U USBD_LL_PrepareReceive
-         U USBD_LL_Transmit
-         U USBD_static_free
-         U USBD_static_malloc
-
-usbd_cdc_if_template.o:
-00000000 D linecoding
-00000000 t TEMPLATE_Control
-00000000 t TEMPLATE_DeInit
-00000000 t TEMPLATE_Init
-00000000 t TEMPLATE_Receive
-00000000 D USBD_CDC_Template_fops
-
-usbd_core.o:
-00000000 T USBD_ClrClassConfig
-         U USBD_CtlContinueRx
-         U USBD_CtlContinueSendData
-         U USBD_CtlReceiveStatus
-         U USBD_CtlSendStatus
-00000000 T USBD_DeInit
-00000000 T USBD_Init
-00000000 T USBD_LL_DataInStage
-00000000 T USBD_LL_DataOutStage
-         U USBD_LL_DeInit
-00000000 T USBD_LL_DevConnected
-00000000 T USBD_LL_DevDisconnected
-         U USBD_LL_Init
-00000000 T USBD_LL_IsoINIncomplete
-00000000 T USBD_LL_IsoOUTIncomplete
-         U USBD_LL_OpenEP
-         U USBD_LL_PrepareReceive
-00000000 T USBD_LL_Reset
-00000000 T USBD_LL_Resume
-00000000 T USBD_LL_SetSpeed
-00000000 T USBD_LL_SetupStage
-00000000 T USBD_LL_SOF
-         U USBD_LL_StallEP
-         U USBD_LL_Start
-         U USBD_LL_Stop
-00000000 T USBD_LL_Suspend
-         U USBD_ParseSetupRequest
-00000000 T USBD_RegisterClass
-00000000 T USBD_RunTestMode
-00000000 T USBD_SetClassConfig
-00000000 T USBD_Start
-         U USBD_StdDevReq
-         U USBD_StdEPReq
-         U USBD_StdItfReq
-00000000 T USBD_Stop
-
-usbd_ctlreq.o:
-00000000 b cfgidx.7724
-         U USBD_ClrClassConfig
-00000000 T USBD_CtlError
-         U USBD_CtlSendData
-         U USBD_CtlSendStatus
-00000000 T USBD_GetString
-         U USBD_LL_ClearStallEP
-         U USBD_LL_IsStallEP
-         U USBD_LL_SetUSBAddress
-         U USBD_LL_StallEP
-00000000 T USBD_ParseSetupRequest
-         U USBD_SetClassConfig
-00000000 T USBD_StdDevReq
-00000000 T USBD_StdEPReq
-00000000 T USBD_StdItfReq
-
-usbd_ioreq.o:
-00000000 T USBD_CtlContinueRx
-00000000 T USBD_CtlContinueSendData
-00000000 T USBD_CtlPrepareRx
-00000000 T USBD_CtlReceiveStatus
-00000000 T USBD_CtlSendData
-00000000 T USBD_CtlSendStatus
-00000000 T USBD_GetRxCount
-         U USBD_LL_GetRxDataSize
-         U USBD_LL_PrepareReceive
-         U USBD_LL_Transmit
-
-startup_stm32f103xb.o:
+startup_stm32f100xb.o:
          U __libc_init_array
          U _ebss
          U _edata
@@ -861,11 +595,10 @@ startup_stm32f103xb.o:
          U _sbss
          U _sdata
          U _sidata
-00000000 W ADC1_2_IRQHandler
+00000000 W ADC1_IRQHandler
 f108f85f a BootRAM
 00000000 W BusFault_Handler
-00000000 W CAN1_RX1_IRQHandler
-00000000 W CAN1_SCE_IRQHandler
+00000000 W CEC_IRQHandler
 00000006 t CopyDataInit
 00000000 W DebugMon_Handler
 00000000 T Default_Handler
@@ -889,8 +622,8 @@ f108f85f a BootRAM
 00000000 W HardFault_Handler
 00000000 W I2C1_ER_IRQHandler
 00000000 W I2C1_EV_IRQHandler
-00000000 W I2C2_ER_IRQHandler
-00000000 W I2C2_EV_IRQHandler
+         w I2C2_ER_IRQHandler
+         w I2C2_EV_IRQHandler
 00000000 t Infinite_Loop
 0000000e t LoopCopyDataInit
 00000026 t LoopFillZerobss
@@ -904,23 +637,22 @@ f108f85f a BootRAM
 00000000 W RTC_Alarm_IRQHandler
 00000000 W RTC_IRQHandler
 00000000 W SPI1_IRQHandler
-00000000 W SPI2_IRQHandler
+00000000 t SPI2_IRQHandler
 00000000 W SVC_Handler
          U SystemInit
 00000000 W SysTick_Handler
 00000000 W TAMPER_IRQHandler
-00000000 W TIM1_BRK_IRQHandler
+00000000 W TIM1_BRK_TIM15_IRQHandler
 00000000 W TIM1_CC_IRQHandler
-00000000 W TIM1_TRG_COM_IRQHandler
-00000000 W TIM1_UP_IRQHandler
+00000000 W TIM1_TRG_COM_TIM17_IRQHandler
+00000000 W TIM1_UP_TIM16_IRQHandler
 00000000 W TIM2_IRQHandler
 00000000 W TIM3_IRQHandler
 00000000 W TIM4_IRQHandler
+00000000 W TIM6_DAC_IRQHandler
+00000000 W TIM7_IRQHandler
 00000000 W UsageFault_Handler
 00000000 W USART1_IRQHandler
 00000000 W USART2_IRQHandler
 00000000 W USART3_IRQHandler
-00000000 W USB_HP_CAN1_TX_IRQHandler
-00000000 W USB_LP_CAN1_RX0_IRQHandler
-00000000 W USBWakeUp_IRQHandler
 00000000 W WWDG_IRQHandler

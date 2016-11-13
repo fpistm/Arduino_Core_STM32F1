@@ -24,7 +24,7 @@
  *----------------------------------------------------------------------------*/
 
 /** Frequency of the board main oscillator */
-#define VARIANT_MAINOSC		8000000
+//#define VARIANT_MAINOSC		12000000
 
 /** Master clock frequency */
 //#define VARIANT_MCK			84000000
@@ -35,12 +35,6 @@
 
 #include "Arduino.h"
 #ifdef __cplusplus
-
-#ifdef SERIAL_USB 
-#include "USBSerial.h" 
-#define USBDP_PIN PA12 //USB Plus (+) pin number. That pin is normally pulled up to 3.3v by a 1.5k resistor 
-#endif 
- 
 #include "UARTClass.h"
 #include "USARTClass.h"
 #endif
@@ -65,12 +59,6 @@ extern "C"{
 /*----------------------------------------------------------------------------
  *        Pins
  *----------------------------------------------------------------------------*/
-
-enum {
-  PA0, PA1, PA2, PA3, PA4, PA5, PA6, PA7, PA8, PA9, PA10, PA11, PA12, PA13, PA14, PA15,
-  PB0, PB1, PB2, PB3, PB4, PB5, PB6, PB7, PB8, PB9, PB10, PB11, PB12, PB13, PB14, PB15,
-  PC13, PC14, PC15
-};
 
 #define digitalPinToPort(P)        ( g_APinDescription[P].ulPort )
 #define digitalPinToBitMask(P)     ( g_APinDescription[P].ulPin )
@@ -109,7 +97,7 @@ enum {
 #define ARDUINO_PIN_D14               0x0000000E
 #define ARDUINO_PIN_D15               0x0000000F
 
-#define MAX_DIGITAL_IOS               PC15 // All pins can be use as digital pins
+#define MAX_DIGITAL_IOS               22 //All pins can be use as digital pins
 
 //analog pins
 #define ARDUINO_PIN_A0                0x00000010
@@ -118,11 +106,13 @@ enum {
 #define ARDUINO_PIN_A3                0x00000013
 #define ARDUINO_PIN_A4                0x00000014
 #define ARDUINO_PIN_A5                0x00000015
-
+//D13 can be used as a DAC
 #define MAX_ANALOG_IOS                7
+
 
 //Morpho connector IOS
 #define ARDUINO_PIN_EXT               0x10000000
+
 
 //Analog pins
 static const uint8_t A0  = ARDUINO_PIN_A0;
@@ -133,7 +123,7 @@ static const uint8_t A4  = ARDUINO_PIN_A4;
 static const uint8_t A5  = ARDUINO_PIN_A5;
 
 //On-board LED pin number
-#define LED_BUILTIN                   PC13
+#define LED_BUILTIN                   13
 
 //ADC resolution is 12bits
 #define ADC_RESOLUTION                12
@@ -174,17 +164,10 @@ static const uint8_t SCK  = 13;
  *----------------------------------------------------------------------------*/
 
 #ifdef __cplusplus
-//extern UARTClass Serial;
-
-extern UARTClass  Serial1;
+extern UARTClass Serial;
+extern UARTClass Serial1;
 extern USARTClass Serial2;
 
-#ifdef SERIAL_USB 
-extern USBSerial Serial; 
-#else 
-#define Serial Serial1 
-#endif 
- 
 #endif
 
 #endif /* _VARIANT_ARDUINO_STM32_ */

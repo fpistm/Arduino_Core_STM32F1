@@ -30,6 +30,30 @@ NUCLEO-F103RB.build.extra_flags=-mthumb -DSTM32F103xB
 NUCLEO-F103RB.build.vect-offset=
 
 ################################################################################
+# STM32VLDISCOVERY board
+
+STM32VLDISCOVERY.name=STM32VLDISCOVERY-STM32F100RB
+
+STM32VLDISCOVERY.vid.0=0x0483
+STM32VLDISCOVERY.pid.0=0x374b
+STM32VLDISCOVERY.node=NODE_F103RB
+
+STM32VLDISCOVERY.upload.tool=nucleoFlasher
+STM32VLDISCOVERY.upload.protocol=nucleoFlasher
+STM32VLDISCOVERY.upload.maximum_size=131071
+STM32VLDISCOVERY.upload.maximum_data_size=20479
+
+STM32VLDISCOVERY.build.mcu=cortex-m3
+STM32VLDISCOVERY.build.board=NUCLEO-F103RB
+STM32VLDISCOVERY.build.core=arduino
+STM32VLDISCOVERY.build.ldscript=linker_scripts/gcc/STM32F100RB_FLASH.ld
+STM32VLDISCOVERY.build.variant=STM32F100RB-STM32VLDISCOVERY
+STM32VLDISCOVERY.build.variant_system_lib=libstm32f1_stm32f100rb_gcc_rel.a
+STM32VLDISCOVERY.build.extra_flags=-mthumb -DSTM32F100xB
+
+STM32VLDISCOVERY.build.vect-offset=
+
+################################################################################
 
 ################################################################################
 # BluePill-F103C8 board
@@ -50,7 +74,7 @@ BluePill-F103C8.build.core=arduino
 BluePill-F103C8.build.ldscript=linker_scripts/STM32F103C8_FLASH.ld
 BluePill-F103C8.build.variant=STM32F103C-BluePill
 BluePill-F103C8.build.variant_system_lib=libstm32f103c_stm32f103c_gcc_rel.a
-BluePill-F103C8.build.extra_flags=-mthumb -DSTM32F103xB
+BluePill-F103C8.build.extra_flags=-mthumb -DSTM32F103xB -DSERIAL_USB 
 BluePill-F103C8.build.vect-offset=-DVECT_TAB_OFFSET=0x0
 
 #---------------------------- UPLOAD METHODS ---------------------------
@@ -64,7 +88,7 @@ BluePill-F103C8.menu.upload_method.DFUUploadMethod=STM32duino bootloader
 BluePill-F103C8.menu.upload_method.DFUUploadMethod.upload.protocol=maple_dfu
 BluePill-F103C8.menu.upload_method.DFUUploadMethod.upload.tool=maple_upload
 BluePill-F103C8.menu.upload_method.DFUUploadMethod.build.upload_flags=-DSERIAL_USB -DGENERIC_BOOTLOADER
-BluePill-F103C8.menu.upload_method.DFUUploadMethod.build.vect-offset=VECT_TAB_OFFSET=0x2000
+BluePill-F103C8.menu.upload_method.DFUUploadMethod.build.vect-offset=-DVECT_TAB_OFFSET=0x2000
 BluePill-F103C8.menu.upload_method.DFUUploadMethod.build.ldscript=linker_scripts/STM32F103C8_FLASH_bootloader.ld
 BluePill-F103C8.menu.upload_method.DFUUploadMethod.upload.usbID=1EAF:0003
 BluePill-F103C8.menu.upload_method.DFUUploadMethod.upload.altID=2
