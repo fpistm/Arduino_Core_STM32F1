@@ -49,7 +49,9 @@
 #include "stm32f1xx.h"
 #include "hw_config.h"
 
+#ifdef SERIAL_USB 
 extern PCD_HandleTypeDef hpcd_USB_FS; 
+#endif
 
 #ifdef __cplusplus
  extern "C" {
@@ -226,6 +228,7 @@ void DebugMon_Handler(void)
   /* USER CODE END DebugMonitor_IRQn 1 */
 }
 
+#ifdef SERIAL_USB 
 /** 
 * @brief This function handles USB low priority or CAN RX0 interrupts. 
 */ 
@@ -240,6 +243,7 @@ void USB_LP_CAN1_RX0_IRQHandler(void)
   /* USER CODE END USB_LP_CAN1_RX0_IRQn 1 */ 
 } 
  
+#endif
 /** 
   * @brief  This function is executed in case of error occurrence. 
   * @param  None 
