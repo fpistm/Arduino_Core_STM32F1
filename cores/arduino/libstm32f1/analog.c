@@ -488,7 +488,7 @@ void dac_write_value(GPIO_TypeDef  *port, uint32_t pin, uint32_t value, uint8_t 
 void HAL_DAC_MspDeInit(DAC_HandleTypeDef* hdac)
 {
   /* DAC Periph clock disable */
-  __HAL_RCC_DAC1_CLK_DISABLE();
+  __HAL_RCC_DAC_CLK_DISABLE();
 }
 
 #endif
