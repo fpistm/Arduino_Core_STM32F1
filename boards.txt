@@ -6,98 +6,109 @@ menu.upload_method=Upload method
 menu.cpu_speed=CPU Speed(MHz)
 
 ################################################################################
-# NUCLEO-F103RB board
+# NUCLEO_F103RB board
 
-NUCLEO-F103RB.name=NUCLEO-F103RB
+NUCLEO_F103RB.name=Nucleo F103RB
 
-NUCLEO-F103RB.vid.0=0x0483
-NUCLEO-F103RB.pid.0=0x374b
-NUCLEO-F103RB.node=NODE_F103RB
+NUCLEO_F103RB.vid.0=0x0483
+NUCLEO_F103RB.pid.0=0x374b
+NUCLEO_F103RB.node=NODE_F103RB
 
-NUCLEO-F103RB.upload.tool=nucleoFlasher
-NUCLEO-F103RB.upload.protocol=nucleoFlasher
-NUCLEO-F103RB.upload.maximum_size=131071
-NUCLEO-F103RB.upload.maximum_data_size=20479
+NUCLEO_F103RB.upload.tool=nucleoFlasher
+NUCLEO_F103RB.upload.protocol=nucleoFlasher
+NUCLEO_F103RB.upload.maximum_size=131071
+NUCLEO_F103RB.upload.maximum_data_size=20479
 
-NUCLEO-F103RB.build.mcu=cortex-m3
-NUCLEO-F103RB.build.board=NUCLEO-F103RB
-NUCLEO-F103RB.build.core=arduino
-NUCLEO-F103RB.build.ldscript=linker_scripts/gcc/STM32F103RB_FLASH.ld
-NUCLEO-F103RB.build.variant=STM32F103RB-Nucleo
-NUCLEO-F103RB.build.variant_system_lib=libstm32f1_nucleo-f103rb_gcc_rel.a
-NUCLEO-F103RB.build.extra_flags=-mthumb -DSTM32F103xB
+NUCLEO_F103RB.build.mcu=cortex-m3
+NUCLEO_F103RB.build.board=NUCLEO_F103RB
+NUCLEO_F103RB.build.core=arduino
+NUCLEO_F103RB.build.ldscript=linker_scripts/gcc/STM32F103RB_FLASH.ld
+NUCLEO_F103RB.build.variant=STM32F103RB_Nucleo
+NUCLEO_F103RB.build.variant_system_lib=libstm32f1_nucleo_f103rb_gcc_rel.a
+NUCLEO_F103RB.build.extra_flags=-mthumb -DSTM32F103xB
 
-NUCLEO-F103RB.build.vect-offset=
+NUCLEO_F103RB.build.vect-offset=
 
 ################################################################################
 # STM32VLDISCOVERY board
 
-STM32VLDISCOVERY.name=STM32VLDISCOVERY-STM32F100RB
+STM32VLDISCOVERY.name=STM32 VL Discovery STM32F100RB
 
 STM32VLDISCOVERY.vid.0=0x0483
 STM32VLDISCOVERY.pid.0=0x374b
 STM32VLDISCOVERY.node=NODE_F103RB
 
-STM32VLDISCOVERY.upload.tool=nucleoFlasher
-STM32VLDISCOVERY.upload.protocol=nucleoFlasher
 STM32VLDISCOVERY.upload.maximum_size=131071
 STM32VLDISCOVERY.upload.maximum_data_size=20479
 
 STM32VLDISCOVERY.build.mcu=cortex-m3
-STM32VLDISCOVERY.build.board=NUCLEO-F103RB
+STM32VLDISCOVERY.build.board=NUCLEO_F103RB
 STM32VLDISCOVERY.build.core=arduino
 STM32VLDISCOVERY.build.ldscript=linker_scripts/gcc/STM32F100RB_FLASH.ld
-STM32VLDISCOVERY.build.variant=STM32F100RB-STM32VLDISCOVERY
+STM32VLDISCOVERY.build.variant=STM32F100RB_STM32VLDISCOVERY
 STM32VLDISCOVERY.build.variant_system_lib=libstm32f1_stm32f100rb_gcc_rel.a
 STM32VLDISCOVERY.build.extra_flags=-mthumb -DSTM32F100xB
 
 STM32VLDISCOVERY.build.vect-offset=
 
-################################################################################
+#---------------------------- UPLOAD METHODS ---------------------------
+STM32VLDISCOVERY.menu.upload_method.STLinkMethod=STLink
+STM32VLDISCOVERY.menu.upload_method.STLinkMethod.upload.protocol=STLink
+STM32VLDISCOVERY.menu.upload_method.STLinkMethod.upload.tool=stlink_upload
+STM32VLDISCOVERY.menu.upload_method.STLinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+
+STM32VLDISCOVERY.menu.upload_method.serialMethod=Serial
+STM32VLDISCOVERY.menu.upload_method.serialMethod.upload.protocol=maple_serial
+STM32VLDISCOVERY.menu.upload_method.serialMethod.upload.tool=serial_upload
+
+STM32VLDISCOVERY.menu.upload_method.BMPMethod=BMP (Black Magic Probe)
+STM32VLDISCOVERY.menu.upload_method.BMPMethod.upload.protocol=gdb_bmp
+STM32VLDISCOVERY.menu.upload_method.BMPMethod.upload.tool=bmp_upload
+STM32VLDISCOVERY.menu.upload_method.BMPMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG
 
 ################################################################################
-# BluePill-F103C8 board
+# BluePill_F103C8 board
 
-BluePill-F103C8.name=BluePill-F103C8
+BluePill_F103C8.name=BluePill F103C8
 
-BluePill-F103C8.vid.0=0x0483
-BluePill-F103C8.pid.0=0x374b
-BluePill-F103C8.node=NODE_F103C8
+BluePill_F103C8.vid.0=0x0483
+BluePill_F103C8.pid.0=0x374b
+BluePill_F103C8.node=NODE_F103C8
 
-BluePill-F103C8.upload.protocol=nucleoFlasher
-BluePill-F103C8.upload.maximum_size=65536
-BluePill-F103C8.upload.maximum_data_size=20480
+BluePill_F103C8.upload.protocol=nucleoFlasher
+BluePill_F103C8.upload.maximum_size=65536
+BluePill_F103C8.upload.maximum_data_size=20480
 
-BluePill-F103C8.build.mcu=cortex-m3
-BluePill-F103C8.build.board=NUCLEO_F103C8
-BluePill-F103C8.build.core=arduino
-BluePill-F103C8.build.ldscript=linker_scripts/STM32F103C8_FLASH.ld
-BluePill-F103C8.build.variant=STM32F103C-BluePill
-BluePill-F103C8.build.variant_system_lib=libstm32f103c_stm32f103c_gcc_rel.a
-BluePill-F103C8.build.extra_flags=-mthumb -DSTM32F103xB -DSERIAL_USB 
-BluePill-F103C8.build.vect-offset=-DVECT_TAB_OFFSET=0x0
+BluePill_F103C8.build.mcu=cortex-m3
+BluePill_F103C8.build.board=NUCLEO_F103C8
+BluePill_F103C8.build.core=arduino
+BluePill_F103C8.build.ldscript=linker_scripts/STM32F103C8_FLASH.ld
+BluePill_F103C8.build.variant=STM32F103C_BluePill
+BluePill_F103C8.build.variant_system_lib=libstm32f103c_stm32f103c_gcc_rel.a
+BluePill_F103C8.build.extra_flags=-mthumb -DSTM32F103xB -DSERIAL_USB 
+BluePill_F103C8.build.vect-offset=-DVECT_TAB_OFFSET=0x0
 
 #---------------------------- UPLOAD METHODS ---------------------------
 
-BluePill-F103C8.menu.upload_method.STLinkMethod=STLink
-BluePill-F103C8.menu.upload_method.STLinkMethod.upload.protocol=STLink
-BluePill-F103C8.menu.upload_method.STLinkMethod.upload.tool=stlink_upload
-BluePill-F103C8.menu.upload_method.STLinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+BluePill_F103C8.menu.upload_method.DFUUploadMethod=STM32duino bootloader
+BluePill_F103C8.menu.upload_method.DFUUploadMethod.upload.protocol=maple_dfu
+BluePill_F103C8.menu.upload_method.DFUUploadMethod.upload.tool=maple_upload
+BluePill_F103C8.menu.upload_method.DFUUploadMethod.build.upload_flags=-DSERIAL_USB -DGENERIC_BOOTLOADER
+BluePill_F103C8.menu.upload_method.DFUUploadMethod.build.vect-offset=-DVECT_TAB_OFFSET=0x2000
+BluePill_F103C8.menu.upload_method.DFUUploadMethod.build.ldscript=linker_scripts/STM32F103C8_FLASH_bootloader.ld
+BluePill_F103C8.menu.upload_method.DFUUploadMethod.upload.usbID=1EAF:0003
+BluePill_F103C8.menu.upload_method.DFUUploadMethod.upload.altID=2
 
-BluePill-F103C8.menu.upload_method.DFUUploadMethod=STM32duino bootloader
-BluePill-F103C8.menu.upload_method.DFUUploadMethod.upload.protocol=maple_dfu
-BluePill-F103C8.menu.upload_method.DFUUploadMethod.upload.tool=maple_upload
-BluePill-F103C8.menu.upload_method.DFUUploadMethod.build.upload_flags=-DSERIAL_USB -DGENERIC_BOOTLOADER
-BluePill-F103C8.menu.upload_method.DFUUploadMethod.build.vect-offset=-DVECT_TAB_OFFSET=0x2000
-BluePill-F103C8.menu.upload_method.DFUUploadMethod.build.ldscript=linker_scripts/STM32F103C8_FLASH_bootloader.ld
-BluePill-F103C8.menu.upload_method.DFUUploadMethod.upload.usbID=1EAF:0003
-BluePill-F103C8.menu.upload_method.DFUUploadMethod.upload.altID=2
+BluePill_F103C8.menu.upload_method.STLinkMethod=STLink
+BluePill_F103C8.menu.upload_method.STLinkMethod.upload.protocol=STLink
+BluePill_F103C8.menu.upload_method.STLinkMethod.upload.tool=stlink_upload
+BluePill_F103C8.menu.upload_method.STLinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
 
-BluePill-F103C8.menu.upload_method.serialMethod=Serial
-BluePill-F103C8.menu.upload_method.serialMethod.upload.protocol=maple_serial
-BluePill-F103C8.menu.upload_method.serialMethod.upload.tool=serial_upload
+BluePill_F103C8.menu.upload_method.serialMethod=Serial
+BluePill_F103C8.menu.upload_method.serialMethod.upload.protocol=maple_serial
+BluePill_F103C8.menu.upload_method.serialMethod.upload.tool=serial_upload
 
-BluePill-F103C8.menu.upload_method.BMPMethod=BMP (Black Magic Probe)
-BluePill-F103C8.menu.upload_method.BMPMethod.upload.protocol=gdb_bmp
-BluePill-F103C8.menu.upload_method.BMPMethod.upload.tool=bmp_upload
-BluePill-F103C8.menu.upload_method.BMPMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG
+BluePill_F103C8.menu.upload_method.BMPMethod=BMP (Black Magic Probe)
+BluePill_F103C8.menu.upload_method.BMPMethod.upload.protocol=gdb_bmp
+BluePill_F103C8.menu.upload_method.BMPMethod.upload.tool=bmp_upload
+BluePill_F103C8.menu.upload_method.BMPMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG
