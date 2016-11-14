@@ -72,7 +72,7 @@ STM32VLDISCOVERY.menu.upload_method.BMPMethod.build.upload_flags=-DCONFIG_MAPLE_
 BluePill_F103C8.name=BluePill F103C8
 
 BluePill_F103C8.vid.0=0x0483
-BluePill_F103C8.pid.0=0x374b
+BluePill_F103C8.pid.0=0x5740
 BluePill_F103C8.node=NODE_F103C8
 
 BluePill_F103C8.upload.protocol=nucleoFlasher
