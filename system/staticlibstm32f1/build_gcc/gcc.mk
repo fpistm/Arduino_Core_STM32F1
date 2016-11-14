@@ -69,7 +69,7 @@ CFLAGS += -Os
 CFLAGS += -Dprintf=iprintf
 
 CFLAGS += --param max-inline-insns-single=500 -mcpu=cortex-m3 -mthumb -mlong-calls -ffunction-sections -fdata-sections -std=c99 -msoft-float -mfloat-abi=soft
-CFLAGS += $(OPTIMIZATION) $(INCLUDES) -D$(CHIP) -DVECT_TAB_OFFSET=0x2000
+CFLAGS += $(OPTIMIZATION) $(INCLUDES) -D$(CHIP)
 
 
 # ---------------------------------------------------------------------------------------
