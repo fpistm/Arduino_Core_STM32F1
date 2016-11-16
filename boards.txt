@@ -57,14 +57,6 @@ STM32VLDISCOVERY.menu.upload_method.STLinkMethod.upload.protocol=STLink
 STM32VLDISCOVERY.menu.upload_method.STLinkMethod.upload.tool=stlink_upload
 STM32VLDISCOVERY.menu.upload_method.STLinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
 
-STM32VLDISCOVERY.menu.upload_method.serialMethod=Serial
-STM32VLDISCOVERY.menu.upload_method.serialMethod.upload.protocol=maple_serial
-STM32VLDISCOVERY.menu.upload_method.serialMethod.upload.tool=serial_upload
-
-STM32VLDISCOVERY.menu.upload_method.BMPMethod=BMP (Black Magic Probe)
-STM32VLDISCOVERY.menu.upload_method.BMPMethod.upload.protocol=gdb_bmp
-STM32VLDISCOVERY.menu.upload_method.BMPMethod.upload.tool=bmp_upload
-STM32VLDISCOVERY.menu.upload_method.BMPMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG
 
 ################################################################################
 # BluePill_F103C8 board

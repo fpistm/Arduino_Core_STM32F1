@@ -18,45 +18,6 @@
 
 #include "variant.h"
 
-/* GPIO ID    | label
-  PA0         | A0
-  PA1         | A1
-  PA2         | D1/TX
-  PA3         | D0/RX
-  PA4         | A2
-  PA5         | D13/SCK
-  PA6         | D12/MISO
-  PA7         | D11/PWM/MOSI
-  PA8         | D7
-  PA9         | D8
-  PA10        | D2
-  PA11        |
-  PA12        |
-  PA13        |
-  PA14        |
-  PA15        |
-  PB0         | A3
-  PB1         |
-  PB2         |
-  PB3         | D3/PWM
-  PB4         | D5/PWM
-  PB5         | D4
-  PB6         | D10/PWM/CS
-  PB7         |
-  PB8         | D15/SCL
-  PB9         | D14/SDA
-  PB10        | D6/PWM
-  PB11        |
-  PB12        |
-  PB13        |
-  PB14        |
-  PB15        |
-  PC13        |
-  PC14        |
-  PC15        |
-
-*/
-
 #ifdef __cplusplus
 extern "C" {
 #endif
