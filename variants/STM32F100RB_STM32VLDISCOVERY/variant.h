@@ -129,7 +129,9 @@ static const uint8_t A4  = ARDUINO_PIN_A4;
 static const uint8_t A5  = ARDUINO_PIN_A5;
 
 //On-board LED pin number
-#define LED_BUILTIN                   13
+#define LED_BUILTIN						PC8
+#define LED_BUILTIN1					LED_BUILTIN
+#define LED_BUILTIN2					PC9
 
 //ADC resolution is 12bits
 #define ADC_RESOLUTION                12
