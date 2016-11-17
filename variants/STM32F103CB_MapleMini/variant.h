@@ -67,9 +67,9 @@ extern "C"{
  *----------------------------------------------------------------------------*/
 
 enum {
-  PA0, PA1, PA2, PA3, PA4, PA5, PA6, PA7, PA8, PA9, PA10, PA11, PA12, PA13, PA14, PA15,
-  PB0, PB1, PB2, PB3, PB4, PB5, PB6, PB7, PB8, PB9, PB10, PB11, PB12, PB13, PB14, PB15,
-  PC13, PC14, PC15
+    PB11, PB10, PB2, PB0, PA7, PA6, PA5, PA4, PA3, PA2, PA1, PA0, PC15, PC14,
+    PC13, PB7, PB6, PB5, PB4, PB3, PA15, PA14, PA13, PA12, PA11, PA10, PA9,
+    PA8, PB15, PB14, PB13, PB12, PB8, PB1, PB9
 };
 
 #define digitalPinToPort(P)        ( g_APinDescription[P].ulPort )
@@ -109,7 +109,7 @@ enum {
 #define ARDUINO_PIN_D14               0x0000000E
 #define ARDUINO_PIN_D15               0x0000000F
 
-#define MAX_DIGITAL_IOS               PC15 // All pins can be use as digital pins
+#define MAX_DIGITAL_IOS               PB9 // All pins can be use as digital pins
 
 //analog pins
 #define ARDUINO_PIN_A0                0x00000010
@@ -133,7 +133,7 @@ static const uint8_t A4  = ARDUINO_PIN_A4;
 static const uint8_t A5  = ARDUINO_PIN_A5;
 
 //On-board LED pin number
-#define LED_BUILTIN                   PC13
+#define LED_BUILTIN                   PB1
 
 //ADC resolution is 12bits
 #define ADC_RESOLUTION                12
