@@ -97,7 +97,7 @@ extern "C"{
 #define ARDUINO_PIN_D14               0x0000000E
 #define ARDUINO_PIN_D15               0x0000000F
 
-#define MAX_DIGITAL_IOS               22 //All pins can be use as digital pins
+#define MAX_DIGITAL_IOS               PC15 //All pins can be use as digital pins
 
 //analog pins
 #define ARDUINO_PIN_A0                0x00000010
