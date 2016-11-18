@@ -50,6 +50,7 @@
 #include "hw_config.h"
 #include "analog.h"
 #include "timer.h"
+#include "variant.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -701,6 +702,7 @@ void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef *htim)
   timer_disable_clock(htim);
 }
 
+
 /**
   * @brief  This function will set the PWM to the required value
   * @param  port : the gpio port to use
@@ -714,6 +716,7 @@ void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef *htim)
 void pwm_start(GPIO_TypeDef  *port, uint32_t pin, uint32_t clock_freq,
                 uint32_t period, uint32_t value, uint8_t do_init)
 {
+
   //find the instance in the global
   int8_t id = get_analog_instance(port, pin);
   if(id < 0) return;
@@ -737,27 +740,30 @@ void pwm_start(GPIO_TypeDef  *port, uint32_t pin, uint32_t clock_freq,
 
   HAL_TIM_PWM_Stop(&timHandle, g_analog_config[id].timChannel);
 
+  
   /*##-2- Configure the PWM channels #########################################*/
   /* Common configuration for all channels */
   
-	TIM_OC_InitTypeDef timConfig = {
-      .OCMode       = TIM_OCMODE_PWM1,
-      .OCPolarity   = TIM_OCPOLARITY_HIGH,
-      .OCFastMode   = TIM_OCFAST_DISABLE,
-      .OCNPolarity  = TIM_OCNPOLARITY_HIGH,
-      .OCNIdleState = TIM_OCNIDLESTATE_RESET,
-      .OCIdleState  = TIM_OCIDLESTATE_RESET
-     };
+	TIM_OC_InitTypeDef timConfig;
+	
+	timConfig.OCMode       = TIM_OCMODE_PWM1;
+	timConfig.OCPolarity   = TIM_OCPOLARITY_HIGH;
+	timConfig.OCFastMode   = TIM_OCFAST_DISABLE;
+	timConfig.OCNPolarity  = TIM_OCNPOLARITY_HIGH;
+	timConfig.OCNIdleState = TIM_OCNIDLESTATE_RESET;
+	timConfig.OCIdleState  = TIM_OCIDLESTATE_RESET;
+	timConfig.Pulse = value;
 	 
-	 timConfig.Pulse = value;
+	
 	 
-  if (HAL_TIM_PWM_ConfigChannel(&g_analog_config[id].timHandle, &g_analog_config[id].timConfig,
+  if (HAL_TIM_PWM_ConfigChannel(&timHandle, &timConfig,
                                   g_analog_config[id].timChannel) != HAL_OK)
   {
     /*##-2- Configure the PWM channels #########################################*/
     return;
   }
 
+  
   if(g_analog_config[id].useNchannel) {
     HAL_TIMEx_PWMN_Start(&timHandle, g_analog_config[id].timChannel);
   } else {
@@ -774,21 +780,20 @@ void pwm_start(GPIO_TypeDef  *port, uint32_t pin, uint32_t clock_freq,
   */
 void pwm_stop(GPIO_TypeDef  *port, uint32_t pin)
 {
+
   //find the instance in the global
   int8_t id = get_analog_instance(port, pin);
   if(id < 0) return;
 
-    TIM_HandleTypeDef timHandle;
+  TIM_HandleTypeDef timHandle;
 
   /* Compute the prescaler value to have TIM counter clock equal to clock_freq Hz */
   timHandle.Instance               = g_analog_config[id].timInstance;
-  /*
-  timHandle.Init.Prescaler         = 1;
-  timHandle.Init.Period            = 1;
+  timHandle.Init.Prescaler         = PWM_FREQUENCY * PWM_MAX_DUTY_CYCLE;
+  timHandle.Init.Period            = PWM_MAX_DUTY_CYCLE;
   timHandle.Init.ClockDivision     = 0;
   timHandle.Init.CounterMode       = TIM_COUNTERMODE_UP;
   timHandle.Init.RepetitionCounter = 0;
-  */
   
   if(g_analog_config[id].useNchannel) {
     HAL_TIMEx_PWMN_Stop(&timHandle, g_analog_config[id].timChannel);
