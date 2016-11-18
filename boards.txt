@@ -77,7 +77,7 @@ BluePill_F103C8.build.core=arduino
 BluePill_F103C8.build.ldscript=linker_scripts/STM32F103C8_FLASH.ld
 BluePill_F103C8.build.variant=STM32F103C_BluePill
 BluePill_F103C8.build.variant_system_lib=libstm32f103c_stm32f103c_gcc_rel.a
-BluePill_F103C8.build.extra_flags=-mthumb -DSTM32F103xB -DSERIAL_USB 
+BluePill_F103C8.build.extra_flags=-mthumb -DSTM32F103xB 
 BluePill_F103C8.build.vect-offset=-DVECT_TAB_OFFSET=0x0
 
 #---------------------------- UPLOAD METHODS ---------------------------
@@ -124,7 +124,7 @@ MapleMini_F103CB.build.core=arduino
 MapleMini_F103CB.build.ldscript=linker_scripts/STM32F103CB_FLASH.ld
 MapleMini_F103CB.build.variant=STM32F103CB_MapleMini
 MapleMini_F103CB.build.variant_system_lib=libstm32f103c_maplemini_stm32f103c_gcc_rel.a
-MapleMini_F103CB.build.extra_flags=-mthumb -DSTM32F103xB -DSERIAL_USB
+MapleMini_F103CB.build.extra_flags=-mthumb -DSTM32F103xB
 MapleMini_F103CB.build.vect-offset=-DVECT_TAB_OFFSET=0x0
 
 #---------------------------- UPLOAD METHODS ---------------------------
@@ -157,7 +157,7 @@ MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.ram.maximum_size=20480
 MapleMini_F103CB.menu.upload_method.STLinkMethod=STLink
 MapleMini_F103CB.menu.upload_method.STLinkMethod.upload.protocol=STLink
 MapleMini_F103CB.menu.upload_method.STLinkMethod.upload.tool=stlink_upload
-MapleMini_F103CB.menu.upload_method.STLinkMethod.build.upload_flags=-DSERIAL_USB 
+MapleMini_F103CB.menu.upload_method.STLinkMethod.build.upload_flags=-DSERIAL_USB -DUSB_DISC_PIN=PB9
 
 MapleMini_F103CB.menu.upload_method.serialMethod=Serial
 MapleMini_F103CB.menu.upload_method.serialMethod.upload.protocol=maple_serial
