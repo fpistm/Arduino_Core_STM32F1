@@ -102,7 +102,7 @@ static uint8_t g_current_init_id = 0;
 
 
 //Give details about the analog pins.
-analog_config_str g_analog_config[NB_ANALOG_CHANNELS] = {
+const analog_config_str g_analog_config[NB_ANALOG_CHANNELS] = {
   {
     .port = GPIOA,
     .pin = GPIO_PIN_0,
@@ -717,28 +717,40 @@ void pwm_start(GPIO_TypeDef  *port, uint32_t pin, uint32_t clock_freq,
   //find the instance in the global
   int8_t id = get_analog_instance(port, pin);
   if(id < 0) return;
+  
+  TIM_HandleTypeDef timHandle;
 
   /* Compute the prescaler value to have TIM counter clock equal to clock_freq Hz */
-  g_analog_config[id].timHandle.Instance               = g_analog_config[id].timInstance;
-  g_analog_config[id].timHandle.Init.Prescaler         = (uint32_t)(SystemCoreClock / clock_freq) - 1;
-  g_analog_config[id].timHandle.Init.Period            = period;
-  g_analog_config[id].timHandle.Init.ClockDivision     = 0;
-  g_analog_config[id].timHandle.Init.CounterMode       = TIM_COUNTERMODE_UP;
-  g_analog_config[id].timHandle.Init.RepetitionCounter = 0;
+  timHandle.Instance               = g_analog_config[id].timInstance;
+  timHandle.Init.Prescaler         = (uint32_t)(SystemCoreClock / clock_freq) - 1;
+  timHandle.Init.Period            = period;
+  timHandle.Init.ClockDivision     = 0;
+  timHandle.Init.CounterMode       = TIM_COUNTERMODE_UP;
+  timHandle.Init.RepetitionCounter = 0;
 
   if(do_init == 1) {
     g_current_init_id = id;
-    if (HAL_TIM_PWM_Init(&g_analog_config[id].timHandle) != HAL_OK) {
+    if (HAL_TIM_PWM_Init(&timHandle) != HAL_OK) {
       return;
     }
   }
 
-  HAL_TIM_PWM_Stop(&g_analog_config[id].timHandle, g_analog_config[id].timChannel);
+  HAL_TIM_PWM_Stop(&timHandle, g_analog_config[id].timChannel);
 
   /*##-2- Configure the PWM channels #########################################*/
   /* Common configuration for all channels */
-  g_analog_config[id].timConfig.Pulse = value;
-
+  
+	TIM_OC_InitTypeDef timConfig = {
+      .OCMode       = TIM_OCMODE_PWM1,
+      .OCPolarity   = TIM_OCPOLARITY_HIGH,
+      .OCFastMode   = TIM_OCFAST_DISABLE,
+      .OCNPolarity  = TIM_OCNPOLARITY_HIGH,
+      .OCNIdleState = TIM_OCNIDLESTATE_RESET,
+      .OCIdleState  = TIM_OCIDLESTATE_RESET
+     };
+	 
+	 timConfig.Pulse = value;
+	 
   if (HAL_TIM_PWM_ConfigChannel(&g_analog_config[id].timHandle, &g_analog_config[id].timConfig,
                                   g_analog_config[id].timChannel) != HAL_OK)
   {
@@ -747,10 +759,11 @@ void pwm_start(GPIO_TypeDef  *port, uint32_t pin, uint32_t clock_freq,
   }
 
   if(g_analog_config[id].useNchannel) {
-    HAL_TIMEx_PWMN_Start(&g_analog_config[id].timHandle, g_analog_config[id].timChannel);
+    HAL_TIMEx_PWMN_Start(&timHandle, g_analog_config[id].timChannel);
   } else {
-    HAL_TIM_PWM_Start(&g_analog_config[id].timHandle, g_analog_config[id].timChannel);
+    HAL_TIM_PWM_Start(&timHandle, g_analog_config[id].timChannel);
   }
+
 }
 
 /**
@@ -765,13 +778,26 @@ void pwm_stop(GPIO_TypeDef  *port, uint32_t pin)
   int8_t id = get_analog_instance(port, pin);
   if(id < 0) return;
 
+    TIM_HandleTypeDef timHandle;
+
+  /* Compute the prescaler value to have TIM counter clock equal to clock_freq Hz */
+  timHandle.Instance               = g_analog_config[id].timInstance;
+  /*
+  timHandle.Init.Prescaler         = 1;
+  timHandle.Init.Period            = 1;
+  timHandle.Init.ClockDivision     = 0;
+  timHandle.Init.CounterMode       = TIM_COUNTERMODE_UP;
+  timHandle.Init.RepetitionCounter = 0;
+  */
+  
   if(g_analog_config[id].useNchannel) {
-    HAL_TIMEx_PWMN_Stop(&g_analog_config[id].timHandle, g_analog_config[id].timChannel);
+    HAL_TIMEx_PWMN_Stop(&timHandle, g_analog_config[id].timChannel);
   } else {
-    HAL_TIM_PWM_Stop(&g_analog_config[id].timHandle, g_analog_config[id].timChannel);
+    HAL_TIM_PWM_Stop(&timHandle, g_analog_config[id].timChannel);
   }
 
-  HAL_TIM_PWM_DeInit(&g_analog_config[id].timHandle);
+  HAL_TIM_PWM_DeInit(&timHandle);
+	 
 }
 
 
