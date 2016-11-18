@@ -101,9 +101,11 @@ static void TIM4_AF_NoRemap(void)       { __HAL_RCC_AFIO_CLK_ENABLE();
   */
 static uint8_t g_current_init_id = 0;
 
+TIM_HandleTypeDef g_analog_timer_config[NB_ANALOG_CHANNELS]={};
+
 
 //Give details about the analog pins.
-const analog_config_str g_analog_config[NB_ANALOG_CHANNELS] = {
+const analog_config_str g_analog_init_config[NB_ANALOG_CHANNELS] = {
   {
     .port = GPIOA,
     .pin = GPIO_PIN_0,
@@ -368,7 +370,7 @@ int8_t get_analog_instance(GPIO_TypeDef  *port, uint32_t pin)
   int8_t i;
 
   for(i = 0; i < NB_ANALOG_CHANNELS ; i++) {
-    if((g_analog_config[i].port == port)&&(g_analog_config[i].pin == pin)) {
+    if((g_analog_init_config[i].port == port)&&(g_analog_init_config[i].pin == pin)) {
       return i;
     }
   }
@@ -394,11 +396,11 @@ void HAL_DAC_MspInit(DAC_HandleTypeDef *hdac)
 
   /*##-1- Enable peripherals and GPIO Clocks #################################*/
   /* Enable GPIO clock ****************************************/
-  if(g_analog_config[g_current_init_id].port == GPIOA) {
+  if(g_analog_init_config[g_current_init_id].port == GPIOA) {
     __GPIOA_CLK_ENABLE();
-  } else if(g_analog_config[g_current_init_id].port == GPIOB){
+  } else if(g_analog_init_config[g_current_init_id].port == GPIOB){
     __GPIOB_CLK_ENABLE();
-  } else if(g_analog_config[g_current_init_id].port == GPIOC){
+  } else if(g_analog_init_config[g_current_init_id].port == GPIOC){
     __GPIOC_CLK_ENABLE();
   }
 
@@ -407,10 +409,10 @@ void HAL_DAC_MspInit(DAC_HandleTypeDef *hdac)
 
   /*##-2- Configure peripheral GPIO ##########################################*/
   /* DAC Channel1 GPIO pin configuration */
-  GPIO_InitStruct.Pin = g_analog_config[g_current_init_id].pin;
+  GPIO_InitStruct.Pin = g_analog_init_config[g_current_init_id].pin;
   GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(g_analog_config[g_current_init_id].port, &GPIO_InitStruct);
+  HAL_GPIO_Init(g_analog_init_config[g_current_init_id].port, &GPIO_InitStruct);
 }
 
 #endif
@@ -433,11 +435,11 @@ void dac_write_value(GPIO_TypeDef  *port, uint32_t pin, uint32_t value, uint8_t 
   int8_t id = get_analog_instance(port, pin);
   if(id < 0 ) return;
 
-  if(g_analog_config[id].adcInstance == NULL) {
+  if(g_analog_init_config[id].adcInstance == NULL) {
     return;
   }
 
-  DacHandle.Instance = g_analog_config[id].dacInstance;
+  DacHandle.Instance = g_analog_init_config[id].dacInstance;
 
   if(do_init == 1) {
 
@@ -456,8 +458,8 @@ void dac_write_value(GPIO_TypeDef  *port, uint32_t pin, uint32_t value, uint8_t 
     }
 
     /*##-2- Configure DAC channel1 #############################################*/
-    if (HAL_DAC_ConfigChannel(&DacHandle, &g_analog_config[id].dacChannelConf,
-                              g_analog_config[id].dacChannel) != HAL_OK)
+    if (HAL_DAC_ConfigChannel(&DacHandle, &g_analog_init_config[id].dacChannelConf,
+                              g_analog_init_config[id].dacChannel) != HAL_OK)
     {
       /* Channel configuration Error */
       return;
@@ -465,7 +467,7 @@ void dac_write_value(GPIO_TypeDef  *port, uint32_t pin, uint32_t value, uint8_t 
   }
 
   /*##-3- Set DAC Channel1 DHR register ######################################*/
-  if (HAL_DAC_SetValue(&DacHandle, g_analog_config[id].dacChannel,
+  if (HAL_DAC_SetValue(&DacHandle, g_analog_init_config[id].dacChannel,
                        DAC_ALIGN_12B_R, value) != HAL_OK)
   {
     /* Setting value Error */
@@ -473,7 +475,7 @@ void dac_write_value(GPIO_TypeDef  *port, uint32_t pin, uint32_t value, uint8_t 
   }
 
   /*##-4- Enable DAC Channel1 ################################################*/
-  HAL_DAC_Start(&DacHandle, g_analog_config[id].dacChannel);
+  HAL_DAC_Start(&DacHandle, g_analog_init_config[id].dacChannel);
 
   #endif
 }
@@ -510,13 +512,13 @@ void dac_stop(GPIO_TypeDef  *port, uint32_t pin)
   int8_t id = get_analog_instance(port, pin);
   if(id < 0 ) return;
 
-  if(g_analog_config[id].adcInstance == NULL) {
+  if(g_analog_init_config[id].adcInstance == NULL) {
     return;
   }
 
-  DacHandle.Instance = g_analog_config[id].dacInstance;
+  DacHandle.Instance = g_analog_init_config[id].dacInstance;
 
-  HAL_DAC_Stop(&DacHandle, g_analog_config[id].dacChannel);
+  HAL_DAC_Stop(&DacHandle, g_analog_init_config[id].dacChannel);
 
   if (HAL_DAC_DeInit(&DacHandle) != HAL_OK)
   {
@@ -547,20 +549,20 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef *hadc)
   __HAL_RCC_ADC1_CLK_ENABLE();
 
   /* Enable GPIO clock ****************************************/
-  if(g_analog_config[g_current_init_id].port == GPIOA) {
+  if(g_analog_init_config[g_current_init_id].port == GPIOA) {
     __GPIOA_CLK_ENABLE();
-  } else if(g_analog_config[g_current_init_id].port == GPIOB){
+  } else if(g_analog_init_config[g_current_init_id].port == GPIOB){
     __GPIOB_CLK_ENABLE();
-  } else if(g_analog_config[g_current_init_id].port == GPIOC){
+  } else if(g_analog_init_config[g_current_init_id].port == GPIOC){
     __GPIOC_CLK_ENABLE();
   }
 
   /*##-2- Configure peripheral GPIO ##########################################*/
   /* ADC Channel GPIO pin configuration */
-  GPIO_InitStruct.Pin = g_analog_config[g_current_init_id].pin;
+  GPIO_InitStruct.Pin = g_analog_init_config[g_current_init_id].pin;
   GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(g_analog_config[g_current_init_id].port, &GPIO_InitStruct);
+  HAL_GPIO_Init(g_analog_init_config[g_current_init_id].port, &GPIO_InitStruct);
 }
 
 /**
@@ -589,7 +591,7 @@ uint16_t adc_read_value(GPIO_TypeDef  *port, uint32_t pin, uint8_t do_init)
   if(id < 0 ) return 0;
   __IO uint16_t uhADCxConvertedValue = 0;
 
-  AdcHandle.Instance = g_analog_config[id].adcInstance;
+  AdcHandle.Instance = g_analog_init_config[id].adcInstance;
 
   if(do_init == 1) {
 
@@ -608,7 +610,7 @@ uint16_t adc_read_value(GPIO_TypeDef  *port, uint32_t pin, uint8_t do_init)
   }
 
   /*##-2- Configure ADC regular channel ######################################*/
-  if (HAL_ADC_ConfigChannel(&AdcHandle, &g_analog_config[id].adcChannelConf) != HAL_OK)
+  if (HAL_ADC_ConfigChannel(&AdcHandle, &g_analog_init_config[id].adcChannelConf) != HAL_OK)
   {
     /* Channel Configuration Error */
     return 0;
@@ -673,23 +675,23 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim)
 
   /* Enable GPIO Channels Clock */
   /* Enable GPIO clock ****************************************/
-  if(g_analog_config[g_current_init_id].port == GPIOA) {
+  if(g_analog_init_config[g_current_init_id].port == GPIOA) {
     __GPIOA_CLK_ENABLE();
-  } else if(g_analog_config[g_current_init_id].port == GPIOB){
+  } else if(g_analog_init_config[g_current_init_id].port == GPIOB){
     __GPIOB_CLK_ENABLE();
-  } else if(g_analog_config[g_current_init_id].port == GPIOC){
+  } else if(g_analog_init_config[g_current_init_id].port == GPIOC){
     __GPIOC_CLK_ENABLE();
   }
 
   /* Common configuration for all channels */
-  GPIO_InitStruct.Pin = g_analog_config[g_current_init_id].pin;
+  GPIO_InitStruct.Pin = g_analog_init_config[g_current_init_id].pin;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 
-  g_analog_config[g_current_init_id].alFunction();
+  g_analog_init_config[g_current_init_id].alFunction();
 
-  HAL_GPIO_Init(g_analog_config[g_current_init_id].port, &GPIO_InitStruct);
+  HAL_GPIO_Init(g_analog_init_config[g_current_init_id].port, &GPIO_InitStruct);
 }
 
 /**
@@ -721,24 +723,26 @@ void pwm_start(GPIO_TypeDef  *port, uint32_t pin, uint32_t clock_freq,
   int8_t id = get_analog_instance(port, pin);
   if(id < 0) return;
   
-  TIM_HandleTypeDef timHandle;
-
   /* Compute the prescaler value to have TIM counter clock equal to clock_freq Hz */
-  timHandle.Instance               = g_analog_config[id].timInstance;
-  timHandle.Init.Prescaler         = (uint32_t)(SystemCoreClock / clock_freq) - 1;
-  timHandle.Init.Period            = period;
-  timHandle.Init.ClockDivision     = 0;
-  timHandle.Init.CounterMode       = TIM_COUNTERMODE_UP;
-  timHandle.Init.RepetitionCounter = 0;
+  g_analog_timer_config[id].Instance               = g_analog_init_config[id].timInstance;
+  g_analog_timer_config[id].Init.Prescaler         = (uint32_t)(SystemCoreClock / clock_freq) - 1;
+  g_analog_timer_config[id].Init.Period            = period;
+  g_analog_timer_config[id].Init.ClockDivision     = 0;
+  g_analog_timer_config[id].Init.CounterMode       = TIM_COUNTERMODE_UP;
+  g_analog_timer_config[id].Init.RepetitionCounter = 0;
 
-  if(do_init == 1) {
+ // timHandle.State = HAL_TIM_STATE_RESET;
+  //. (HAL_TIM_STATE_RESET = 0x00)
+  
+  if(do_init == 1) 
+  {
     g_current_init_id = id;
-    if (HAL_TIM_PWM_Init(&timHandle) != HAL_OK) {
+    if (HAL_TIM_PWM_Init(&g_analog_timer_config[id]) != HAL_OK) {
       return;
     }
   }
 
-  HAL_TIM_PWM_Stop(&timHandle, g_analog_config[id].timChannel);
+  HAL_TIM_PWM_Stop(&g_analog_timer_config[id], g_analog_init_config[id].timChannel);
 
   
   /*##-2- Configure the PWM channels #########################################*/
@@ -756,18 +760,18 @@ void pwm_start(GPIO_TypeDef  *port, uint32_t pin, uint32_t clock_freq,
 	 
 	
 	 
-  if (HAL_TIM_PWM_ConfigChannel(&timHandle, &timConfig,
-                                  g_analog_config[id].timChannel) != HAL_OK)
+  if (HAL_TIM_PWM_ConfigChannel(&g_analog_timer_config[id], &timConfig,
+                                  g_analog_init_config[id].timChannel) != HAL_OK)
   {
     /*##-2- Configure the PWM channels #########################################*/
     return;
   }
 
   
-  if(g_analog_config[id].useNchannel) {
-    HAL_TIMEx_PWMN_Start(&timHandle, g_analog_config[id].timChannel);
+  if(g_analog_init_config[id].useNchannel) {
+    HAL_TIMEx_PWMN_Start(&g_analog_timer_config[id], g_analog_init_config[id].timChannel);
   } else {
-    HAL_TIM_PWM_Start(&timHandle, g_analog_config[id].timChannel);
+    HAL_TIM_PWM_Start(&g_analog_timer_config[id], g_analog_init_config[id].timChannel);
   }
 
 }
@@ -785,23 +789,15 @@ void pwm_stop(GPIO_TypeDef  *port, uint32_t pin)
   int8_t id = get_analog_instance(port, pin);
   if(id < 0) return;
 
-  TIM_HandleTypeDef timHandle;
 
-  /* Compute the prescaler value to have TIM counter clock equal to clock_freq Hz */
-  timHandle.Instance               = g_analog_config[id].timInstance;
-  timHandle.Init.Prescaler         = PWM_FREQUENCY * PWM_MAX_DUTY_CYCLE;
-  timHandle.Init.Period            = PWM_MAX_DUTY_CYCLE;
-  timHandle.Init.ClockDivision     = 0;
-  timHandle.Init.CounterMode       = TIM_COUNTERMODE_UP;
-  timHandle.Init.RepetitionCounter = 0;
   
-  if(g_analog_config[id].useNchannel) {
-    HAL_TIMEx_PWMN_Stop(&timHandle, g_analog_config[id].timChannel);
+  if(g_analog_init_config[id].useNchannel) {
+    HAL_TIMEx_PWMN_Stop(&g_analog_timer_config[id], g_analog_init_config[id].timChannel);
   } else {
-    HAL_TIM_PWM_Stop(&timHandle, g_analog_config[id].timChannel);
+    HAL_TIM_PWM_Stop(&g_analog_timer_config[id], g_analog_init_config[id].timChannel);
   }
 
-  HAL_TIM_PWM_DeInit(&timHandle);
+  HAL_TIM_PWM_DeInit(&g_analog_timer_config[id]);
 	 
 }
 
