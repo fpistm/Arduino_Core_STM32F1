@@ -55,7 +55,7 @@ STM32VLDISCOVERY.build.vect-offset=
 STM32VLDISCOVERY.menu.upload_method.STLinkMethod=STLink
 STM32VLDISCOVERY.menu.upload_method.STLinkMethod.upload.protocol=STLink
 STM32VLDISCOVERY.menu.upload_method.STLinkMethod.upload.tool=stlink_upload
-STM32VLDISCOVERY.menu.upload_method.STLinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+STM32VLDISCOVERY.menu.upload_method.STLinkMethod.build.upload_flags=-DSERIAL_USB 
 
 
 ################################################################################
@@ -85,7 +85,7 @@ BluePill_F103C8.build.vect-offset=-DVECT_TAB_OFFSET=0x0
 BluePill_F103C8.menu.upload_method.DFUUploadMethod=STM32duino bootloader
 BluePill_F103C8.menu.upload_method.DFUUploadMethod.upload.protocol=maple_dfu
 BluePill_F103C8.menu.upload_method.DFUUploadMethod.upload.tool=maple_upload
-BluePill_F103C8.menu.upload_method.DFUUploadMethod.build.upload_flags=-DSERIAL_USB -DGENERIC_BOOTLOADER
+BluePill_F103C8.menu.upload_method.DFUUploadMethod.build.upload_flags=-DSERIAL_USB 
 BluePill_F103C8.menu.upload_method.DFUUploadMethod.build.vect-offset=-DVECT_TAB_OFFSET=0x2000
 BluePill_F103C8.menu.upload_method.DFUUploadMethod.build.ldscript=linker_scripts/STM32F103C8_FLASH_bootloader.ld
 BluePill_F103C8.menu.upload_method.DFUUploadMethod.upload.usbID=1EAF:0003
@@ -94,7 +94,7 @@ BluePill_F103C8.menu.upload_method.DFUUploadMethod.upload.altID=2
 BluePill_F103C8.menu.upload_method.STLinkMethod=STLink
 BluePill_F103C8.menu.upload_method.STLinkMethod.upload.protocol=STLink
 BluePill_F103C8.menu.upload_method.STLinkMethod.upload.tool=stlink_upload
-BluePill_F103C8.menu.upload_method.STLinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+BluePill_F103C8.menu.upload_method.STLinkMethod.build.upload_flags=-DSERIAL_USB 
 
 BluePill_F103C8.menu.upload_method.serialMethod=Serial
 BluePill_F103C8.menu.upload_method.serialMethod.upload.protocol=maple_serial
@@ -129,19 +129,35 @@ MapleMini_F103CB.build.vect-offset=-DVECT_TAB_OFFSET=0x0
 
 #---------------------------- UPLOAD METHODS ---------------------------
 
-MapleMini_F103CB.menu.upload_method.DFUUploadMethod=STM32duino bootloader
-MapleMini_F103CB.menu.upload_method.DFUUploadMethod.upload.protocol=maple_dfu
-MapleMini_F103CB.menu.upload_method.DFUUploadMethod.upload.tool=maple_upload
-MapleMini_F103CB.menu.upload_method.DFUUploadMethod.build.upload_flags=-DSERIAL_USB -DGENERIC_BOOTLOADER
-MapleMini_F103CB.menu.upload_method.DFUUploadMethod.build.vect-offset=-DVECT_TAB_OFFSET=0x2000
-MapleMini_F103CB.menu.upload_method.DFUUploadMethod.build.ldscript=linker_scripts/STM32F103CB_FLASH_bootloader.ld
-MapleMini_F103CB.menu.upload_method.DFUUploadMethod.upload.usbID=1EAF:0003
-MapleMini_F103CB.menu.upload_method.DFUUploadMethod.upload.altID=2
+#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1=Maple bootloader (original version)
+#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.upload.protocol=maple_dfu
+#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.upload.tool=maple_upload
+#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.build.upload_flags=-DSERIAL_USB  -DUSB_DISC_PIN=PB9
+#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.build.vect-offset=-DVECT_TAB_OFFSET=0x5000
+#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.build.ldscript=linker_scripts/STM32F103CB_FLASH_bootloader_original.ld
+#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.upload.usbID=1EAF:0003
+#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.upload.altID=2
+#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.flash.maximum_size=110592
+#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.maximum_data_size=110592
+#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.ram.maximum_size=17408
+
+
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod2=STM32duino bootloader
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod2.upload.protocol=maple_dfu
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod2.upload.tool=maple_upload
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod2.build.upload_flags=-DSERIAL_USB -DUSB_DISC_PIN=PB9
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod2.build.vect-offset=-DVECT_TAB_OFFSET=0x2000
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod2.build.ldscript=linker_scripts/STM32F103CB_FLASH_bootloader.ld
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod2.upload.usbID=1EAF:0003
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod2.upload.altID=2
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.flash.maximum_size=122880
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.maximum_data_size=122880
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.ram.maximum_size=20480
 
 MapleMini_F103CB.menu.upload_method.STLinkMethod=STLink
 MapleMini_F103CB.menu.upload_method.STLinkMethod.upload.protocol=STLink
 MapleMini_F103CB.menu.upload_method.STLinkMethod.upload.tool=stlink_upload
-MapleMini_F103CB.menu.upload_method.STLinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+MapleMini_F103CB.menu.upload_method.STLinkMethod.build.upload_flags=-DSERIAL_USB 
 
 MapleMini_F103CB.menu.upload_method.serialMethod=Serial
 MapleMini_F103CB.menu.upload_method.serialMethod.upload.protocol=maple_serial
@@ -150,4 +166,4 @@ MapleMini_F103CB.menu.upload_method.serialMethod.upload.tool=serial_upload
 MapleMini_F103CB.menu.upload_method.BMPMethod=BMP (Black Magic Probe)
 MapleMini_F103CB.menu.upload_method.BMPMethod.upload.protocol=gdb_bmp
 MapleMini_F103CB.menu.upload_method.BMPMethod.upload.tool=bmp_upload
-MapleMini_F103CB.menu.upload_method.BMPMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG
+MapleMini_F103CB.menu.upload_method.BMPMethod.build.upload_flags=
