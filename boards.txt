@@ -55,7 +55,7 @@ STM32VLDISCOVERY.build.vect-offset=
 STM32VLDISCOVERY.menu.upload_method.STLinkMethod=STLink
 STM32VLDISCOVERY.menu.upload_method.STLinkMethod.upload.protocol=STLink
 STM32VLDISCOVERY.menu.upload_method.STLinkMethod.upload.tool=stlink_upload
-STM32VLDISCOVERY.menu.upload_method.STLinkMethod.build.upload_flags=-DSERIAL_USB 
+
 
 
 ################################################################################
