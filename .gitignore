@@ -1,3 +1,7 @@
-.DS_store
-system/libstm32f103c/build_gcc/release_stm32f103c/*
-system/libstm32f103c/build_gcc/release_stm32f1
+NUL
+null.txt
+nul.txt
+system/staticlibstm32f1/build_gcc/release_stm32f103c
+system/staticlibstm32f1/build_gcc/release_maplemini_stm32f103c
+system/staticlibstm32f1/build_gcc/release_nucleo_f103rb
+system/staticlibstm32f1/build_gcc/release_stm32f100rb

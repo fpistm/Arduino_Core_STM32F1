@@ -24,6 +24,7 @@
 
 #include <inttypes.h>
 #include "Stream.h"
+#include "variant.h"
 
 #define BUFFER_LENGTH 32
 
