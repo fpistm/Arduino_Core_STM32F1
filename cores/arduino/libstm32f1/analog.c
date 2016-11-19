@@ -723,25 +723,27 @@ void pwm_start(GPIO_TypeDef  *port, uint32_t pin, uint32_t clock_freq,
   int8_t id = get_analog_instance(port, pin);
   if(id < 0) return;
   
-  if (g_analog_timer_config[id]==NULL)
+  if (g_analog_timer_config[id]==0)
   {
 	  g_analog_timer_config[id]=malloc(sizeof(TIM_HandleTypeDef));
+      g_analog_timer_config[id]->State = HAL_TIM_STATE_RESET;
+	  g_analog_timer_config[id]->Init.ClockDivision     = 0;
+	  g_analog_timer_config[id]->Init.CounterMode       = TIM_COUNTERMODE_UP;
+	  g_analog_timer_config[id]->Init.RepetitionCounter = 0;	  
   }
+
   /* Compute the prescaler value to have TIM counter clock equal to clock_freq Hz */
   g_analog_timer_config[id]->Instance               = g_analog_init_config[id].timInstance;
   g_analog_timer_config[id]->Init.Prescaler         = (uint32_t)(SystemCoreClock / clock_freq) - 1;
   g_analog_timer_config[id]->Init.Period            = period;
-  g_analog_timer_config[id]->Init.ClockDivision     = 0;
-  g_analog_timer_config[id]->Init.CounterMode       = TIM_COUNTERMODE_UP;
-  g_analog_timer_config[id]->Init.RepetitionCounter = 0;
 
- // timHandle.State = HAL_TIM_STATE_RESET;
-  //. (HAL_TIM_STATE_RESET = 0x00)
   
   if(do_init == 1) 
   {
     g_current_init_id = id;
-    if (HAL_TIM_PWM_Init(g_analog_timer_config[id]) != HAL_OK) {
+    if (HAL_TIM_PWM_Init(g_analog_timer_config[id]) != HAL_OK) 
+	{
+			  digitalWrite(13,HIGH);
       return;
     }
   }
@@ -768,6 +770,7 @@ void pwm_start(GPIO_TypeDef  *port, uint32_t pin, uint32_t clock_freq,
                                   g_analog_init_config[id].timChannel) != HAL_OK)
   {
     /*##-2- Configure the PWM channels #########################################*/
+				  digitalWrite(13,HIGH);
     return;
   }
 
