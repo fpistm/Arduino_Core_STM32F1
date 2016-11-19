@@ -60,13 +60,6 @@ extern "C"{
  *        Pins
  *----------------------------------------------------------------------------*/
 
-enum {
-  PA0, PA1, PA2, PA3, PA4, PA5, PA6, PA7, PA8, PA9, PA10, PA11, PA12, PA13, PA14, PA15,
-  PB0, PB1, PB2, PB3, PB4, PB5, PB6, PB7, PB8, PB9, PB10, PB11, PB12, PB13, PB14, PB15,
-  PC0, PC1, PC2, PC3, PC4, PC5, PC6, PC7, PC8, PC9, PC10, PC11, PC12, PC13, PC14, PC15
-};
- 
- 
 #define digitalPinToPort(P)        ( g_APinDescription[P].ulPort )
 #define digitalPinToBitMask(P)     ( g_APinDescription[P].ulPin )
 
@@ -104,8 +97,6 @@ enum {
 #define ARDUINO_PIN_D14               0x0000000E
 #define ARDUINO_PIN_D15               0x0000000F
 
-#define MAX_DIGITAL_IOS               PC15 //All pins can be use as digital pins
-
 //analog pins
 #define ARDUINO_PIN_A0                0x00000010
 #define ARDUINO_PIN_A1                0x00000011
@@ -115,6 +106,59 @@ enum {
 #define ARDUINO_PIN_A5                0x00000015
 //D13 can be used as a DAC
 #define MAX_ANALOG_IOS                7
+
+enum {
+    PA3  = ARDUINO_PIN_D0,
+    PA2  = ARDUINO_PIN_D1,
+    PA10 = ARDUINO_PIN_D2,
+    PB3  = ARDUINO_PIN_D3,
+    PB5  = ARDUINO_PIN_D4,
+    PB4  = ARDUINO_PIN_D5,
+    PB10 = ARDUINO_PIN_D6,
+    PA8  = ARDUINO_PIN_D7,
+    PA9  = ARDUINO_PIN_D8,
+    PC7  = ARDUINO_PIN_D9,
+    PB6  = ARDUINO_PIN_D10,
+    PA7  = ARDUINO_PIN_D11,
+    PA6  = ARDUINO_PIN_D12,
+    PA5  = ARDUINO_PIN_D13,
+    PB9  = ARDUINO_PIN_D14,
+    PB8  = ARDUINO_PIN_D15,
+    PA0  = ARDUINO_PIN_A0,
+    PA1  = ARDUINO_PIN_A1,
+    PA4  = ARDUINO_PIN_A2,
+    PB0  = ARDUINO_PIN_A3,
+    PC1  = ARDUINO_PIN_A4,
+    PC0  = ARDUINO_PIN_A5,
+    PA11,
+    PA12,
+    PA13,
+    PA14,
+    PA15,
+    PB1,
+    PB2,
+    PB7,
+    PB11,
+    PB12,
+    PB13,
+    PB14,
+    PB15,
+    PC2,
+    PC3,
+    PC4,
+    PC5,
+    PC6,
+    PC8,
+    PC9,
+    PC10,
+    PC11,
+    PC12,
+    PC13,
+    PC14,
+    PC15,
+};
+
+#define MAX_DIGITAL_IOS               PC15 //All pins can be use as digital pins
 
 
 //Morpho connector IOS
