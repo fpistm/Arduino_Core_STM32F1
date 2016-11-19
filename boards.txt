@@ -129,17 +129,17 @@ MapleMini_F103CB.build.vect-offset=-DVECT_TAB_OFFSET=0x0
 
 #---------------------------- UPLOAD METHODS ---------------------------
 
-#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1=Maple bootloader (original version)
-#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.upload.protocol=maple_dfu
-#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.upload.tool=maple_upload
-#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.build.upload_flags=-DSERIAL_USB  -DUSB_DISC_PIN=PB9
-#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.build.vect-offset=-DVECT_TAB_OFFSET=0x5000
-#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.build.ldscript=linker_scripts/STM32F103CB_FLASH_bootloader_original.ld
-#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.upload.usbID=1EAF:0003
-#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.upload.altID=2
-#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.flash.maximum_size=110592
-#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.maximum_data_size=110592
-#MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.ram.maximum_size=17408
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod1=Maple bootloader (original version)
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.upload.protocol=maple_dfu
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.upload.tool=maple_upload
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.build.upload_flags=-DSERIAL_USB  -DUSB_DISC_PIN=PB9
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.build.vect-offset=-DVECT_TAB_OFFSET=0x5000
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.build.ldscript=linker_scripts/STM32F103CB_FLASH_bootloader_original.ld
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.upload.usbID=1EAF:0003
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.upload.altID=1
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.flash.maximum_size=110592
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.maximum_data_size=110592
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.ram.maximum_size=17408
 
 
 MapleMini_F103CB.menu.upload_method.DFUUploadMethod2=STM32duino bootloader
@@ -150,9 +150,9 @@ MapleMini_F103CB.menu.upload_method.DFUUploadMethod2.build.vect-offset=-DVECT_TA
 MapleMini_F103CB.menu.upload_method.DFUUploadMethod2.build.ldscript=linker_scripts/STM32F103CB_FLASH_bootloader.ld
 MapleMini_F103CB.menu.upload_method.DFUUploadMethod2.upload.usbID=1EAF:0003
 MapleMini_F103CB.menu.upload_method.DFUUploadMethod2.upload.altID=2
-MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.flash.maximum_size=122880
-MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.maximum_data_size=122880
-MapleMini_F103CB.menu.upload_method.DFUUploadMethod1.ram.maximum_size=20480
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod2.flash.maximum_size=122880
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod2.maximum_data_size=122880
+MapleMini_F103CB.menu.upload_method.DFUUploadMethod2.ram.maximum_size=20480
 
 MapleMini_F103CB.menu.upload_method.STLinkMethod=STLink
 MapleMini_F103CB.menu.upload_method.STLinkMethod.upload.protocol=STLink
