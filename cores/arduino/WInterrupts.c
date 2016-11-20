@@ -23,7 +23,7 @@
 #endif
 
 //This is the list of the digital IOs configured
-PinDescription g_intPinConfigured[MAX_DIGITAL_IOS];
+PinDescription *g_intPinConfigured[MAX_DIGITAL_IOS]={};
 
 
 void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
@@ -39,8 +39,8 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
   //find the pin.
   for(i = 0; i < NB_PIN_DESCRIPTIONS; i++) {
     if(g_APinDescription[i].arduino_id == pin) {
-      g_intPinConfigured[pin] = g_APinDescription[i];
-      g_intPinConfigured[pin].configured = true;
+      g_intPinConfigured[pin] = &g_APinDescription[i];
+   //   g_intPinConfigured[pin].configured = true;
       break;
     }
   }
@@ -64,8 +64,8 @@ void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
     break;
   }
 
-  stm32_interrupt_enable(g_intPinConfigured[pin].ulPort,
-                          g_intPinConfigured[pin].ulPin, callback, it_mode);
+  stm32_interrupt_enable(g_intPinConfigured[pin]->ulPort,
+                          g_intPinConfigured[pin]->ulPin, callback, it_mode);
 
 }
 
@@ -81,12 +81,12 @@ void detachInterrupt(uint32_t pin)
   //find the pin.
   for(i = 0; i < NB_PIN_DESCRIPTIONS; i++) {
     if(g_APinDescription[i].arduino_id == pin) {
-      g_intPinConfigured[pin] = g_APinDescription[i];
-      g_intPinConfigured[pin].configured = true;
+      g_intPinConfigured[pin] = &g_APinDescription[i];
+      //g_intPinConfigured[pin].configured = true;
       break;
     }
   }
 
-  stm32_interrupt_disable(g_intPinConfigured[pin].ulPort,
-                          g_intPinConfigured[pin].ulPin);
+  stm32_interrupt_disable(g_intPinConfigured[pin]->ulPort,
+                          g_intPinConfigured[pin]->ulPin);
 }
