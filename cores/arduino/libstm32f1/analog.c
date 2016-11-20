@@ -381,7 +381,7 @@ int8_t get_analog_instance(GPIO_TypeDef  *port, uint32_t pin)
 
 ////////////////////////// DAC INTERFACE FUNCTIONS /////////////////////////////
 
-#if defined (STM32F100xB) || defined (STM32F100xE) || defined (STM32F101xE) || defined (STM32F101xG) || defined (STM32F103xE) || defined (STM32F103xG) || defined (STM32F105xC) || defined (STM32F107xC)
+#if  defined (STM32F100xE) || defined (STM32F101xE) || defined (STM32F101xG) || defined (STM32F103xE) || defined (STM32F103xG) || defined (STM32F105xC) || defined (STM32F107xC)
 /**
   * @brief DAC MSP Initialization
   *        This function configures the hardware resources used in this example:
