@@ -405,7 +405,7 @@ void HAL_DAC_MspInit(DAC_HandleTypeDef *hdac)
   }
 
   /* DAC Periph clock enable */
-  __HAL_RCC_DAC1_CLK_ENABLE();
+  __HAL_RCC_DAC_CLK_ENABLE();
 
   /*##-2- Configure peripheral GPIO ##########################################*/
   /* DAC Channel1 GPIO pin configuration */
