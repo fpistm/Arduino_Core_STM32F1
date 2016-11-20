@@ -161,10 +161,8 @@
       . = ALIGN(4);
       PROVIDE ( end = . );
       PROVIDE ( _end = . );
-      . = . + _Min_Heap_Size;
-      . = . + _Min_Stack_Size;
-      . = ALIGN(4);
     } >RAM
+
 
 
 
