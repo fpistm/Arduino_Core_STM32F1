@@ -24,7 +24,7 @@
 
 
 //This is the list of the digital IOs configured
-PinDescription g_digPinConfigured[MAX_DIGITAL_IOS];
+bool g_digPinConfigured[MAX_DIGITAL_IOS];
 extern PinDescription g_anOutputPinConfigured[MAX_DIGITAL_IOS];
 
 
@@ -36,15 +36,7 @@ extern void pinMode( uint32_t ulPin, uint32_t ulMode )
   if(ulPin>MAX_DIGITAL_IOS) {
     return ;
   }
-
-  //find the pin.
-  for(i = 0; i < NB_PIN_DESCRIPTIONS; i++) {
-    if(g_APinDescription[i].arduino_id == ulPin) {
-      g_digPinConfigured[ulPin] = g_APinDescription[i];
-      g_digPinConfigured[ulPin].configured = true;
-      break;
-    }
-  }
+  g_digPinConfigured[ulPin] = true;
   
   // If the pin that support PWM or DAC output, we need to turn it off
   if(g_anOutputPinConfigured[ulPin].configured == true) {
@@ -60,23 +52,23 @@ extern void pinMode( uint32_t ulPin, uint32_t ulMode )
   switch ( ulMode )
   {
     case INPUT:
-      digital_io_init(g_digPinConfigured[ulPin].ulPort,
-                    g_digPinConfigured[ulPin].ulPin,
+      digital_io_init(g_APinDescription[ulPin].ulPort,
+                    g_APinDescription[ulPin].ulPin,
                     GPIO_MODE_INPUT, GPIO_NOPULL);
     break;
     case INPUT_PULLUP:
-      digital_io_init(g_digPinConfigured[ulPin].ulPort,
-                    g_digPinConfigured[ulPin].ulPin,
+      digital_io_init(g_APinDescription[ulPin].ulPort,
+                    g_APinDescription[ulPin].ulPin,
                     GPIO_MODE_INPUT, GPIO_PULLUP);
     break;
     case INPUT_PULLDOWN:
-      digital_io_init(g_digPinConfigured[ulPin].ulPort,
-                    g_digPinConfigured[ulPin].ulPin,
+      digital_io_init(g_APinDescription[ulPin].ulPort,
+                    g_APinDescription[ulPin].ulPin,
                     GPIO_MODE_INPUT, GPIO_PULLDOWN);
     break;
     case OUTPUT:
-      digital_io_init(g_digPinConfigured[ulPin].ulPort,
-                    g_digPinConfigured[ulPin].ulPin,
+      digital_io_init(g_APinDescription[ulPin].ulPort,
+                    g_APinDescription[ulPin].ulPin,
                     GPIO_MODE_OUTPUT_PP, GPIO_NOPULL);
     break;
     default:
@@ -91,9 +83,9 @@ extern void digitalWrite( uint32_t ulPin, uint32_t ulVal )
     return ;
   }
 
-  if(g_digPinConfigured[ulPin].configured == true) {
-    digital_io_write(g_digPinConfigured[ulPin].ulPort,
-                  g_digPinConfigured[ulPin].ulPin,
+  if(g_digPinConfigured[ulPin] == true) {
+    digital_io_write(g_APinDescription[ulPin].ulPort,
+                  g_APinDescription[ulPin].ulPin,
                   ulVal);
   }
 }
@@ -107,9 +99,9 @@ extern int digitalRead( uint32_t ulPin )
     return LOW;
   }
 
-  if(g_digPinConfigured[ulPin].configured == true) {
-    level = digital_io_read(g_digPinConfigured[ulPin].ulPort,
-                        g_digPinConfigured[ulPin].ulPin);
+  if(g_digPinConfigured[ulPin] == true) {
+    level = digital_io_read(g_APinDescription[ulPin].ulPort,
+                        g_APinDescription[ulPin].ulPin);
   }
 
   if(level) {
