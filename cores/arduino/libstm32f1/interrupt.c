@@ -209,6 +209,15 @@ void stm32_interrupt_enable(GPIO_TypeDef *port, uint16_t pin,
 void stm32_interrupt_disable(GPIO_TypeDef *port, uint16_t pin)
 {
   uint8_t id = get_pin_id(pin);
+  
+  gpio_irq_conf[id].callback = NULL;
+  
+  for(int i = 0; i < NB_EXTI; i++) {
+    if (gpio_irq_conf[id].irqnb == gpio_irq_conf[i].irqnb 
+        && gpio_irq_conf[i].callback != NULL) {
+      return;
+    }
+  }
   HAL_NVIC_DisableIRQ(gpio_irq_conf[id].irqnb);
 }
 
