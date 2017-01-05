@@ -45,13 +45,7 @@ static inline int32_t get_pin_description(uint32_t apin, uint32_t ulPin)
   return -1;
 }
 
-static inline int32_t pinConvert(uint32_t ulPin)
-{
-  if(ulPin < ARDUINO_PIN_A0)
-    return ulPin | ARDUINO_PIN_A0;
-  else
-    return ulPin;
-}
+uint32_t analogPinConvert(uint32_t ulPin) __attribute__((weak));
 
 
 void analogReadResolution(int res) {
@@ -87,7 +81,9 @@ uint32_t analogRead(uint32_t ulPin)
     return 0;
   }
 
-  ulPin = pinConvert(ulPin);
+  if (analogPinConvert) {
+    ulPin = analogPinConvert(ulPin);
+  }
 
   //find the pin.
   i = get_pin_description(apin, ulPin);
