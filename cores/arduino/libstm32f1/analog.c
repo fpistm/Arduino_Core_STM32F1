@@ -592,6 +592,10 @@ uint16_t adc_read_value(GPIO_TypeDef  *port, uint32_t pin, uint8_t do_init)
   __IO uint16_t uhADCxConvertedValue = 0;
 
   AdcHandle.Instance = g_analog_init_config[id].adcInstance;
+  
+  if (AdcHandle.Instance == NULL) {
+      return 0;
+  }
 
   if(do_init == 1) {
 
