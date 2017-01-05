@@ -190,6 +190,12 @@ void SystemClock_Config(void)
   
 void __libc_init_array(void);
 
+uint32_t analogPinConvert(uint32_t ulPin) {
+  if(ulPin < ARDUINO_PIN_A0) 
+    return ulPin | ARDUINO_PIN_A0; 
+  else 
+    return ulPin;
+}
 
 void init( void )
 {
