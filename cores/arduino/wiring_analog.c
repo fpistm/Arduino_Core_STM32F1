@@ -32,19 +32,6 @@ static int _readResolution = 10;
 static int _writeResolution = 8;
 
 
-static inline int32_t get_pin_description(uint32_t apin, uint32_t ulPin)
-{
-  int32_t i;
-
-  //find the pin.
-  for(i = 0; i < NB_PIN_DESCRIPTIONS; i++) {
-    if(g_APinDescription[i].arduino_id == ulPin) {
-      return i;
-    }
-  }
-  return -1;
-}
-
 uint32_t analogPinConvert(uint32_t ulPin) __attribute__((weak));
 
 
@@ -75,7 +62,6 @@ uint32_t analogRead(uint32_t ulPin)
 
   //put mask only to have the lower digits
   uint32_t apin = ulPin&0x0000000F;
-  int i;
 
   if(ulPin>MAX_DIGITAL_IOS) {
     return 0;
@@ -85,12 +71,10 @@ uint32_t analogRead(uint32_t ulPin)
     ulPin = analogPinConvert(ulPin);
   }
 
-  //find the pin.
-  i = get_pin_description(apin, ulPin);
-  if((i<0) && (apin < MAX_ANALOG_IOS))
+  if((ulPin<0) && (apin < MAX_ANALOG_IOS))
     return 0;
 
-  g_anInputPinConfigured[apin] = g_APinDescription[i];
+  g_anInputPinConfigured[apin] = g_APinDescription[ulPin];
 
   if(g_anInputPinConfigured[apin].configured == false) {
     do_init = 1;
@@ -117,19 +101,16 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue) {
   //put mask only to have the lower digits
   uint32_t apin = ulPin&0x0000000F;
   uint32_t attr = 0;
-  int i;
   uint8_t do_init = 0;
 
   if(ulPin>MAX_DIGITAL_IOS) {
     return;
   }
 
-  //find the pin.
-  i = get_pin_description(apin, ulPin);
-  if((i<0) && (apin < MAX_DIGITAL_IOS))
+  if((ulPin<0) && (apin < MAX_DIGITAL_IOS))
     return;
 
-  g_anOutputPinConfigured[apin] = g_APinDescription[i];
+  g_anOutputPinConfigured[apin] = g_APinDescription[ulPin];
 
   if(g_anOutputPinConfigured[apin].configured == false) {
     do_init = 1;
