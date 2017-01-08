@@ -112,14 +112,8 @@ typedef struct {
   void (*i2c_alternate)(void);
   GPIO_TypeDef  *sda_port;
   uint32_t sda_pin;
-  uint32_t sda_mode;
-  uint32_t sda_pull;
-  uint32_t sda_speed;
   GPIO_TypeDef  *scl_port;
   uint32_t scl_pin;
-  uint32_t scl_mode;
-  uint32_t scl_pull;
-  uint32_t scl_speed;
   void (*i2c_onSlaveReceive)(i2c_instance_e, uint8_t *, int);
   void (*i2c_onSlaveTransmit)(i2c_instance_e);
   uint8_t i2cTxRxBuffer[I2C_TXRX_BUFFER_SIZE];
@@ -161,14 +155,8 @@ static i2c_init_info_t g_i2c_init_info[NB_I2C_INSTANCES] = {
     .i2c_alternate = i2c1_alternate,
     .sda_port = GPIOB,
     .sda_pin = GPIO_PIN_9,
-    .sda_mode = GPIO_MODE_AF_OD,
-    .sda_pull = GPIO_PULLUP,
-    .sda_speed = GPIO_SPEED_FREQ_HIGH,
     .scl_port = GPIOB,
     .scl_pin = GPIO_PIN_8,
-    .scl_mode = GPIO_MODE_AF_OD,
-    .scl_pull = GPIO_PULLUP,
-    .scl_speed = GPIO_SPEED_FREQ_HIGH,
     .i2c_onSlaveReceive = NULL,
     .i2c_onSlaveTransmit = NULL,
     .i2cTxRxBufferSize = 0
@@ -230,16 +218,16 @@ void i2c_custom_init(i2c_instance_e i2c_id, uint32_t timing, uint32_t addressing
 
     //SCL
     GPIO_InitStruct.Pin = g_i2c_init_info[i2c_id].scl_pin;
-    GPIO_InitStruct.Mode = g_i2c_init_info[i2c_id].scl_mode;
-    GPIO_InitStruct.Speed = g_i2c_init_info[i2c_id].scl_speed;
-    GPIO_InitStruct.Pull  = g_i2c_init_info[i2c_id].scl_pull;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    GPIO_InitStruct.Pull  = GPIO_PULLUP;
     HAL_GPIO_Init(g_i2c_init_info[i2c_id].scl_port, &GPIO_InitStruct);
 
     //SDA
     GPIO_InitStruct.Pin = g_i2c_init_info[i2c_id].sda_pin;
-    GPIO_InitStruct.Mode = g_i2c_init_info[i2c_id].sda_mode;
-    GPIO_InitStruct.Speed = g_i2c_init_info[i2c_id].sda_speed;
-    GPIO_InitStruct.Pull  = g_i2c_init_info[i2c_id].sda_pull;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    GPIO_InitStruct.Pull  = GPIO_PULLUP;
     HAL_GPIO_Init(g_i2c_init_info[i2c_id].sda_port, &GPIO_InitStruct);
 
     g_i2c_init_info[i2c_id].i2c_alternate();
