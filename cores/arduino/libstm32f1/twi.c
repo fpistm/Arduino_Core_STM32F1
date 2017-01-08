@@ -103,8 +103,6 @@ typedef struct {
   IRQn_Type irq;
   void (*i2c_clock_init)(void);
   void (*i2c_clock_deinit)(void);
-  void (*i2c_force_reset)(void);
-  void (*i2c_release_reset)(void);
   void (*i2c_alternate)(void);
   GPIO_TypeDef  *sda_port;
   uint32_t sda_pin;
@@ -126,8 +124,6 @@ typedef struct {
   */
 static void i2c1_clk_enable(void)      { __HAL_RCC_I2C1_CLK_ENABLE();    }
 static void i2c1_clk_disable(void)     { __HAL_RCC_I2C1_CLK_DISABLE();   }
-static void i2c1_force_reset(void)     { __I2C1_FORCE_RESET();           }
-static void i2c1_release_reset(void)   { __I2C1_RELEASE_RESET();         }
 static void i2c1_alternate(void)       {  __HAL_RCC_AFIO_CLK_ENABLE();
                                           __HAL_AFIO_REMAP_I2C1_ENABLE(); }
 
@@ -138,8 +134,6 @@ static i2c_init_info_t g_i2c_init_info[NB_I2C_INSTANCES] = {
     .irq = I2C1_EV_IRQn,
     .i2c_clock_init = i2c1_clk_enable,
     .i2c_clock_deinit = i2c1_clk_disable,
-    .i2c_force_reset = i2c1_force_reset,
-    .i2c_release_reset = i2c1_release_reset,
     .i2c_alternate = i2c1_alternate,
     .sda_port = GPIOB,
     .sda_pin = GPIO_PIN_9,
