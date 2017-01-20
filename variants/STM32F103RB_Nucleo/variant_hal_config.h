@@ -354,6 +354,74 @@ typedef enum {
   }                                   \
 } while(0)
 
+/******************************************************************************/
+/* Uart configuration */
+/* UART instance_e available. Number of UART instance configured. */
+typedef enum {
+  USART1_E,
+  USART2_E,
+  NB_UART_MANAGED
+} uart_id_e;
+
+/* UART configuration:
+.usart_typedef = USARTx
+.irqtype : UART interrupt handler
+.tx_port = GPIOx
+.tx_pin : GPIO_InitTypeDef
+.rx_port = GPIOx
+.rx_pin : GPIO_InitTypeDef
+.uart_af_remap : alternate function remapping //TDB: option not fully implemented
+*/
+#define UART_PARAM {                                                            \
+  {                                                                             \
+    .usart_typedef = USART1,                                                    \
+    .irqtype = USART1_IRQn,                                                     \
+    .tx_port = GPIOA,                                                           \
+    .tx_pin = {GPIO_PIN_9, GPIO_MODE_AF_PP, GPIO_PULLUP, GPIO_SPEED_FREQ_HIGH}, \
+    .rx_port = GPIOA,                                                           \
+    .rx_pin = {GPIO_PIN_10, GPIO_MODE_INPUT, GPIO_PULLUP, GPIO_SPEED_FREQ_HIGH},\
+    .uart_af_remap = USART1_AF_Remap                                            \
+  },                                                                            \
+  {                                                                             \
+    .usart_typedef = USART2,                                                    \
+    .irqtype = USART2_IRQn,                                                     \
+    .tx_port = GPIOA,                                                           \
+    .tx_pin = {GPIO_PIN_2, GPIO_MODE_AF_PP, GPIO_PULLUP, GPIO_SPEED_FREQ_HIGH}, \
+    .rx_port = GPIOA,                                                           \
+    .rx_pin = {GPIO_PIN_3, GPIO_MODE_AF_PP, GPIO_PULLUP, GPIO_SPEED_FREQ_HIGH}, \
+    .uart_af_remap = USART2_AF_Remap                                            \
+  }                                                                             \
+}
+
+//Enable uart clock
+#define ENABLE_UART_CLK(UARTx) do {   \
+  if((UARTx) == USART1) {             \
+    __HAL_RCC_USART1_CLK_ENABLE();    \
+  } else if((UARTx) == USART2) {      \
+    __HAL_RCC_USART2_CLK_ENABLE();    \
+  }                                   \
+} while(0)
+
+//Disable uart clock
+#define DISABLE_UART_CLK(UARTx) do {  \
+  if((UARTx) == USART1) {             \
+    __HAL_RCC_USART1_CLK_DISABLE();   \
+  } else if((UARTx) == USART2) {      \
+    __HAL_RCC_USART2_CLK_DISABLE();   \
+  }                                   \
+} while(0)
+
+/* Emulated uart configuration */
+#define UART_EMUL_PARAM {                                                           \
+  {                                                                                 \
+    .uartEmul_typedef = {UART1_EMUL_E},                                             \
+    .tx_port = GPIOB,                                                               \
+    .tx_pin = {GPIO_PIN_3, GPIO_MODE_OUTPUT_PP, GPIO_PULLUP, GPIO_SPEED_FREQ_HIGH}, \
+    .rx_port = GPIOA,                                                               \
+    .rx_pin = {GPIO_PIN_10, GPIO_MODE_IT_FALLING, GPIO_PULLUP, GPIO_SPEED_FREQ_HIGH}\
+  }                                                                                 \
+}
+
 #ifdef __cplusplus
 }
 #endif

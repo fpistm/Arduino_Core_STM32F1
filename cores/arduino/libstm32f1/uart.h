@@ -41,18 +41,13 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
+#include "uart_emul.h"
 
 #ifdef __cplusplus
  extern "C" {
 #endif
 
 /* Exported types ------------------------------------------------------------*/
-typedef enum {
-  USART1_E = 0,
-  USART2_E = 1,
-  NB_UART_MANAGED
-} uart_id_e;
-
 typedef enum {
   UART1_EMUL_E = 0,
   NB_UART_EMUL_MANAGED
@@ -67,6 +62,41 @@ typedef enum {
 /* Exported constants --------------------------------------------------------*/
 #define UART_RCV_SIZE 128
 
+/// @brief defines the global attributes of the UART
+typedef struct {
+  USART_TypeDef * usart_typedef;
+  IRQn_Type       irqtype;
+  GPIO_TypeDef  *tx_port;
+  GPIO_InitTypeDef tx_pin;
+  GPIO_TypeDef  *rx_port;
+  GPIO_InitTypeDef rx_pin;
+  void (*uart_af_remap)(void);
+}uart_conf_t;
+
+typedef struct {
+  uint8_t rxpData[UART_RCV_SIZE];
+  volatile uint32_t data_available;
+  volatile uint8_t begin;
+  volatile uint8_t end;
+}uart_param_t;
+
+typedef struct {
+  UART_Emul_TypeDef uartEmul_typedef;
+  GPIO_TypeDef  *tx_port;
+  GPIO_InitTypeDef tx_pin;
+  GPIO_TypeDef  *rx_port;
+  GPIO_InitTypeDef rx_pin;
+}uart_emul_conf_t;
+
+typedef struct {
+  void (*uart_rx_irqHandle)(void);
+  uint8_t rxpData[UART_RCV_SIZE];
+  volatile uint32_t data_available;
+  volatile uint8_t begin;
+  volatile uint8_t end;
+}uart_emul_param_t;
+
+/* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 void uart_init(uart_id_e uart_id, uint32_t baudRate);
