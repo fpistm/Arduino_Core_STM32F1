@@ -45,6 +45,11 @@
  extern "C" {
 #endif
 
+/******************************************************************************/
+/* Serial wire JTAG */
+// STM32F103 serial wire JTAG configuration must be disabled to use PA13, PA14,
+// PA15, PB3 and PB4 pins. Comment the following line to enable the JTAG.
+#define DISABLE_JTAG  1
 
 /******************************************************************************/
 /* ANALOG CHANNEL CONFIGURATION */

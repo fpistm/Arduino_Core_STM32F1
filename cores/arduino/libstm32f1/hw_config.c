@@ -48,6 +48,7 @@
   */
 #include "stm32f1xx.h"
 #include "hw_config.h"
+#include "variant_hal_config.h"
 
 #ifdef SERIAL_USB 
 extern PCD_HandleTypeDef hpcd_USB_FS; 
@@ -121,10 +122,10 @@ void hw_config_init(void)
   //Initialize the HAL
   HAL_Init();
 
+#ifdef DISABLE_JTAG
   __HAL_RCC_AFIO_CLK_ENABLE();
-#if 0 // we like being able to debug :)
   __HAL_AFIO_REMAP_SWJ_DISABLE();
-#endif
+#endif /* DISABLE_JTAG */
 
   // Configure the system clock
   SystemClock_Config();
