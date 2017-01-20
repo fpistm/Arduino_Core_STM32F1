@@ -208,6 +208,31 @@ PWM option: .timInstance=TIMx
   }                                 */\
 } while(0)
 
+/******************************************************************************/
+/* GPIO external interrupt configuration */
+/* Number of pin connected to an external interrupt by port */
+#define NB_GPIO_EXTI   16
+
+/* List of EXTI connected to pin 0 to 15 */
+#define GPIO_EXTI_PARAM {   \
+  EXTI0_IRQn,               \
+  EXTI1_IRQn,               \
+  EXTI2_IRQn,               \
+  EXTI3_IRQn,               \
+  EXTI4_IRQn,               \
+  EXTI9_5_IRQn,             \
+  EXTI9_5_IRQn,             \
+  EXTI9_5_IRQn,             \
+  EXTI9_5_IRQn,             \
+  EXTI9_5_IRQn,             \
+  EXTI15_10_IRQn,           \
+  EXTI15_10_IRQn,           \
+  EXTI15_10_IRQn,           \
+  EXTI15_10_IRQn,           \
+  EXTI15_10_IRQn,           \
+  EXTI15_10_IRQn            \
+}
+
 #ifdef __cplusplus
 }
 #endif
