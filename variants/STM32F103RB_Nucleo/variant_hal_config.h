@@ -233,6 +233,53 @@ PWM option: .timInstance=TIMx
   EXTI15_10_IRQn            \
 }
 
+/******************************************************************************/
+/* I2C configuration */
+/* I2C instance_e available. Number of I2C instance configured. */
+typedef enum {
+  I2C_1,
+  //I2C_2,
+  //I2C_3,
+  NB_I2C_INSTANCES
+}i2c_instance_e;
+
+/* I2C configuration:
+  .i2c_instance=I2Cx
+  .ev_irq : I2C Event interrupt handler
+  .er_irq : I2C Error interrupt handler
+  .i2c_alternate : enable I2Cx alternate function //TDB: option not fully implemented
+  .sda_port = GPIOx,
+  .sda_pin = GPIO_PIN_x,
+  .scl_port = GPIOx,
+  .scl_pin = GPIO_PIN_x
+*/
+#define I2C_PARAM {                   \
+  {                                   \
+    .i2c_instance = I2C1,             \
+    .ev_irq = I2C1_EV_IRQn,           \
+    .er_irq = I2C1_ER_IRQn,           \
+    .i2c_alternate = i2c1_alternate,  \
+    .sda_port = GPIOB,                \
+    .sda_pin = GPIO_PIN_9,            \
+    .scl_port = GPIOB,                \
+    .scl_pin = GPIO_PIN_8             \
+  }                                   \
+}
+
+//Enable I2C clock
+#define ENABLE_I2C_CLK(I2Cx) do {   \
+  if((I2Cx) == I2C1) {              \
+    __HAL_RCC_I2C1_CLK_ENABLE();    \
+  }                                 \
+} while(0)
+
+//Disable I2C clock
+#define DISABLE_I2C_CLK(I2Cx) do {  \
+  if((I2Cx) == I2C1) {              \
+    __HAL_RCC_I2C1_CLK_DISABLE();   \
+  }                                 \
+} while(0)
+
 #ifdef __cplusplus
 }
 #endif

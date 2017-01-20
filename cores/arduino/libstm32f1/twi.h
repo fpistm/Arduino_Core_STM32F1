@@ -42,19 +42,13 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
+#include "variant_hal_config.h"
 
 #ifdef __cplusplus
  extern "C" {
 #endif
 
 /* Exported types ------------------------------------------------------------*/
-
-///@brief define the possible I2C instances
-typedef enum {
-  I2C_1,
-  NB_I2C_INSTANCES
-}i2c_instance_e;
-
 ///@brief I2C state
 typedef enum {
   I2C_OK = 0,
@@ -69,6 +63,30 @@ typedef enum {
 #define I2C_100KHz  100000
 #define I2C_200KHz  200000
 #define I2C_400KHz  400000
+
+//I2C buffer size
+#define I2C_TXRX_BUFFER_SIZE    32
+
+typedef struct {
+  I2C_TypeDef *i2c_instance;
+  IRQn_Type ev_irq;
+  IRQn_Type er_irq;
+  void (*i2c_alternate)(void);
+  GPIO_TypeDef  *sda_port;
+  uint32_t sda_pin;
+  GPIO_TypeDef  *scl_port;
+  uint32_t scl_pin;
+} i2c_init_info_t;
+
+typedef struct {
+  I2C_HandleTypeDef    i2c_handle;
+  uint8_t init_done;
+  void (*i2c_onSlaveReceive)(i2c_instance_e, uint8_t *, int);
+  void (*i2c_onSlaveTransmit)(i2c_instance_e);
+  uint8_t i2cTxRxBuffer[I2C_TXRX_BUFFER_SIZE];
+  uint8_t i2cTxRxBufferSize;
+  uint8_t slaveMode;
+} i2c_param_t;
 
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
