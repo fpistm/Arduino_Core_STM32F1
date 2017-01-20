@@ -102,24 +102,12 @@ typedef struct {
   I2C_TypeDef *i2c_instance;
   IRQn_Type irq;
   void (*i2c_clock_init)(void);
-  void (*i2c_scl_clock_init)(void);
-  void (*i2c_sda_clock_init)(void);
   void (*i2c_clock_deinit)(void);
-  void (*i2c_scl_clock_deinit)(void);
-  void (*i2c_sda_clock_deinit)(void);
-  void (*i2c_force_reset)(void);
-  void (*i2c_release_reset)(void);
   void (*i2c_alternate)(void);
   GPIO_TypeDef  *sda_port;
   uint32_t sda_pin;
-  uint32_t sda_mode;
-  uint32_t sda_pull;
-  uint32_t sda_speed;
   GPIO_TypeDef  *scl_port;
   uint32_t scl_pin;
-  uint32_t scl_mode;
-  uint32_t scl_pull;
-  uint32_t scl_speed;
   void (*i2c_onSlaveReceive)(i2c_instance_e, uint8_t *, int);
   void (*i2c_onSlaveTransmit)(i2c_instance_e);
   uint8_t i2cTxRxBuffer[I2C_TXRX_BUFFER_SIZE];
@@ -136,12 +124,6 @@ typedef struct {
   */
 static void i2c1_clk_enable(void)      { __HAL_RCC_I2C1_CLK_ENABLE();    }
 static void i2c1_clk_disable(void)     { __HAL_RCC_I2C1_CLK_DISABLE();   }
-static void i2c1_scl_clk_enable(void)  { __HAL_RCC_GPIOB_CLK_ENABLE();   }
-static void i2c1_sda_clk_enable(void)  { __HAL_RCC_GPIOB_CLK_ENABLE();   }
-static void i2c1_scl_clk_disable(void) { __HAL_RCC_GPIOB_CLK_DISABLE();  }
-static void i2c1_sda_clk_disable(void) { __HAL_RCC_GPIOB_CLK_DISABLE();  }
-static void i2c1_force_reset(void)     { __I2C1_FORCE_RESET();           }
-static void i2c1_release_reset(void)   { __I2C1_RELEASE_RESET();         }
 static void i2c1_alternate(void)       {  __HAL_RCC_AFIO_CLK_ENABLE();
                                           __HAL_AFIO_REMAP_I2C1_ENABLE(); }
 
@@ -151,24 +133,12 @@ static i2c_init_info_t g_i2c_init_info[NB_I2C_INSTANCES] = {
     .i2c_instance = I2C1,
     .irq = I2C1_EV_IRQn,
     .i2c_clock_init = i2c1_clk_enable,
-    .i2c_scl_clock_init = i2c1_scl_clk_enable,
-    .i2c_sda_clock_init = i2c1_sda_clk_enable,
     .i2c_clock_deinit = i2c1_clk_disable,
-    .i2c_scl_clock_deinit = i2c1_scl_clk_disable,
-    .i2c_sda_clock_deinit = i2c1_sda_clk_disable,
-    .i2c_force_reset = i2c1_force_reset,
-    .i2c_release_reset = i2c1_release_reset,
     .i2c_alternate = i2c1_alternate,
     .sda_port = GPIOB,
     .sda_pin = GPIO_PIN_9,
-    .sda_mode = GPIO_MODE_AF_OD,
-    .sda_pull = GPIO_PULLUP,
-    .sda_speed = GPIO_SPEED_FREQ_HIGH,
     .scl_port = GPIOB,
     .scl_pin = GPIO_PIN_8,
-    .scl_mode = GPIO_MODE_AF_OD,
-    .scl_pull = GPIO_PULLUP,
-    .scl_speed = GPIO_SPEED_FREQ_HIGH,
     .i2c_onSlaveReceive = NULL,
     .i2c_onSlaveTransmit = NULL,
     .i2cTxRxBufferSize = 0
@@ -224,23 +194,19 @@ void i2c_custom_init(i2c_instance_e i2c_id, uint32_t timing, uint32_t addressing
     }
 
     //Enable Clocks
-    g_i2c_init_info[i2c_id].i2c_scl_clock_init();
-    g_i2c_init_info[i2c_id].i2c_sda_clock_init();
     g_i2c_init_info[i2c_id].i2c_clock_init();
 
     //SCL
-    GPIO_InitStruct.Pin = g_i2c_init_info[i2c_id].scl_pin;
-    GPIO_InitStruct.Mode = g_i2c_init_info[i2c_id].scl_mode;
-    GPIO_InitStruct.Speed = g_i2c_init_info[i2c_id].scl_speed;
-    GPIO_InitStruct.Pull  = g_i2c_init_info[i2c_id].scl_pull;
-    HAL_GPIO_Init(g_i2c_init_info[i2c_id].scl_port, &GPIO_InitStruct);
+    digital_io_init(g_i2c_init_info[i2c_id].scl_port, 
+      g_i2c_init_info[i2c_id].scl_pin, 
+      GPIO_MODE_AF_OD, 
+      GPIO_PULLUP);
 
     //SDA
-    GPIO_InitStruct.Pin = g_i2c_init_info[i2c_id].sda_pin;
-    GPIO_InitStruct.Mode = g_i2c_init_info[i2c_id].sda_mode;
-    GPIO_InitStruct.Speed = g_i2c_init_info[i2c_id].sda_speed;
-    GPIO_InitStruct.Pull  = g_i2c_init_info[i2c_id].sda_pull;
-    HAL_GPIO_Init(g_i2c_init_info[i2c_id].sda_port, &GPIO_InitStruct);
+    digital_io_init(g_i2c_init_info[i2c_id].sda_port, 
+      g_i2c_init_info[i2c_id].sda_pin, 
+      GPIO_MODE_AF_OD, 
+      GPIO_PULLUP);
 
     g_i2c_init_info[i2c_id].i2c_alternate();
 
@@ -277,8 +243,6 @@ void i2c_deinit(i2c_instance_e i2c_id)
 {
   if(g_i2c_init_info[i2c_id].init_done == 1) {
 
-    g_i2c_init_info[i2c_id].i2c_scl_clock_deinit();
-    g_i2c_init_info[i2c_id].i2c_sda_clock_deinit();
     g_i2c_init_info[i2c_id].i2c_clock_deinit();
 
     HAL_NVIC_DisableIRQ(g_i2c_init_info[i2c_id].irq);
