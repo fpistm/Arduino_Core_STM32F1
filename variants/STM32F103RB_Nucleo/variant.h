@@ -209,6 +209,9 @@ static const uint8_t SCK  = 13;
 //Enable Firmata
 #define STM32 1
 
+//I2C definition
+#define DEFAULT_I2C I2C_1
+
 
 /*----------------------------------------------------------------------------
  *        Arduino objects - C++ only
