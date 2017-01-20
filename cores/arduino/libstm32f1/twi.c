@@ -446,28 +446,6 @@ void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c)
 }
 
 /**
-* @brief  This function handles I2C1 interrupt.
-* @param  None
-* @retval None
-*/
-void I2C1_EV_IRQHandler(void)
-{
-  I2C_HandleTypeDef *hi2c = &g_i2c_init_info[I2C_1].i2c_handle;
-
-  HAL_I2C_EV_IRQHandler(hi2c);
-}
-
-/**
-* @brief  This function handles I2C1 error interrupt.
-* @param  None
-* @retval None
-*/
-void I2C1_ER_IRQHandler(void)
-{
-  HAL_I2C_ER_IRQHandler(&g_i2c_init_info[I2C_1].i2c_handle);
-}
-
-/**
   * @}
   */
 

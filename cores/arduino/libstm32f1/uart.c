@@ -387,28 +387,6 @@ void HAL_UARTEx_WakeupCallback(UART_HandleTypeDef *huart)
 {
 }
 
-/**
-  * @brief  USART 1 IRQ handler
-  * @param  None
-  * @retval None
-  */
-void USART1_IRQHandler(void)
-{
-  HAL_NVIC_ClearPendingIRQ(USART1_IRQn);
-  HAL_UART_IRQHandler(&g_UartHandle[USART1_E]);
-}
-
-/**
-  * @brief  USART 2 IRQ handler
-  * @param  None
-  * @retval None
-  */
-void USART2_IRQHandler(void)
-{
-  HAL_NVIC_ClearPendingIRQ(USART2_IRQn);
-  HAL_UART_IRQHandler(&g_UartHandle[USART2_E]);
-}
-
 /******************************* EMULATED UART ********************************/
 /**
   * @brief  Initializes the UART Emulation MSP.

@@ -1,15 +1,15 @@
 /**
   ******************************************************************************
-  * @file    hw_config.c
+  * @file    variant_it.h
   * @author  WI6LABS
   * @version V1.0.0
-  * @date    22-July-2016
-  * @brief   provide some hw interface for the Arduino interface
+  * @date    18-Juanuary-2017
+  * @brief   Add here STM interrupt available for the variant
   *
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -35,115 +35,54 @@
   *
   ******************************************************************************
   */
-/** @addtogroup CMSIS
-  * @{
-  */
 
-/** @addtogroup stm32f1xx_system
-  * @{
-  */
-
-/** @addtogroup STM32F1xx_System_Private_Includes
-  * @{
-  */
-#include "stm32f1xx.h"
-#include "hw_config.h"
-#include "variant_hal_config.h"
-
-#ifdef SERIAL_USB 
-extern PCD_HandleTypeDef hpcd_USB_FS; 
-#endif
+#ifndef __VARIANT_IT_H_
+#define __VARIANT_IT_H_
 
 #ifdef __cplusplus
  extern "C" {
 #endif
 
-/**
-  * @}
-  */
+/* Includes ------------------------------------------------------------------*/
+/* Exported types ------------------------------------------------------------*/
+/* Exported constants --------------------------------------------------------*/
+/* Exported macro ------------------------------------------------------------*/
+/* Exported functions ------------------------------------------------------- */
 
-/** @addtogroup STM32F1xx_System_Private_TypesDefinitions
-  * @{
-  */
+void NMI_Handler(void);
+void HardFault_Handler(void);
+void MemManage_Handler(void);
+void BusFault_Handler(void);
+void UsageFault_Handler(void);
+void DebugMon_Handler(void);
+void Error_Handler(void);
+void SysTick_Handler(void);
 
-/**
-  * @}
-  */
+void TIM1_UP_IRQHandler(void);
+void TIM1_CC_IRQHandler(void);
+void TIM2_IRQHandler(void);
+void TIM3_IRQHandler(void);
+void TIM4_IRQHandler(void);
 
-/** @addtogroup STM32F1xx_System_Private_Defines
-  * @{
-  */
-/**
-  * @}
-  */
+void EXTI0_IRQHandler(void);
+void EXTI1_IRQHandler(void);
+void EXTI2_IRQHandler(void);
+void EXTI3_IRQHandler(void);
+void EXTI4_IRQHandler(void);
+void EXTI9_5_IRQHandler(void);
+void EXTI15_10_IRQHandler(void);
 
-/** @addtogroup STM32F1xx_System_Private_Macros
-  * @{
-  */
+void I2C1_EV_IRQHandler(void);
+void I2C1_ER_IRQHandler(void);
 
-/**
-  * @}
-  */
+void USART1_IRQHandler(void);
+void USART2_IRQHandler(void);
 
-/** @addtogroup STM32F1xx_System_Private_Variables
-  * @{
-  */
+void USB_LP_CAN1_RX0_IRQHandler(void);
 
-/**
-  * @}
-  */
 
-/** @addtogroup STM32F1xx_System_Private_FunctionPrototypes
-  * @{
-  */
-
-extern void SystemClock_Config(void);
-
-/**
-  * @}
-  */
-
-/** @addtogroup STM32F1xx_System_Private_Functions
-  * @{
-  */
-/**
-  * @brief  System Clock Configuration : 64MHz
-  * @param  None
-  * @retval None
-  */
-
-/**
-  * @brief  This function performs the global init of the system (HAL, IOs...)
-  * @param  None
-  * @retval None
-  */
-void hw_config_init(void)
-{
-  //Initialize the HAL
-  HAL_Init();
-
-#ifdef DISABLE_JTAG
-  __HAL_RCC_AFIO_CLK_ENABLE();
-  __HAL_AFIO_REMAP_SWJ_DISABLE();
-#endif /* DISABLE_JTAG */
-
-  // Configure the system clock
-  SystemClock_Config();
-}
-
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
 #ifdef __cplusplus
 }
 #endif
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+#endif /* __VARIANT_IT_H_ */

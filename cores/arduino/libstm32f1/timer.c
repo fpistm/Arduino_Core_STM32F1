@@ -599,57 +599,6 @@ void attachIntHandle(timer_id_e timer_id, void (*irqHandle)(timer_id_e))
     g_timer_param[timer_id].irqHandle = irqHandle;
 }
 
-
-/******************************************************************************/
-/*                            TIMx IRQ HANDLER                                */
-/******************************************************************************/
-
-/**
-  * @brief  TIM1 & TIM16 irq handler
-  * @param  None
-  * @retval None
-  */
-void TIM1_UP_IRQHandler(void)
-{
-  HAL_TIM_IRQHandler(&g_TimerHandle[TIM1_E]);
-}
-
-void TIM1_CC_IRQHandler(void)
-{
-  HAL_TIM_IRQHandler(&g_TimerHandle[TIM1_E]);
-}
-
-/**
-  * @brief  TIM2 irq handler
-  * @param  None
-  * @retval None
-  */
-void TIM2_IRQHandler(void)
-{
-  HAL_TIM_IRQHandler(&g_TimerHandle[TIM2_E]);
-}
-
-/**
-  * @brief  TIM3 irq handler
-  * @param  None
-  * @retval None
-  */
-void TIM3_IRQHandler(void)
-{
-  HAL_TIM_IRQHandler(&g_TimerHandle[TIM3_E]);
-}
-
-/**
-  * @brief  TIM6 irq handler
-  * @param  None
-  * @retval None
-  */
-void TIM4_IRQHandler(void)
-{
-  HAL_TIM_IRQHandler(&g_TimerHandle[TIM4_E]);
-}
-
-
 /**
   * @}
   */

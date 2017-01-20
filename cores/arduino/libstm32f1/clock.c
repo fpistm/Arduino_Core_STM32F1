@@ -124,16 +124,6 @@ uint32_t GetCurrentMilli(void)
 }
 
 /**
-  * @brief  Function called when the tick interruption falls
-  * @param  None
-  * @retval None
-  */
-void SysTick_Handler(void)
-{
-  HAL_IncTick();
-}
-
-/**
   * @brief  This function configures the source of the time base.
   * @param  TickPriority: Tick interrupt priority
   * @retval None
