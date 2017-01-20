@@ -306,9 +306,7 @@ void TwoWire::onReceiveService(i2c_instance_e p_i2c_instance, uint8_t* inBytes, 
   } else {
     switch(p_i2c_instance)
     {
-    case I2C_1:
-      ptr = &Wire;
-    break;
+    LINK_I2C_INSTANCE_OBJ;
     default:
       return;
     break;
@@ -348,9 +346,7 @@ void TwoWire::onRequestService(i2c_instance_e p_i2c_instance)
   } else {
     switch(p_i2c_instance)
     {
-    case I2C_1:
-      ptr = &Wire;
-    break;
+    LINK_I2C_INSTANCE_OBJ;
     default:
       return;
     break;
@@ -384,4 +380,4 @@ void TwoWire::onRequest( void (*function)(void) )
 
 // Preinstantiate Objects //////////////////////////////////////////////////////
 
-TwoWire Wire = TwoWire(I2C_1); //D14-D15
+TwoWire Wire = TwoWire(DEFAULT_I2C); //D14-D15

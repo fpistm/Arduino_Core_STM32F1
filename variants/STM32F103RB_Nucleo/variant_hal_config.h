@@ -280,6 +280,10 @@ typedef enum {
   }                                 \
 } while(0)
 
+/*TBD: Wire library must be rework to accept more than one I2C without use this macro. */
+#define LINK_I2C_INSTANCE_OBJ case I2C_1: ptr = &Wire; break; \
+                              /*case I2C_2: ptr = &Wire1; break;*/
+
 #ifdef __cplusplus
 }
 #endif
