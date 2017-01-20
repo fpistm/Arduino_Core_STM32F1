@@ -284,6 +284,76 @@ typedef enum {
 #define LINK_I2C_INSTANCE_OBJ case I2C_1: ptr = &Wire; break; \
                               /*case I2C_2: ptr = &Wire1; break;*/
 
+/******************************************************************************/
+/* Timer configuration */
+/* Timer instance_e available. Number of timer instance configured. */
+typedef enum {
+  TIM1_E,
+  TIM2_E,
+  TIM3_E,
+  TIM4_E,
+  NB_TIMER_MANAGED
+} timer_id_e;
+
+/* Timer configuration:
+  .timInstance=TIMx
+  .irqtype : Timer interrupt handler
+  .timer_mode : Can be reserved for PWM or can be used for all
+  .prescalerLimit : bits_8, bits_16 or bits_32
+*/
+#define TIMER_PARAM {           \
+  {                             \
+    .timInstance = TIM1,        \
+    .irqtype = TIM1_UP_IRQn,    \
+    .timer_mode = TIMER_OTHER,  \
+    .prescalerLimit = bits_16   \
+  },                            \
+  {                             \
+    .timInstance = TIM2,        \
+    .irqtype = TIM2_IRQn,       \
+    .timer_mode = TIMER_OTHER,  \
+    .prescalerLimit = bits_16   \
+  },                            \
+  {                             \
+    .timInstance = TIM3,        \
+    .irqtype = TIM3_IRQn,       \
+    .timer_mode = TIMER_OTHER,  \
+    .prescalerLimit = bits_16   \
+  },                            \
+  {                             \
+    .timInstance = TIM4,        \
+    .irqtype = TIM4_IRQn,       \
+    .timer_mode = TIMER_OTHER,  \
+    .prescalerLimit = bits_16   \
+  }                             \
+}
+
+//Enable timer clock
+#define ENABLE_TIMER_CLK(TIMx) do {   \
+  if((TIMx) == TIM1) {                \
+    __TIM1_CLK_ENABLE();              \
+  } else if((TIMx) == TIM2) {         \
+    __TIM2_CLK_ENABLE();              \
+  } else if((TIMx) == TIM3) {         \
+    __TIM3_CLK_ENABLE();              \
+  } else if((TIMx) == TIM4) {         \
+    __TIM4_CLK_ENABLE();              \
+  }                                   \
+} while(0)
+
+//Disable timer clock
+#define DISABLE_TIMER_CLK(TIMx) do {  \
+  if((TIMx) == TIM1) {                \
+    __TIM1_CLK_DISABLE();             \
+  } else if((TIMx) == TIM2) {         \
+    __TIM2_CLK_DISABLE();             \
+  } else if((TIMx) == TIM3) {         \
+    __TIM3_CLK_DISABLE();             \
+  } else if((TIMx) == TIM4) {         \
+    __TIM4_CLK_DISABLE();             \
+  }                                   \
+} while(0)
+
 #ifdef __cplusplus
 }
 #endif
