@@ -48,6 +48,7 @@
   */
 #include "stm32f1xx.h"
 #include "hw_config.h"
+#include "variant_hal_config.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -108,24 +109,7 @@ void digital_io_init(GPIO_TypeDef  *port, uint32_t pin, uint32_t mode, uint32_t 
 {
   GPIO_InitTypeDef GPIO_InitStructure;
 
-  if(port == GPIOA) {
-    __GPIOA_CLK_ENABLE();
-  } else if(port == GPIOB){
-    __GPIOB_CLK_ENABLE();
-  } else if(port == GPIOC){
-    __GPIOC_CLK_ENABLE();
-  }   else if(port == GPIOD){
-    __GPIOD_CLK_ENABLE();
-  }
-/*  
- else if(port == GPIOE){
-    __GPIOE_CLK_ENABLE();
-  } else if(port == GPIOF){
-    __GPIOF_CLK_ENABLE();
-  } else if(port == GPIOG){
-    __GPIOG_CLK_ENABLE();
-  }
-*/
+  SET_GPIO_CLK(port);
   GPIO_InitStructure.Pin = pin;
   GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_HIGH;
   GPIO_InitStructure.Mode = mode;
