@@ -422,6 +422,53 @@ typedef enum {
   }                                                                                 \
 }
 
+
+/******************************************************************************/
+/* SPI configuration */
+
+/* SPI instance_e available. Number of SPI instance configured. */
+typedef enum {
+  SPI_1,
+  NB_SPI_INSTANCES
+}spi_instance_e;
+
+/* SPI configuration:
+.spi_instance = SPIx
+.spi_alternate : SPI alternate function //TDB: option not fully implemented
+.mosi_port = GPIOx
+.mosi_pin =  GPIO_PIN_x
+.miso_port = GPIOx
+.miso_pin = GPIO_PIN_x
+.sck_port = GPIOx
+.sck_pin = GPIO_PIN_x
+*/
+#define SPI_PARAM {                   \
+  {                                   \
+    .spi_instance = SPI1,             \
+    .spi_alternate = SPI1_Alternate,  \
+    .mosi_port = GPIOA,               \
+    .mosi_pin =  GPIO_PIN_7,          \
+    .miso_port = GPIOA,               \
+    .miso_pin = GPIO_PIN_6,           \
+    .sck_port = GPIOA,                \
+    .sck_pin = GPIO_PIN_5,            \
+  }                                   \
+}
+
+//Enable spi clock
+#define ENABLE_SPI_CLK(SPIx) do {     \
+  if((SPIx) == SPI1) {                \
+    __HAL_RCC_SPI1_CLK_ENABLE();      \
+  }                                   \
+} while(0)
+
+//Disable spi clock
+#define DISABLE_SPI_CLK(SPIx) do {    \
+  if((SPIx) == SPI1) {                \
+    __HAL_RCC_SPI1_CLK_DISABLE();     \
+  }                                   \
+} while(0)
+
 #ifdef __cplusplus
 }
 #endif
