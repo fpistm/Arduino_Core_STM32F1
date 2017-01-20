@@ -17,6 +17,7 @@
 */
 
 #include "variant.h"
+#include "variant_it.h"
 
 /* GPIO ID    | label
   PA0         | A0

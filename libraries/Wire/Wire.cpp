@@ -83,6 +83,8 @@ void TwoWire::setClock(uint32_t frequency)
 
 uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint32_t iaddress, uint8_t isize, uint8_t sendStop)
 {
+  UNUSED(sendStop);
+
   if (master == true) {
     if (isize > 0) {
     // send internal address; this mode allows sending a repeated start to access
@@ -173,6 +175,7 @@ void TwoWire::beginTransmission(int address)
 uint8_t TwoWire::endTransmission(uint8_t sendStop)
 {
   int8_t ret = 4;
+  UNUSED(sendStop);
 
   if (master == true) {
     // transmit buffer (blocking)

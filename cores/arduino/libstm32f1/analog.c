@@ -228,6 +228,11 @@ void dac_write_value(GPIO_TypeDef  *port, uint32_t pin, uint32_t value, uint8_t 
   /*##-4- Enable DAC Channel1 ################################################*/
   HAL_DAC_Start(&DacHandle, g_analog_init_config[id].dacChannel);
 
+#else
+  UNUSED(port);
+  UNUSED(pin);
+  UNUSED(value);
+  UNUSED(do_init);
   #endif
 }
 
@@ -277,6 +282,9 @@ void dac_stop(GPIO_TypeDef  *port, uint32_t pin)
     return;
   }
 
+#else
+UNUSED(port);
+UNUSED(pin);
   #endif
 }
 

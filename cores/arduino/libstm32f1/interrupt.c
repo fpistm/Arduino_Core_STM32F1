@@ -185,6 +185,7 @@ void stm32_interrupt_enable(GPIO_TypeDef *port, uint16_t pin,
   */
 void stm32_interrupt_disable(GPIO_TypeDef *port, uint16_t pin)
 {
+  UNUSED(port);
   uint8_t id = get_pin_id(pin);
   HAL_NVIC_DisableIRQ(g_EXTIx_IRQn[id]);
 }

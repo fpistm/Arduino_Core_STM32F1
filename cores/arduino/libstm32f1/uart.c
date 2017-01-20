@@ -115,7 +115,6 @@ uint8_t g_rx_data[1];
 /** @addtogroup STM32F1xx_System_Private_FunctionPrototypes
   * @{
   */
-static void uart_emul_timer_irq(timer_id_e timer_id) {g_uartEmul_config[UART1_EMUL_E].uart_rx_irqHandle();}
 uart_id_e get_uart_id_from_handle(UART_HandleTypeDef *huart);
 
 /**
@@ -385,9 +384,17 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
   */
 void HAL_UARTEx_WakeupCallback(UART_HandleTypeDef *huart)
 {
+  UNUSED(huart);
 }
 
 /******************************* EMULATED UART ********************************/
+/* @brief Callback for uart emulated for compatibility with timer callback */
+static void uart_emul_timer_irq(timer_id_e timer_id) {
+  UNUSED(timer_id);
+  g_uart_emul_param[UART1_EMUL_E].uart_rx_irqHandle();
+}
+
+
 /**
   * @brief  Initializes the UART Emulation MSP.
   * @param  huart: UART Emulation Handle
@@ -395,6 +402,8 @@ void HAL_UARTEx_WakeupCallback(UART_HandleTypeDef *huart)
   */
 void HAL_UART_Emul_MspInit(UART_Emul_HandleTypeDef *huart)
 {
+  UNUSED(huart);
+
   // Enable GPIO TX/RX clock
   SET_GPIO_CLK(g_uartEmul_config[UART1_EMUL_E].tx_port);
   SET_GPIO_CLK(g_uartEmul_config[UART1_EMUL_E].rx_port);
@@ -415,6 +424,8 @@ void HAL_UART_Emul_MspInit(UART_Emul_HandleTypeDef *huart)
  */
 void HAL_UART_Emul_MspDeInit(UART_Emul_HandleTypeDef *huart)
 {
+  UNUSED(huart);
+
   HAL_GPIO_DeInit(g_uartEmul_config[UART1_EMUL_E].tx_port, g_uartEmul_config[UART1_EMUL_E].tx_pin.Pin);
   HAL_GPIO_DeInit(g_uartEmul_config[UART1_EMUL_E].rx_port, g_uartEmul_config[UART1_EMUL_E].rx_pin.Pin);
 }
