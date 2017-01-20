@@ -29,6 +29,15 @@ NUCLEO_F103RB.build.extra_flags=-mthumb -DSTM32F103xB
 
 NUCLEO_F103RB.build.vect-offset=
 
+#---------------------------- UPLOAD METHODS ---------------------------
+NUCLEO_F103RB.menu.upload_method.MassStorageMethod=Mass Storage
+NUCLEO_F103RB.menu.upload_method.MassStorageMethod.upload.protocol=
+NUCLEO_F103RB.menu.upload_method.MassStorageMethod.upload.tool=nucleoFlasher
+
+NUCLEO_F103RB.menu.upload_method.STLinkMethod=STLink
+NUCLEO_F103RB.menu.upload_method.STLinkMethod.upload.protocol=STLink
+NUCLEO_F103RB.menu.upload_method.STLinkMethod.upload.tool=stlink_upload
+
 ################################################################################
 # STM32VLDISCOVERY board
 
