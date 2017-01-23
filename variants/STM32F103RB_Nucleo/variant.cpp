@@ -17,7 +17,6 @@
 */
 
 #include "variant.h"
-#include "variant_it.h"
 
 /* GPIO ID    | label
   PA0         | A0
@@ -158,6 +157,8 @@ void serialEventRun(void)
 extern "C" {
 #endif
 
+void Error_Handler(void);
+
 /* System clock configured at 72MHz using external high speed clock from
  MCO output of ST-LINK MCU (8MHz) */
 void SystemClock_Config(void)
@@ -194,13 +195,13 @@ void SystemClock_Config(void)
   /* SysTick_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 }
-  
+
 void __libc_init_array(void);
 
 uint32_t analogPinConvert(uint32_t ulPin) {
-  if(ulPin < ARDUINO_PIN_A0) 
-    return ulPin | ARDUINO_PIN_A0; 
-  else 
+  if(ulPin < ARDUINO_PIN_A0)
+    return ulPin | ARDUINO_PIN_A0;
+  else
     return ulPin;
 }
 

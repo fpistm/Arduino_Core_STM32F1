@@ -36,7 +36,6 @@
   ******************************************************************************
   */
 
-#include "variant_it.h"
 #include "chip.h"
 
 
@@ -224,131 +223,6 @@ void USART2_IRQHandler(void)
 {
   HAL_NVIC_ClearPendingIRQ(USART2_IRQn);
   HAL_UART_IRQHandler(&g_UartHandle[USART2_E]);
-}
-
-
-/******************************************************************************/
-/*            Cortex-M3 Processor Interruption and Exception Handlers         */
-/******************************************************************************/
-
-/**
-* @brief This function handles Non maskable interrupt.
-*/
-void NMI_Handler(void)
-{
-  /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
-
-  /* USER CODE END NonMaskableInt_IRQn 0 */
-
-  /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
-
-  /* USER CODE END NonMaskableInt_IRQn 1 */
-}
-
-/**
-* @brief This function handles Hard fault interrupt.
-*/
-void HardFault_Handler(void)
-{
-  /* USER CODE BEGIN HardFault_IRQn 0 */
-
-  /* USER CODE END HardFault_IRQn 0 */
-  while (1)
-  {
-  }
-  /* USER CODE BEGIN HardFault_IRQn 1 */
-
-  /* USER CODE END HardFault_IRQn 1 */
-}
-
-/**
-* @brief This function handles Memory management fault.
-*/
-void MemManage_Handler(void)
-{
-  /* USER CODE BEGIN MemoryManagement_IRQn 0 */
-
-  /* USER CODE END MemoryManagement_IRQn 0 */
-  while (1)
-  {
-  }
-  /* USER CODE BEGIN MemoryManagement_IRQn 1 */
-
-  /* USER CODE END MemoryManagement_IRQn 1 */
-}
-
-/**
-* @brief This function handles Prefetch fault, memory access fault.
-*/
-void BusFault_Handler(void)
-{
-  /* USER CODE BEGIN BusFault_IRQn 0 */
-
-  /* USER CODE END BusFault_IRQn 0 */
-  while (1)
-  {
-  }
-  /* USER CODE BEGIN BusFault_IRQn 1 */
-
-  /* USER CODE END BusFault_IRQn 1 */
-}
-
-/**
-* @brief This function handles Undefined instruction or illegal state.
-*/
-void UsageFault_Handler(void)
-{
-  /* USER CODE BEGIN UsageFault_IRQn 0 */
-
-  /* USER CODE END UsageFault_IRQn 0 */
-  while (1)
-  {
-  }
-  /* USER CODE BEGIN UsageFault_IRQn 1 */
-
-  /* USER CODE END UsageFault_IRQn 1 */
-}
-
-/**
-* @brief This function handles Debug monitor.
-*/
-void DebugMon_Handler(void)
-{
-  /* USER CODE BEGIN DebugMonitor_IRQn 0 */
-
-  /* USER CODE END DebugMonitor_IRQn 0 */
-  while (1)
-  {
-  }
-  /* USER CODE BEGIN DebugMonitor_IRQn 1 */
-
-  /* USER CODE END DebugMonitor_IRQn 1 */
-}
-
-/**
-  * @brief  This function is executed in case of error occurrence.
-  * @param  None
-  * @retval None
-  */
-void Error_Handler(void)
-{
-  /* Turn LED on */
-  while(1)
-  {
-    /* Error if LED3 is slowly blinking (1 sec. period) */
-    //HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-    //HAL_Delay(1000);
-  }
-}
-
-/**
-  * @brief  Function called when the tick interruption falls
-  * @param  None
-  * @retval None
-  */
-void SysTick_Handler(void)
-{
-  HAL_IncTick();
 }
 
 #ifdef __cplusplus
