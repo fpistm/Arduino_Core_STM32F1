@@ -41,20 +41,13 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
+#include "variant_hal_config.h"
 
 #ifdef __cplusplus
  extern "C" {
 #endif
 
 /* Exported types ------------------------------------------------------------*/
-typedef enum {
-  TIM1_E = 0,
-  TIM2_E,
-  TIM3_E,
-  TIM4_E,
-  NB_TIMER_MANAGED
-} timer_id_e;
-
 typedef enum {
   bits_8 = 0xFF,
   bits_16 = 0xFFFF,
@@ -72,21 +65,22 @@ typedef struct{
   uint32_t pin;
   int32_t count;
   uint8_t state;
-}timer_toggle_pin_config_str;
+}timer_toggle_pin_config_t;
 
 /// @brief defines the global attributes of the TIMER
 typedef struct {
   TIM_TypeDef *timInstance;
   IRQn_Type irqtype;
-  void (*irqHandle)(timer_id_e);
-  void (*irqHandleOC)(timer_id_e, uint32_t);
-  void (*timer_clock_init)(void);
-  void (*timer_clock_reset)(void);
   timer_mode_e timer_mode;
   timer_prescaler_limit prescalerLimit;
-  timer_toggle_pin_config_str toggle_pin;
-  uint8_t configured;
 }timer_conf_t;
+
+typedef struct {
+  void (*irqHandle)(timer_id_e);
+  void (*irqHandleOC)(timer_id_e, uint32_t);
+  timer_toggle_pin_config_t toggle_pin;
+  uint8_t configured;
+}timer_param_t;
 
 /* Exported constants --------------------------------------------------------*/
 #define MAX_FREQ  65535

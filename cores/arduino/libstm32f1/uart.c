@@ -49,10 +49,12 @@
 #include "stm32f1xx.h"
 #include "hw_config.h"
 #include "uart.h"
-#include "uart_emul.h"
 #include "timer.h"
 #include "digital_io.h"
 #include "interrupt.h"
+#include "variant_hal_config.h"
+
+#include "string.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -77,43 +79,6 @@
   * @{
   */
 
-/// @brief defines the global attributes of the UART
-typedef struct {
-  USART_TypeDef * usart_typedef;
-  IRQn_Type       irqtype;
-  GPIO_TypeDef  *tx_port;
-  GPIO_InitTypeDef tx_pin;
-  GPIO_TypeDef  *rx_port;
-  GPIO_InitTypeDef rx_pin;
-  void (*uart_af_remap)(void);
-  void (*uart_clock_init)(void);
-  void (*uart_force_reset)(void);
-  void (*uart_release_reset)(void);
-  void (*gpio_tx_clock_init)(void);
-  void (*gpio_rx_clock_init)(void);
-  uint8_t rxpData[UART_RCV_SIZE];
-  volatile uint32_t data_available;
-  volatile uint8_t begin;
-  volatile uint8_t end;
-  uart_option_e uart_option;
-}uart_conf_t;
-
-typedef struct {
-  UART_Emul_TypeDef uartEmul_typedef;
-  GPIO_TypeDef  *tx_port;
-  GPIO_InitTypeDef tx_pin;
-  GPIO_TypeDef  *rx_port;
-  GPIO_InitTypeDef rx_pin;
-  void (*gpio_tx_clock_init)(void);
-  void (*gpio_rx_clock_init)(void);
-  void (*uart_rx_irqHandle)(void);
-  uint8_t rxpData[UART_RCV_SIZE];
-  volatile uint32_t data_available;
-  volatile uint8_t begin;
-  volatile uint8_t end;
-  uart_option_e uart_option;
-}uart_emul_conf_t;
-
 /**
   * @}
   */
@@ -121,17 +86,17 @@ typedef struct {
 /** @addtogroup STM32F1xx_System_Private_Macros
   * @{
   */
-static void usart1_clock_enable(void)   { __HAL_RCC_USART1_CLK_ENABLE(); }
-static void usart1_force_reset(void)    { __HAL_RCC_USART1_FORCE_RESET(); }
-static void usart1_release_reset(void)  { __HAL_RCC_USART1_RELEASE_RESET(); }
-static void usart2_clock_enable(void)   { __HAL_RCC_USART2_CLK_ENABLE(); }
-static void usart2_force_reset(void)    { __HAL_RCC_USART2_FORCE_RESET(); }
-static void usart2_release_reset(void)  { __HAL_RCC_USART2_RELEASE_RESET(); }
-static void gpioa_clock_enable(void)    { __HAL_RCC_GPIOA_CLK_ENABLE(); }
-static void gpiob_clock_enable(void)    { __HAL_RCC_GPIOB_CLK_ENABLE(); }
+static void USART1_AF_FullRemap(void)     {__HAL_AFIO_REMAP_USART1_ENABLE();}
+static void USART1_AF_NoRemap(void)       {__HAL_AFIO_REMAP_USART1_DISABLE();}
 
-static void USART1_AF_Remap(void)       {__HAL_RCC_AFIO_CLK_ENABLE(); __HAL_AFIO_REMAP_USART1_DISABLE();}
-static void USART2_AF_Remap(void)       {__HAL_RCC_AFIO_CLK_ENABLE(); __HAL_AFIO_REMAP_USART2_DISABLE();}
+static void USART2_AF_FullRemap(void)     {__HAL_AFIO_REMAP_USART2_ENABLE();}
+static void USART2_AF_NoRemap(void)       {__HAL_AFIO_REMAP_USART2_DISABLE();}
+
+#ifdef USART3
+static void USART3_AF_FullRemap(void)     {__HAL_AFIO_REMAP_USART3_ENABLE();}
+static void USART3_AF_PartialRemap(void)  {__HAL_AFIO_REMAP_USART3_PARTIAL();}
+static void USART3_AF_NoRemap(void)       {__HAL_AFIO_REMAP_USART3_DISABLE();}
+#endif /* USART 3 */
 
 /**
   * @}
@@ -141,74 +106,13 @@ static void USART2_AF_Remap(void)       {__HAL_RCC_AFIO_CLK_ENABLE(); __HAL_AFIO
   * @{
   */
 /// @brief uart caracteristics
-static UART_HandleTypeDef g_UartHandle[NB_UART_MANAGED];
-
-static uart_conf_t g_uart_config[NB_UART_MANAGED] = {
-  //USART1 (PA9/PA10)
-  {
-    //UART ID and IRQ
-    .usart_typedef = USART1, .irqtype = USART1_IRQn,
-    //tx pin configuration
-    .tx_port = GPIOA, .tx_pin = {GPIO_PIN_9, GPIO_MODE_AF_PP, GPIO_PULLUP, GPIO_SPEED_FREQ_HIGH},
-    //rx pin configuration
-    .rx_port = GPIOA, .rx_pin = {GPIO_PIN_10, GPIO_MODE_INPUT, GPIO_PULLUP, GPIO_SPEED_FREQ_HIGH},
-    .uart_af_remap = USART1_AF_Remap,
-    //uart clock init
-    .uart_clock_init = usart1_clock_enable,
-    //uart force reset
-    .uart_force_reset = usart1_force_reset,
-    //uart release reset
-    .uart_release_reset = usart1_release_reset,
-    //TX gpio clock init
-    .gpio_tx_clock_init = gpioa_clock_enable,
-    //RX gpio clock init
-    .gpio_rx_clock_init = gpioa_clock_enable,
-    .data_available = 0,
-    .begin = 0,
-    .end = 0,
-    .uart_option = NATIVE_UART_E
-  },
-  //USART2 (PA2/PA3)
-  {
-    .usart_typedef = USART2, .irqtype = USART2_IRQn,
-    //tx pin configuration
-    .tx_port = GPIOA, .tx_pin = {GPIO_PIN_2, GPIO_MODE_AF_PP, GPIO_PULLUP, GPIO_SPEED_FREQ_HIGH},
-    //rx pin configuration
-    .rx_port = GPIOA, .rx_pin = {GPIO_PIN_3, GPIO_MODE_AF_PP, GPIO_PULLUP, GPIO_SPEED_FREQ_HIGH},
-    .uart_af_remap = USART2_AF_Remap,
-    //uart clock init
-    .uart_clock_init = usart2_clock_enable,
-    //uart force reset
-    .uart_force_reset = usart2_force_reset,
-    //uart release reset
-    .uart_release_reset = usart2_release_reset,
-    //TX gpio clock init
-    .gpio_tx_clock_init = gpioa_clock_enable,
-    //RX gpio clock init
-    .gpio_rx_clock_init = gpioa_clock_enable,
-    .data_available = 0,
-    .begin = 0,
-    .end = 0,
-    .uart_option = NATIVE_UART_E
-  }
-};
+UART_HandleTypeDef g_UartHandle[NB_UART_MANAGED];
+static const uart_conf_t g_uart_config[NB_UART_MANAGED] = UART_PARAM;
+static uart_param_t g_uart_param[NB_UART_MANAGED];
 
 static UART_Emul_HandleTypeDef g_UartEmulHandle[NB_UART_EMUL_MANAGED];
-
-static uart_emul_conf_t g_uartEmul_config[NB_UART_EMUL_MANAGED] = {
-  {
-    .uartEmul_typedef = {UART1_EMUL_E},
-    .tx_port = GPIOB, .tx_pin = {GPIO_PIN_3, GPIO_MODE_OUTPUT_PP, GPIO_PULLUP, GPIO_SPEED_FREQ_HIGH},
-    .rx_port = GPIOA, .rx_pin = {GPIO_PIN_10, GPIO_MODE_IT_FALLING, GPIO_PULLUP, GPIO_SPEED_FREQ_HIGH},
-    .gpio_tx_clock_init = gpiob_clock_enable,
-    .gpio_rx_clock_init = gpioa_clock_enable,
-    .uart_rx_irqHandle = NULL,
-    .data_available = 0,
-    .begin = 0,
-    .end = 0,
-    .uart_option = EMULATED_UART_E
-  }
-};
+static const uart_emul_conf_t g_uartEmul_config[NB_UART_EMUL_MANAGED] = UART_EMUL_PARAM;
+static uart_emul_param_t g_uart_emul_param[NB_UART_EMUL_MANAGED];
 
 //@brief just a simple buffer for the uart reception
 uint8_t g_rx_data[1];
@@ -220,7 +124,6 @@ uint8_t g_rx_data[1];
 /** @addtogroup STM32F1xx_System_Private_FunctionPrototypes
   * @{
   */
-static void uart_emul_timer_irq(timer_id_e timer_id) {g_uartEmul_config[UART1_EMUL_E].uart_rx_irqHandle();}
 uart_id_e get_uart_id_from_handle(UART_HandleTypeDef *huart);
 
 /**
@@ -267,21 +170,46 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
   }
 
   // Enable GPIO TX/RX clock
-  g_uart_config[uart_id].gpio_tx_clock_init();
-  g_uart_config[uart_id].gpio_rx_clock_init();
+  set_gpio_clk(g_uart_config[uart_id].tx_port);
+  set_gpio_clk(g_uart_config[uart_id].rx_port);
 
   // Enable USART clock
-  g_uart_config[uart_id].uart_clock_init();
+  if(huart->Instance == USART1) {
+    __HAL_RCC_USART1_CLK_ENABLE();
+  }
+  else if(huart->Instance == USART2) {
+    __HAL_RCC_USART2_CLK_ENABLE();
+  }
+#ifdef USART3
+  else if(huart->Instance == USART3) {
+    __HAL_RCC_USART3_CLK_ENABLE();
+  }
+#endif /* USART3 */
+#ifdef UART4
+  else if(huart->Instance == UART4) {
+    __HAL_RCC_UART4_CLK_ENABLE();
+  }
+#endif /* UART4 */
+#ifdef UART5
+  else if(huart->Instance == UART5) {
+    __HAL_RCC_UART5_CLK_ENABLE();
+  }
+#endif /* UART5 */
 
-  g_uart_config[uart_id].uart_af_remap();
+  if(g_uart_config[uart_id].uart_af_remap != NULL) {
+    __HAL_RCC_AFIO_CLK_ENABLE();
+    g_uart_config[uart_id].uart_af_remap();
+  }
 
   //##-2- Configure peripheral GPIO ##########################################
 
   // UART TX GPIO pin configuration
-  HAL_GPIO_Init(g_uart_config[uart_id].tx_port, &g_uart_config[uart_id].tx_pin);
+  HAL_GPIO_Init(g_uart_config[uart_id].tx_port,
+                (GPIO_InitTypeDef *) &g_uart_config[uart_id].tx_pin);
 
   // UART RX GPIO pin configuration
-  HAL_GPIO_Init(g_uart_config[uart_id].rx_port, &g_uart_config[uart_id].rx_pin);
+  HAL_GPIO_Init(g_uart_config[uart_id].rx_port,
+                (GPIO_InitTypeDef *) &g_uart_config[uart_id].rx_pin);
 
   HAL_NVIC_SetPriority(g_uart_config[uart_id].irqtype, 0, 1);
   HAL_NVIC_EnableIRQ(g_uart_config[uart_id].irqtype);
@@ -301,8 +229,27 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef *huart)
     return;
   }
 
-  g_uart_config[uart_id].uart_force_reset();
-  g_uart_config[uart_id].uart_release_reset();
+  if(huart->Instance == USART1) {
+    __HAL_RCC_USART1_CLK_DISABLE();
+  }
+  else if(huart->Instance == USART2) {
+    __HAL_RCC_USART2_CLK_DISABLE();
+  }
+#ifdef USART3
+  else if(huart->Instance == USART3) {
+    __HAL_RCC_USART3_CLK_DISABLE();
+  }
+#endif /* USART3 */
+#ifdef UART4
+  else if(huart->Instance == UART4) {
+    __HAL_RCC_UART4_CLK_DISABLE();
+  }
+#endif /* UART4 */
+#ifdef UART5
+  else if(huart->Instance == UART5) {
+    __HAL_RCC_UART5_CLK_DISABLE();
+  }
+#endif /* UART5 */
 
   HAL_GPIO_DeInit(g_uart_config[uart_id].tx_port, g_uart_config[uart_id].tx_pin.Pin);
   HAL_GPIO_DeInit(g_uart_config[uart_id].rx_port, g_uart_config[uart_id].rx_pin.Pin);
@@ -329,12 +276,17 @@ void uart_init(uart_id_e uart_id, uint32_t baudRate)
   g_UartHandle[uart_id].Init.HwFlowCtl    = UART_HWCONTROL_NONE;
   g_UartHandle[uart_id].Init.OverSampling = UART_OVERSAMPLING_16;
 
+  memset(g_uart_param[uart_id].rxpData, 0, UART_RCV_SIZE);
+  g_uart_param[uart_id].data_available = 0;
+  g_uart_param[uart_id].begin = 0;
+  g_uart_param[uart_id].end = 0;
+
   // g_UartHandle[uart_id].Init.OverSampling = UART_OVERSAMPLING_16;
   // g_UartHandle[uart_id].Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
   if(HAL_UART_DeInit(&g_UartHandle[uart_id]) != HAL_OK)
   {
     return;
-  }  
+  }
   if(HAL_UART_Init(&g_UartHandle[uart_id])!= HAL_OK) {
     return;
   }
@@ -361,7 +313,7 @@ void uart_deinit(uart_id_e uart_id)
   */
 int uart_available(uart_id_e uart_id)
 {
-  return g_uart_config[uart_id].data_available;
+  return g_uart_param[uart_id].data_available;
 }
 
 /**
@@ -373,15 +325,15 @@ int8_t uart_read(uart_id_e uart_id)
 {
   int8_t data = -1;
 
-  if(g_uart_config[uart_id].data_available > 0) {
+  if(g_uart_param[uart_id].data_available > 0) {
 
-    data = g_uart_config[uart_id].rxpData[g_uart_config[uart_id].begin++];
+    data = g_uart_param[uart_id].rxpData[g_uart_param[uart_id].begin++];
 
-    if(g_uart_config[uart_id].begin >= UART_RCV_SIZE) {
-      g_uart_config[uart_id].begin = 0;
+    if(g_uart_param[uart_id].begin >= UART_RCV_SIZE) {
+      g_uart_param[uart_id].begin = 0;
     }
 
-    g_uart_config[uart_id].data_available--;
+    g_uart_param[uart_id].data_available--;
   }
 
   return data;
@@ -397,8 +349,8 @@ int8_t uart_peek(uart_id_e uart_id)
 {
   int8_t data = -1;
 
-  if(g_uart_config[uart_id].data_available > 0) {
-    data = g_uart_config[uart_id].rxpData[g_uart_config[uart_id].begin];
+  if(g_uart_param[uart_id].data_available > 0) {
+    data = g_uart_param[uart_id].rxpData[g_uart_param[uart_id].begin];
   }
 
   return data;
@@ -411,9 +363,9 @@ int8_t uart_peek(uart_id_e uart_id)
   */
 void uart_flush(uart_id_e uart_id)
 {
-  g_uart_config[uart_id].data_available = 0;
-  g_uart_config[uart_id].end = 0;
-  g_uart_config[uart_id].begin = 0;
+  g_uart_param[uart_id].data_available = 0;
+  g_uart_param[uart_id].end = 0;
+  g_uart_param[uart_id].begin = 0;
 }
 
 /**
@@ -453,14 +405,14 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
 static void uart_getc(uart_id_e uart_id, uint8_t byte)
 {
   if((NB_UART_MANAGED == uart_id) ||
-      (g_uart_config[uart_id].data_available >= UART_RCV_SIZE)) {
+      (g_uart_param[uart_id].data_available >= UART_RCV_SIZE)) {
     return;
   }
-  g_uart_config[uart_id].rxpData[g_uart_config[uart_id].end++] = byte;
-  if(g_uart_config[uart_id].end >= UART_RCV_SIZE) {
-    g_uart_config[uart_id].end = 0;
+  g_uart_param[uart_id].rxpData[g_uart_param[uart_id].end++] = byte;
+  if(g_uart_param[uart_id].end >= UART_RCV_SIZE) {
+    g_uart_param[uart_id].end = 0;
   }
-  g_uart_config[uart_id].data_available++;
+  g_uart_param[uart_id].data_available++;
 }
 
 /**
@@ -484,31 +436,17 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
   */
 void HAL_UARTEx_WakeupCallback(UART_HandleTypeDef *huart)
 {
-}
-
-/**
-  * @brief  USART 1 IRQ handler
-  * @param  None
-  * @retval None
-  */
-void USART1_IRQHandler(void)
-{
-  HAL_NVIC_ClearPendingIRQ(USART1_IRQn);
-  HAL_UART_IRQHandler(&g_UartHandle[USART1_E]);
-}
-
-/**
-  * @brief  USART 2 IRQ handler
-  * @param  None
-  * @retval None
-  */
-void USART2_IRQHandler(void)
-{
-  HAL_NVIC_ClearPendingIRQ(USART2_IRQn);
-  HAL_UART_IRQHandler(&g_UartHandle[USART2_E]);
+  UNUSED(huart);
 }
 
 /******************************* EMULATED UART ********************************/
+/* @brief Callback for uart emulated for compatibility with timer callback */
+static void uart_emul_timer_irq(timer_id_e timer_id) {
+  UNUSED(timer_id);
+  g_uart_emul_param[UART1_EMUL_E].uart_rx_irqHandle();
+}
+
+
 /**
   * @brief  Initializes the UART Emulation MSP.
   * @param  huart: UART Emulation Handle
@@ -516,15 +454,19 @@ void USART2_IRQHandler(void)
   */
 void HAL_UART_Emul_MspInit(UART_Emul_HandleTypeDef *huart)
 {
+  UNUSED(huart);
+
   // Enable GPIO TX/RX clock
-  g_uartEmul_config[UART1_EMUL_E].gpio_tx_clock_init();
-  g_uartEmul_config[UART1_EMUL_E].gpio_rx_clock_init();
+  set_gpio_clk(g_uartEmul_config[UART1_EMUL_E].tx_port);
+  set_gpio_clk(g_uartEmul_config[UART1_EMUL_E].rx_port);
 
   // UART TX GPIO pin configuration
-  HAL_GPIO_Init(g_uartEmul_config[UART1_EMUL_E].tx_port, &g_uartEmul_config[UART1_EMUL_E].tx_pin);
+  HAL_GPIO_Init(g_uartEmul_config[UART1_EMUL_E].tx_port,
+                (GPIO_InitTypeDef *) &g_uartEmul_config[UART1_EMUL_E].tx_pin);
 
   // UART RX GPIO pin configuration
-  HAL_GPIO_Init(g_uartEmul_config[UART1_EMUL_E].rx_port, &g_uartEmul_config[UART1_EMUL_E].rx_pin);
+  HAL_GPIO_Init(g_uartEmul_config[UART1_EMUL_E].rx_port,
+                (GPIO_InitTypeDef *) &g_uartEmul_config[UART1_EMUL_E].rx_pin);
 }
 
 /**
@@ -534,6 +476,8 @@ void HAL_UART_Emul_MspInit(UART_Emul_HandleTypeDef *huart)
  */
 void HAL_UART_Emul_MspDeInit(UART_Emul_HandleTypeDef *huart)
 {
+  UNUSED(huart);
+
   HAL_GPIO_DeInit(g_uartEmul_config[UART1_EMUL_E].tx_port, g_uartEmul_config[UART1_EMUL_E].tx_pin.Pin);
   HAL_GPIO_DeInit(g_uartEmul_config[UART1_EMUL_E].rx_port, g_uartEmul_config[UART1_EMUL_E].rx_pin.Pin);
 }
@@ -559,6 +503,11 @@ void uart_emul_init(uart_emul_id_e uart_id, uint32_t baudRate)
   g_UartEmulHandle[uart_id].Init.TxPinNumber  = g_uartEmul_config[uart_id].tx_pin.Pin;
   g_UartEmulHandle[uart_id].RxPortName        = g_uartEmul_config[uart_id].rx_port;
   g_UartEmulHandle[uart_id].TxPortName        = g_uartEmul_config[uart_id].tx_port;
+
+  memset(g_uart_emul_param[uart_id].rxpData, 0, UART_RCV_SIZE);
+  g_uart_emul_param[uart_id].data_available = 0;
+  g_uart_emul_param[uart_id].begin = 0;
+  g_uart_emul_param[uart_id].end = 0;
 
   if(HAL_UART_Emul_Init(&g_UartEmulHandle[uart_id])!= HAL_OK) {
     return;
@@ -596,7 +545,7 @@ int uart_emul_available(uart_emul_id_e uart_id)
     return 0;
   }
 
-  return g_uartEmul_config[uart_id].data_available;
+  return g_uart_emul_param[uart_id].data_available;
 }
 
 /**
@@ -612,15 +561,15 @@ int8_t uart_emul_read(uart_emul_id_e uart_id)
     return data;
   }
 
-  if(g_uartEmul_config[uart_id].data_available > 0) {
+  if(g_uart_emul_param[uart_id].data_available > 0) {
 
-    data = g_uartEmul_config[uart_id].rxpData[g_uartEmul_config[uart_id].begin++];
+    data = g_uart_emul_param[uart_id].rxpData[g_uart_emul_param[uart_id].begin++];
 
-    if(g_uartEmul_config[uart_id].begin >= UART_RCV_SIZE) {
-      g_uartEmul_config[uart_id].begin = 0;
+    if(g_uart_emul_param[uart_id].begin >= UART_RCV_SIZE) {
+      g_uart_emul_param[uart_id].begin = 0;
     }
 
-    g_uartEmul_config[uart_id].data_available--;
+    g_uart_emul_param[uart_id].data_available--;
   }
 
   return data;
@@ -656,8 +605,8 @@ int8_t uart_emul_peek(uart_emul_id_e uart_id)
     return data;
   }
 
-  if(g_uartEmul_config[uart_id].data_available > 0) {
-    data = g_uartEmul_config[uart_id].rxpData[g_uartEmul_config[uart_id].begin];
+  if(g_uart_emul_param[uart_id].data_available > 0) {
+    data = g_uart_emul_param[uart_id].rxpData[g_uart_emul_param[uart_id].begin];
   }
 
   return data;
@@ -674,9 +623,9 @@ void uart_emul_flush(uart_emul_id_e uart_id)
     return;
   }
 
-  g_uartEmul_config[uart_id].data_available = 0;
-  g_uartEmul_config[uart_id].end = 0;
-  g_uartEmul_config[uart_id].begin = 0;
+  g_uart_emul_param[uart_id].data_available = 0;
+  g_uart_emul_param[uart_id].end = 0;
+  g_uart_emul_param[uart_id].begin = 0;
 }
 
 /**
@@ -688,15 +637,15 @@ void uart_emul_flush(uart_emul_id_e uart_id)
 static void uart_emul_getc(uart_emul_id_e uart_id, uint8_t byte)
 {
   if((uart_id >= NB_UART_EMUL_MANAGED) ||
-      (g_uartEmul_config[uart_id].data_available >= UART_RCV_SIZE)) {
+      (g_uart_emul_param[uart_id].data_available >= UART_RCV_SIZE)) {
     return;
   }
 
-  g_uartEmul_config[uart_id].rxpData[g_uartEmul_config[uart_id].end++] = byte;
-  if(g_uartEmul_config[uart_id].end >= UART_RCV_SIZE) {
-    g_uartEmul_config[uart_id].end = 0;
+  g_uart_emul_param[uart_id].rxpData[g_uart_emul_param[uart_id].end++] = byte;
+  if(g_uart_emul_param[uart_id].end >= UART_RCV_SIZE) {
+    g_uart_emul_param[uart_id].end = 0;
   }
-  g_uartEmul_config[uart_id].data_available++;
+  g_uart_emul_param[uart_id].data_available++;
 }
 
 /**
@@ -707,7 +656,7 @@ static void uart_emul_getc(uart_emul_id_e uart_id, uint8_t byte)
 void uart_emul_attached_handler(void (*irqHandle)(void))
 {
   TimerHandleInit(TIM4_E, EMUL_TIMER_PERIOD - 1, (uint16_t)(HAL_RCC_GetHCLKFreq() / 1000) - 1); //50ms
-  g_uartEmul_config[UART1_EMUL_E].uart_rx_irqHandle = irqHandle;
+  g_uart_emul_param[UART1_EMUL_E].uart_rx_irqHandle = irqHandle;
   attachIntHandle(TIM4_E, uart_emul_timer_irq);
 }
 
@@ -721,13 +670,13 @@ void HAL_UART_Emul_RxCpltCallback(UART_Emul_HandleTypeDef *huart)
   uart_emul_getc(UART1_EMUL_E, *huart->pRxBuffPtr);
   HAL_UART_Emul_Receive(&g_UartEmulHandle[UART1_EMUL_E], g_rx_data, 1);
 
-  if(g_uartEmul_config[UART1_EMUL_E].uart_rx_irqHandle != NULL) {
+  if(g_uart_emul_param[UART1_EMUL_E].uart_rx_irqHandle != NULL) {
     if(uart_emul_available(UART1_EMUL_E) < (UART_RCV_SIZE / 2))
       setTimerCounter(TIM4_E, 0);
     else if(uart_emul_available(UART1_EMUL_E) < (UART_RCV_SIZE/4*3))
       setTimerCounter(TIM4_E, EMUL_TIMER_PERIOD - 1);
     else
-      g_uartEmul_config[UART1_EMUL_E].uart_rx_irqHandle();
+      g_uart_emul_param[UART1_EMUL_E].uart_rx_irqHandle();
   }
 }
 

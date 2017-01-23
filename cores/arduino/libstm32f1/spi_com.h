@@ -41,18 +41,13 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
+#include "variant_hal_config.h"
 
 #ifdef __cplusplus
  extern "C" {
 #endif
 
 /* Exported types ------------------------------------------------------------*/
-
-///@brief define the possible SPI instances
-typedef enum {
-  SPI_1,
-  NB_SPI_INSTANCES
-}spi_instance_e;
 
 ///@brief specifies the SPI speed bus in HZ.
 #define SPI_SPEED_CLOCK_DIV2_MHZ    ((uint32_t)(HAL_RCC_GetPCLK2Freq()/2))
@@ -84,6 +79,23 @@ typedef enum {
   SPI_TIMEOUT = 1,
   SPI_ERROR = 2
 }spi_status_e;
+
+/// @brief defines the global attributes of the SPI
+typedef struct {
+  SPI_TypeDef *spi_instance;
+  void (*spi_alternate)(void);
+  GPIO_TypeDef  *mosi_port;
+  uint32_t mosi_pin;
+  GPIO_TypeDef  *miso_port;
+  uint32_t miso_pin;
+  GPIO_TypeDef  *sck_port;
+  uint32_t sck_pin;
+} spi_init_info_t;
+
+typedef struct {
+  SPI_HandleTypeDef spiHandle;
+  uint8_t init_done;
+} spi_param_t;
 
 /* Exported constants --------------------------------------------------------*/
 

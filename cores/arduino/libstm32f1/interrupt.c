@@ -49,6 +49,7 @@
 #include "stm32f1xx.h"
 #include "hw_config.h"
 #include "interrupt.h"
+#include "variant_hal_config.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -60,16 +61,7 @@
 /** @addtogroup STM32F1xx_System_Private_TypesDefinitions
   * @{
   */
-
-/*As we can have only one interrupt/pin id, don't need to get the port info*/
-typedef struct {
-  uint32_t pin;
-  uint32_t irqnb;
-  void (*callback)(void);
-  uint32_t mode;
-  uint32_t configured;
-}gpio_irq_conf_str;
-
+typedef void (*callback_t)(void);
 /**
   * @}
   */
@@ -77,7 +69,8 @@ typedef struct {
 /** @addtogroup STM32F1xx_System_Private_Defines
   * @{
   */
-#define NB_EXTI   (16)
+/* Number of pin connected to an external interrupt by port */
+#define NB_GPIO_EXTI   16
 
 #define GPIO_NUMBER ((uint32_t)16)
 /**
@@ -95,24 +88,27 @@ typedef struct {
 /** @addtogroup STM32F1xx_System_Private_Variables
   * @{
   */
-static gpio_irq_conf_str gpio_irq_conf[NB_EXTI] = {
-  {.pin = GPIO_PIN_0,   .irqnb = EXTI0_IRQn,    .callback = NULL, .mode = GPIO_MODE_IT_RISING, .configured = 0 },
-  {.pin = GPIO_PIN_1,   .irqnb = EXTI1_IRQn,    .callback = NULL, .mode = GPIO_MODE_IT_RISING, .configured = 0 },
-  {.pin = GPIO_PIN_2,   .irqnb = EXTI2_IRQn,    .callback = NULL, .mode = GPIO_MODE_IT_RISING, .configured = 0 },
-  {.pin = GPIO_PIN_3,   .irqnb = EXTI3_IRQn,    .callback = NULL, .mode = GPIO_MODE_IT_RISING, .configured = 0 },
-  {.pin = GPIO_PIN_4,   .irqnb = EXTI4_IRQn,    .callback = NULL, .mode = GPIO_MODE_IT_RISING, .configured = 0 },
-  {.pin = GPIO_PIN_5,   .irqnb = EXTI9_5_IRQn,  .callback = NULL, .mode = GPIO_MODE_IT_RISING, .configured = 0 },
-  {.pin = GPIO_PIN_6,   .irqnb = EXTI9_5_IRQn,  .callback = NULL, .mode = GPIO_MODE_IT_RISING, .configured = 0 },
-  {.pin = GPIO_PIN_7,   .irqnb = EXTI9_5_IRQn,  .callback = NULL, .mode = GPIO_MODE_IT_RISING, .configured = 0 },
-  {.pin = GPIO_PIN_8,   .irqnb = EXTI9_5_IRQn,  .callback = NULL, .mode = GPIO_MODE_IT_RISING, .configured = 0 },
-  {.pin = GPIO_PIN_9,   .irqnb = EXTI9_5_IRQn,  .callback = NULL, .mode = GPIO_MODE_IT_RISING, .configured = 0 },
-  {.pin = GPIO_PIN_10,  .irqnb = EXTI15_10_IRQn,  .callback = NULL, .mode = GPIO_MODE_IT_RISING, .configured = 0 },
-  {.pin = GPIO_PIN_11,  .irqnb = EXTI15_10_IRQn,  .callback = NULL, .mode = GPIO_MODE_IT_RISING, .configured = 0 },
-  {.pin = GPIO_PIN_12,  .irqnb = EXTI15_10_IRQn,  .callback = NULL, .mode = GPIO_MODE_IT_RISING, .configured = 0 },
-  {.pin = GPIO_PIN_13,  .irqnb = EXTI15_10_IRQn,  .callback = NULL, .mode = GPIO_MODE_IT_RISING, .configured = 0 },
-  {.pin = GPIO_PIN_14,  .irqnb = EXTI15_10_IRQn,  .callback = NULL, .mode = GPIO_MODE_IT_RISING, .configured = 0 },
-  {.pin = GPIO_PIN_15,  .irqnb = EXTI15_10_IRQn,  .callback = NULL, .mode = GPIO_MODE_IT_RISING, .configured = 0 }
+/* List of EXTI connected to pin 0 to 15 */
+static const uint32_t g_EXTIx_IRQn[NB_GPIO_EXTI] = {
+  EXTI0_IRQn,
+  EXTI1_IRQn,
+  EXTI2_IRQn,
+  EXTI3_IRQn,
+  EXTI4_IRQn,
+  EXTI9_5_IRQn,
+  EXTI9_5_IRQn,
+  EXTI9_5_IRQn,
+  EXTI9_5_IRQn,
+  EXTI9_5_IRQn,
+  EXTI15_10_IRQn,
+  EXTI15_10_IRQn,
+  EXTI15_10_IRQn,
+  EXTI15_10_IRQn,
+  EXTI15_10_IRQn,
+  EXTI15_10_IRQn
 };
+
+static callback_t g_callback_ptr[NB_GPIO_EXTI] = {NULL};
 
 /**
   * @}
@@ -193,11 +189,11 @@ void stm32_interrupt_enable(GPIO_TypeDef *port, uint16_t pin,
 
   HAL_GPIO_Init(port, &GPIO_InitStruct);
 
-  gpio_irq_conf[id].callback = callback;
+  g_callback_ptr[id] = callback;
 
   // Enable and set Button EXTI Interrupt to the lowest priority
-  HAL_NVIC_SetPriority(gpio_irq_conf[id].irqnb, 0x06, 0);
-  HAL_NVIC_EnableIRQ(gpio_irq_conf[id].irqnb);
+  HAL_NVIC_SetPriority(g_EXTIx_IRQn[id], 0x06, 0);
+  HAL_NVIC_EnableIRQ(g_EXTIx_IRQn[id]);
 }
 
 /**
@@ -208,8 +204,9 @@ void stm32_interrupt_enable(GPIO_TypeDef *port, uint16_t pin,
   */
 void stm32_interrupt_disable(GPIO_TypeDef *port, uint16_t pin)
 {
+  UNUSED(port);
   uint8_t id = get_pin_id(pin);
-  HAL_NVIC_DisableIRQ(gpio_irq_conf[id].irqnb);
+  HAL_NVIC_DisableIRQ(g_EXTIx_IRQn[id]);
 }
 
 /**
@@ -221,84 +218,8 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
   uint8_t irq_id = get_pin_id(GPIO_Pin);
 
-  if(gpio_irq_conf[irq_id].callback != NULL) {
-    gpio_irq_conf[irq_id].callback();
-  }
-}
-
-/**
-  * @brief This function handles external line 0 interrupt request.
-  * @param  None
-  * @retval None
-  */
-void EXTI0_IRQHandler(void)
-{
-  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
-}
-
-/**
-  * @brief This function handles external line 1 interrupt request.
-  * @param  None
-  * @retval None
-  */
-void EXTI1_IRQHandler(void)
-{
-  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_1);
-}
-
-/**
-  * @brief This function handles external line 2 interrupt request.
-  * @param  None
-  * @retval None
-  */
-void EXTI2_IRQHandler(void)
-{
-  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_2);
-}
-
-/**
-  * @brief This function handles external line 3 interrupt request.
-  * @param  None
-  * @retval None
-  */
-void EXTI3_IRQHandler(void)
-{
-  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_3);
-}
-
-/**
-  * @brief This function handles external line 4 interrupt request.
-  * @param  None
-  * @retval None
-  */
-void EXTI4_IRQHandler(void)
-{
-  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_4);
-}
-
-/**
-  * @brief This function handles external line 5 to 9 interrupt request.
-  * @param  None
-  * @retval None
-  */
-void EXTI9_5_IRQHandler(void)
-{
-  uint32_t pin;
-  for(pin = GPIO_PIN_5; pin <= GPIO_PIN_9; pin=pin<<1) {
-    HAL_GPIO_EXTI_IRQHandler(pin);
-  }
-}
-
-/**
-  * @brief This function handles external line 10 to 15 interrupt request.
-  * @param  None
-  * @retval None
-  */
-void EXTI15_10_IRQHandler(void)
-{
-  uint32_t pin;
-  for(pin = GPIO_PIN_10; pin <= GPIO_PIN_15; pin=pin<<1) {
-    HAL_GPIO_EXTI_IRQHandler(pin);
+  if(g_callback_ptr[irq_id] != NULL) {
+    g_callback_ptr[irq_id]();
   }
 }
 

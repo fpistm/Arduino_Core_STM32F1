@@ -51,6 +51,7 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 void hw_config_init(void);
+void set_gpio_clk(GPIO_TypeDef *GPIOx);
 
 #ifdef __cplusplus
 }

@@ -92,15 +92,6 @@ static timer_id_e get_timer_id_from_handle(TIM_HandleTypeDef *htim);
   * @{
   */
 
-static void tim1_clock_enable(void)   { __TIM1_CLK_ENABLE(); }
-static void tim1_clock_reset(void)    { __TIM1_CLK_DISABLE(); }
-static void tim2_clock_enable(void)   { __TIM2_CLK_ENABLE(); }
-static void tim2_clock_reset(void)    { __TIM2_CLK_DISABLE(); }
-static void tim3_clock_enable(void)   { __TIM3_CLK_ENABLE(); }
-static void tim3_clock_reset(void)    { __TIM3_CLK_DISABLE(); }
-static void tim4_clock_enable(void)   { __TIM4_CLK_ENABLE(); }
-static void tim4_clock_reset(void)    { __TIM4_CLK_DISABLE(); }
-
 /**
   * @}
   */
@@ -110,76 +101,11 @@ static void tim4_clock_reset(void)    { __TIM4_CLK_DISABLE(); }
   */
 
 /// @brief timer caracteristics
-extern analog_config_str g_analog_config[NB_ANALOG_CHANNELS];
 
-static TIM_HandleTypeDef g_TimerHandle[NB_TIMER_MANAGED];
+TIM_HandleTypeDef g_TimerHandle[NB_TIMER_MANAGED];
 
-static timer_conf_t g_timer_config[NB_TIMER_MANAGED] = {
-  {
-    //TIMER ID and IRQ
-    .timInstance = TIM1, .irqtype = TIM1_UP_IRQn,
-    .irqHandle = NULL,
-    .irqHandleOC = NULL,
-    .timer_mode = TIMER_OTHER,
-    //timer clock init
-    .timer_clock_init = tim1_clock_enable,
-    //timer clock reset
-    .timer_clock_reset = tim1_clock_reset,
-    //timer prescaler limit : 8 or 16 bits
-    .prescalerLimit = bits_16,
-    //toggle pin configuration
-    .toggle_pin = { .port = NULL },
-    .configured = 0
-  },
-  {
-    //TIMER ID and IRQ
-    .timInstance = TIM2, .irqtype = TIM2_IRQn,
-    .irqHandle = NULL,
-    .irqHandleOC = NULL,
-    .timer_mode = TIMER_OTHER,
-    //timer clock init
-    .timer_clock_init = tim2_clock_enable,
-    //timer clock reset
-    .timer_clock_reset = tim2_clock_reset,
-    //timer prescaler limit : 8 or 16 bits
-    .prescalerLimit = bits_16,
-    //toggle pin configuration
-    .toggle_pin = { .port = NULL },
-    .configured = 0
-  },
-  {
-    //TIMER ID and IRQ
-    .timInstance = TIM3, .irqtype = TIM3_IRQn,
-    .irqHandle = NULL,
-    .irqHandleOC = NULL,
-    .timer_mode = TIMER_OTHER,
-    //timer clock init
-    .timer_clock_init = tim3_clock_enable,
-    //timer clock reset
-    .timer_clock_reset = tim3_clock_reset,
-    //timer prescaler limit : 8 or 16 bits
-    .prescalerLimit = bits_16,
-    //toggle pin configuration
-    .toggle_pin = { .port = NULL },
-    .configured = 0
-  },
-  {
-    //TIMER ID and IRQ
-    .timInstance = TIM4, .irqtype = TIM4_IRQn,
-    .irqHandle = NULL,
-    .irqHandleOC = NULL,
-    .timer_mode = TIMER_OTHER,
-    //timer clock init
-    .timer_clock_init = tim4_clock_enable,
-    //timer clock reset
-    .timer_clock_reset = tim4_clock_reset,
-    //timer prescaler limit : 8 or 16 bits
-    .prescalerLimit = bits_16,
-    //toggle pin configuration
-    .toggle_pin = { .port = NULL },
-    .configured = 0
-  }
-};
+static const timer_conf_t g_timer_config[NB_TIMER_MANAGED] = TIMER_PARAM;
+static timer_param_t g_timer_param[NB_TIMER_MANAGED] = {};
 
 
 /**
@@ -215,8 +141,94 @@ void timer_enable_clock(TIM_HandleTypeDef *htim)
   uint8_t i = 0;
   for(i = 0; i < NB_TIMER_MANAGED; i++) {
     if(g_timer_config[i].timInstance == htim->Instance) {
-      g_timer_config[i].timer_clock_init();
-      g_timer_config[i].configured = 1;
+
+#ifdef TIM2
+      if(htim->Instance == TIM2) {
+        __TIM2_CLK_ENABLE();
+      }
+#endif /* TIM2 */
+#ifdef TIM1
+      else if(htim->Instance == TIM1) {
+        __TIM1_CLK_ENABLE();
+      }
+#endif /* TIM1 */
+#ifdef TIM3
+      else if(htim->Instance == TIM3) {
+        __TIM3_CLK_ENABLE();
+      }
+#endif /* TIM3 */
+#ifdef TIM4
+      else if(htim->Instance == TIM4) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM4 */
+#ifdef TIM5
+      else if(htim->Instance == TIM5) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM5 */
+#ifdef TIM6
+      else if(htim->Instance == TIM6) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM6 */
+#ifdef TIM7
+      else if(htim->Instance == TIM7) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM7 */
+#ifdef TIM8
+      else if(htim->Instance == TIM8) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM8 */
+#ifdef TIM9
+      else if(htim->Instance == TIM9) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM9 */
+#ifdef TIM10
+      else if(htim->Instance == TIM10) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM10 */
+#ifdef TIM11
+      else if(htim->Instance == TIM11) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM11 */
+#ifdef TIM12
+      else if(htim->Instance == TIM12) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM12 */
+#ifdef TIM13
+      else if(htim->Instance == TIM13) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM13 */
+#ifdef TIM14
+      else if(htim->Instance == TIM14) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM14 */
+#ifdef TIM15
+      else if(htim->Instance == TIM15) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM15 */
+#ifdef TIM16
+      else if(htim->Instance == TIM16) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM16 */
+#ifdef TIM17
+      else if(htim->Instance == TIM17) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM17 */
+
+      g_timer_param[i].configured = 1;
       break;
     }
   }
@@ -232,8 +244,89 @@ void timer_disable_clock(TIM_HandleTypeDef *htim)
   uint8_t i = 0;
   for(i = 0; i < NB_TIMER_MANAGED; i++) {
     if(g_timer_config[i].timInstance == htim->Instance) {
-      g_timer_config[i].timer_clock_reset();
-      g_timer_config[i].configured = 0;
+
+#ifdef TIM2
+      if(htim->Instance == TIM2) {
+        __TIM2_CLK_DISABLE();
+      }
+#endif /* TIM2 */
+#ifdef TIM3
+      else if(htim->Instance == TIM3) {
+        __TIM3_CLK_DISABLE();
+      }
+#endif /* TIM3 */
+#ifdef TIM4
+      else if(htim->Instance == TIM4) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM4 */
+#ifdef TIM5
+      else if(htim->Instance == TIM5) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM5 */
+#ifdef TIM6
+      else if(htim->Instance == TIM6) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM6 */
+#ifdef TIM7
+      else if(htim->Instance == TIM7) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM7 */
+#ifdef TIM8
+      else if(htim->Instance == TIM8) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM8 */
+#ifdef TIM9
+      else if(htim->Instance == TIM9) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM9 */
+#ifdef TIM10
+      else if(htim->Instance == TIM10) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM10 */
+#ifdef TIM11
+      else if(htim->Instance == TIM11) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM11 */
+#ifdef TIM12
+      else if(htim->Instance == TIM12) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM12 */
+#ifdef TIM13
+      else if(htim->Instance == TIM13) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM13 */
+#ifdef TIM14
+      else if(htim->Instance == TIM14) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM14 */
+#ifdef TIM15
+      else if(htim->Instance == TIM15) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM15 */
+#ifdef TIM16
+      else if(htim->Instance == TIM16) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM16 */
+#ifdef TIM17
+      else if(htim->Instance == TIM17) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM17 */
+
+      g_timer_param[i].configured = 0;
       break;
     }
   }
@@ -249,7 +342,7 @@ timer_id_e getInactiveTimer(void)
   timer_id_e timer_id = NB_TIMER_MANAGED;
   uint8_t i = 0;
   for(i = 0; i < NB_TIMER_MANAGED; i++) {
-    if((g_timer_config[i].configured == 0) &&
+    if((g_timer_param[i].configured == 0) &&
        (g_timer_config[i].timer_mode == TIMER_OTHER)){
       timer_id = i;
       break;
@@ -271,8 +364,8 @@ timer_id_e isPinAssociateToTimer(GPIO_TypeDef *port, uint32_t pin)
   timer_id_e timer_id = NB_TIMER_MANAGED;
 
   for(i = 0; i < NB_TIMER_MANAGED; i++) {
-    if((g_timer_config[i].toggle_pin.port == port) &&
-       (g_timer_config[i].toggle_pin.pin == pin))  {
+    if((g_timer_param[i].toggle_pin.port == port) &&
+       (g_timer_param[i].toggle_pin.pin == pin))  {
        timer_id = i;
        break;
     }
@@ -340,7 +433,7 @@ void TimerHandleInit(timer_id_e timer_id, uint16_t period, uint16_t prescaler)
     return;
   }
 
-  if(HAL_TIM_Base_Start_IT(&g_TimerHandle[timer_id]) != HAL_OK);{
+  if(HAL_TIM_Base_Start_IT(&g_TimerHandle[timer_id]) != HAL_OK){
     return;
   }
 }
@@ -369,7 +462,7 @@ void TimerPulseInit(timer_id_e timer_id, uint16_t period, uint16_t pulseWidth, v
   TIM_OC_InitTypeDef sConfig;
 
   if(timer_id >= NB_TIMER_MANAGED) return;
-  if(g_timer_config[timer_id].configured == 1) return;
+  if(g_timer_param[timer_id].configured == 1) return;
 
 
   //min pulse = 1us - max pulse = 65535us
@@ -380,7 +473,7 @@ void TimerPulseInit(timer_id_e timer_id, uint16_t period, uint16_t pulseWidth, v
   g_TimerHandle[timer_id].Init.CounterMode       = TIM_COUNTERMODE_UP;
   g_TimerHandle[timer_id].Init.RepetitionCounter = 0;
 
-  g_timer_config[timer_id].irqHandleOC = irqHandle;
+  g_timer_param[timer_id].irqHandleOC = irqHandle;
 
   sConfig.OCMode = TIM_OCMODE_TIMING;
   sConfig.Pulse = pulseWidth;
@@ -400,7 +493,7 @@ void TimerPulseDeinit(timer_id_e timer_id)
 {
   if(timer_id >= NB_TIMER_MANAGED) return;
 
-  g_timer_config[timer_id].irqHandleOC = NULL;
+  g_timer_param[timer_id].irqHandleOC = NULL;
 
   if(HAL_TIM_OC_DeInit(&g_TimerHandle[timer_id]) != HAL_OK) return;
   if(HAL_TIM_OC_Stop_IT(&g_TimerHandle[timer_id], TIM_CHANNEL_1) != HAL_OK) return;
@@ -456,7 +549,7 @@ void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
     return;
   }
 
-  if(g_timer_config[timer_id].irqHandleOC != NULL) {
+  if(g_timer_param[timer_id].irqHandleOC != NULL) {
     switch(htim->Channel) {
       case HAL_TIM_ACTIVE_CHANNEL_1:
         channel = TIM_CHANNEL_1 / 4;
@@ -465,7 +558,7 @@ void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
         return;
       break;
     }
-      g_timer_config[timer_id].irqHandleOC(timer_id, channel);
+      g_timer_param[timer_id].irqHandleOC(timer_id, channel);
   }
 }
 
@@ -476,36 +569,36 @@ void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
   */
 void HAL_TIMx_PeriodElapsedCallback(timer_id_e timer_id)
 {
-  if(g_timer_config[timer_id].toggle_pin.port != NULL) {
-    if(g_timer_config[timer_id].toggle_pin.count > 0){
-      g_timer_config[timer_id].toggle_pin.count--;
+  if(g_timer_param[timer_id].toggle_pin.port != NULL) {
+    if(g_timer_param[timer_id].toggle_pin.count > 0){
+      g_timer_param[timer_id].toggle_pin.count--;
 
-      if(g_timer_config[timer_id].toggle_pin.state == 0) {
-        g_timer_config[timer_id].toggle_pin.state = 1;
-        digital_io_write(g_timer_config[timer_id].toggle_pin.port,
-                         g_timer_config[timer_id].toggle_pin.pin, 1);
+      if(g_timer_param[timer_id].toggle_pin.state == 0) {
+        g_timer_param[timer_id].toggle_pin.state = 1;
+        digital_io_write(g_timer_param[timer_id].toggle_pin.port,
+                         g_timer_param[timer_id].toggle_pin.pin, 1);
       }
       else {
-        g_timer_config[timer_id].toggle_pin.state = 0;
-        digital_io_write(g_timer_config[timer_id].toggle_pin.port,
-                         g_timer_config[timer_id].toggle_pin.pin, 0);
+        g_timer_param[timer_id].toggle_pin.state = 0;
+        digital_io_write(g_timer_param[timer_id].toggle_pin.port,
+                         g_timer_param[timer_id].toggle_pin.pin, 0);
       }
     }
-    else if(g_timer_config[timer_id].toggle_pin.count == -1) {
-      if(g_timer_config[timer_id].toggle_pin.state == 0) {
-        g_timer_config[timer_id].toggle_pin.state = 1;
-        digital_io_write(g_timer_config[timer_id].toggle_pin.port,
-                         g_timer_config[timer_id].toggle_pin.pin, 1);
+    else if(g_timer_param[timer_id].toggle_pin.count == -1) {
+      if(g_timer_param[timer_id].toggle_pin.state == 0) {
+        g_timer_param[timer_id].toggle_pin.state = 1;
+        digital_io_write(g_timer_param[timer_id].toggle_pin.port,
+                         g_timer_param[timer_id].toggle_pin.pin, 1);
       }
       else {
-        g_timer_config[timer_id].toggle_pin.state = 0;
-        digital_io_write(g_timer_config[timer_id].toggle_pin.port,
-                         g_timer_config[timer_id].toggle_pin.pin, 0);
+        g_timer_param[timer_id].toggle_pin.state = 0;
+        digital_io_write(g_timer_param[timer_id].toggle_pin.port,
+                         g_timer_param[timer_id].toggle_pin.pin, 0);
       }
     }
     else {
-      digital_io_write(g_timer_config[timer_id].toggle_pin.port,
-                       g_timer_config[timer_id].toggle_pin.pin, 0);
+      digital_io_write(g_timer_param[timer_id].toggle_pin.port,
+                       g_timer_param[timer_id].toggle_pin.pin, 0);
     }
   }
 }
@@ -522,8 +615,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     return;
   }
 
-  if(g_timer_config[timer_id].irqHandle != NULL) {
-      g_timer_config[timer_id].irqHandle(timer_id);
+  if(g_timer_param[timer_id].irqHandle != NULL) {
+      g_timer_param[timer_id].irqHandle(timer_id);
   }
 }
 
@@ -554,16 +647,16 @@ void TimerPinInit(GPIO_TypeDef *port, uint32_t pin, uint32_t frequency, uint32_t
   if(frequency > MAX_FREQ)
     return;
 
-  g_timer_config[timer_id].toggle_pin.port = port;
-  g_timer_config[timer_id].toggle_pin.pin = pin;
-  g_timer_config[timer_id].toggle_pin.state = 0;
+  g_timer_param[timer_id].toggle_pin.port = port;
+  g_timer_param[timer_id].toggle_pin.pin = pin;
+  g_timer_param[timer_id].toggle_pin.state = 0;
 
   //Calculate the toggle count
   if (duration > 0) {
-    g_timer_config[timer_id].toggle_pin.count = ((frequency * duration) / 1000) * 2;
+    g_timer_param[timer_id].toggle_pin.count = ((frequency * duration) / 1000) * 2;
   }
   else {
-    g_timer_config[timer_id].toggle_pin.count = -1;
+    g_timer_param[timer_id].toggle_pin.count = -1;
   }
 
   digital_io_init(port, pin, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL);
@@ -580,7 +673,7 @@ void TimerPinInit(GPIO_TypeDef *port, uint32_t pin, uint32_t frequency, uint32_t
 
   if((period < g_timer_config[timer_id].prescalerLimit)
       && (prescaler < g_timer_config[timer_id].prescalerLimit)) {
-    g_timer_config[timer_id].irqHandle = HAL_TIMx_PeriodElapsedCallback;
+    g_timer_param[timer_id].irqHandle = HAL_TIMx_PeriodElapsedCallback;
     TimerHandleInit(timer_id, period, prescaler-1);
   }
   else {
@@ -600,10 +693,11 @@ void TimerPinDeinit(GPIO_TypeDef *port, uint32_t pin)
 
   if(timer_id < NB_TIMER_MANAGED) {
     TimerHandleDeinit(timer_id);
-    g_timer_config[timer_id].toggle_pin.port = NULL;
-    g_timer_config[timer_id].toggle_pin.pin = 0;
-    g_timer_config[timer_id].toggle_pin.count = 0;
-    g_timer_config[timer_id].toggle_pin.state = 0;
+    g_timer_param[timer_id].toggle_pin.port = NULL;
+    g_timer_param[timer_id].toggle_pin.pin = 0;
+    g_timer_param[timer_id].toggle_pin.count = 0;
+    g_timer_param[timer_id].toggle_pin.state = 0;
+    g_timer_param[timer_id].irqHandle = NULL;
   }
 }
 
@@ -669,59 +763,8 @@ uint32_t getCCRRegister(timer_id_e timer_id, uint32_t channel)
 void attachIntHandle(timer_id_e timer_id, void (*irqHandle)(timer_id_e))
 {
   if(timer_id < NB_TIMER_MANAGED)
-    g_timer_config[timer_id].irqHandle = irqHandle;
+    g_timer_param[timer_id].irqHandle = irqHandle;
 }
-
-
-/******************************************************************************/
-/*                            TIMx IRQ HANDLER                                */
-/******************************************************************************/
-
-/**
-  * @brief  TIM1 & TIM16 irq handler
-  * @param  None
-  * @retval None
-  */
-void TIM1_UP_IRQHandler(void)
-{
-  HAL_TIM_IRQHandler(&g_TimerHandle[TIM1_E]);
-}
-
-void TIM1_CC_IRQHandler(void)
-{
-  HAL_TIM_IRQHandler(&g_TimerHandle[TIM1_E]);
-}
-
-/**
-  * @brief  TIM2 irq handler
-  * @param  None
-  * @retval None
-  */
-void TIM2_IRQHandler(void)
-{
-  HAL_TIM_IRQHandler(&g_TimerHandle[TIM2_E]);
-}
-
-/**
-  * @brief  TIM3 irq handler
-  * @param  None
-  * @retval None
-  */
-void TIM3_IRQHandler(void)
-{
-  HAL_TIM_IRQHandler(&g_TimerHandle[TIM3_E]);
-}
-
-/**
-  * @brief  TIM6 irq handler
-  * @param  None
-  * @retval None
-  */
-void TIM4_IRQHandler(void)
-{
-  HAL_TIM_IRQHandler(&g_TimerHandle[TIM4_E]);
-}
-
 
 /**
   * @}

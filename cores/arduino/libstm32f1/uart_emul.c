@@ -138,8 +138,8 @@ static uint8_t UART_Emul_ReceiveFormatFrame(UART_Emul_HandleTypeDef *huart, uint
 static void UART_EMUL_TIM_TX_IT(void);
 static void UART_EMUL_TIM_RX_IT(void);
 
-void TIM_TX_CALLBACK(timer_id_e timer_id) {UART_EMUL_TIM_TX_IT();}
-void TIM_RX_CALLBACK(timer_id_e timer_id) {UART_EMUL_TIM_RX_IT();}
+void TIM_TX_CALLBACK(timer_id_e timer_id) {UNUSED(timer_id);UART_EMUL_TIM_TX_IT();}
+void TIM_RX_CALLBACK(timer_id_e timer_id) {UNUSED(timer_id);UART_EMUL_TIM_RX_IT();}
 
 static volatile uint8_t g_txCplt = 0;
 
@@ -236,6 +236,7 @@ HAL_StatusTypeDef HAL_UART_Emul_DeInit(UART_Emul_HandleTypeDef *huart)
   */
 __weak void HAL_UART_Emul_MspInit(UART_Emul_HandleTypeDef *huart)
 {
+  UNUSED(huart);
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_UART_Emul_MspInit could be implemented in the user file
    */
@@ -248,6 +249,7 @@ __weak void HAL_UART_Emul_MspInit(UART_Emul_HandleTypeDef *huart)
  */
 __weak void HAL_UART_Emul_MspDeInit(UART_Emul_HandleTypeDef *huart)
 {
+  UNUSED(huart);
   /* NOTE: This function Should not be modified, when the callback is needed,
            the HAL_UART_Emul_MspDeInit could be implemented in the user file
    */
@@ -394,6 +396,7 @@ HAL_StatusTypeDef HAL_UART_Emul_Receive(UART_Emul_HandleTypeDef *huart, uint8_t 
   */
 __weak void HAL_UART_Emul_RxCpltCallback(UART_Emul_HandleTypeDef *huart)
 {
+  UNUSED(huart);
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_UART_Emul_TransferComplet could be implemented in the user file
    */
@@ -933,6 +936,7 @@ static void UART_Emul_TransmitCplt(void)
   */
 __weak void HAL_UART_Emul_TxCpltCallback(UART_Emul_HandleTypeDef *huart)
 {
+  UNUSED(huart);
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_UART_Emul_TransferComplete could be implemented in the user file
    */
@@ -945,6 +949,7 @@ __weak void HAL_UART_Emul_TxCpltCallback(UART_Emul_HandleTypeDef *huart)
   */
 __weak void HAL_UART_Emul_ErrorCallback(UART_Emul_HandleTypeDef *huart)
 {
+  UNUSED(huart);
   /* NOTE: This function Should not be modified, when the callback is needed,
            the HAL_UART_ErrorCallback could be implemented in the user file
    */

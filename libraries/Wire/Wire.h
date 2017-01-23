@@ -26,7 +26,7 @@
 #include "Stream.h"
 #include "variant.h"
 
-#define BUFFER_LENGTH 32
+#define BUFFER_LENGTH I2C_TXRX_BUFFER_SIZE
 
 #define MASTER_ADDRESS 0x33
 

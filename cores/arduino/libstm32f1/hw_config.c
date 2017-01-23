@@ -48,9 +48,10 @@
   */
 #include "stm32f1xx.h"
 #include "hw_config.h"
+#include "variant_hal_config.h"
 
-#ifdef SERIAL_USB 
-extern PCD_HandleTypeDef hpcd_USB_FS; 
+#ifdef SERIAL_USB
+extern PCD_HandleTypeDef hpcd_USB_FS;
 #endif
 
 #ifdef __cplusplus
@@ -121,14 +122,52 @@ void hw_config_init(void)
   //Initialize the HAL
   HAL_Init();
 
+#ifdef DISABLE_JTAG
   __HAL_RCC_AFIO_CLK_ENABLE();
-#if 0 // we like being able to debug :)
   __HAL_AFIO_REMAP_SWJ_DISABLE();
-#endif
+#endif /* DISABLE_JTAG */
 
   // Configure the system clock
   SystemClock_Config();
 }
+
+/**
+  * @brief  This function enable the GPIO clock
+  * @param  GPIO_TypeDef GPIOx
+  * @retval None
+  */
+
+//Enable GPIO port clock
+void set_gpio_clk(GPIO_TypeDef *GPIOx) {
+  if(GPIOx == NULL)
+    return;
+
+  if(GPIOx == GPIOA) {
+    __GPIOA_CLK_ENABLE();
+  } else if(GPIOx == GPIOB){
+    __GPIOB_CLK_ENABLE();
+  } else if(GPIOx == GPIOC){
+    __GPIOC_CLK_ENABLE();
+  } else if(GPIOx == GPIOD){
+    __GPIOD_CLK_ENABLE();
+  }
+#ifdef GPIOE
+  else if(GPIOx == GPIOE){
+    __GPIOE_CLK_ENABLE();
+  }
+#endif /* GPIOE */
+#ifdef GPIOF
+  else if(GPIOx == GPIOF){
+    __GPIOF_CLK_ENABLE();
+  }
+#endif /* GPIOF */
+#ifdef GPIOG
+  else if(GPIOx == GPIOG){
+    __GPIOG_CLK_ENABLE();
+  }
+#endif /* GPIOG */
+}
+
 
 /******************************************************************************/
 /*            Cortex-M3 Processor Interruption and Exception Handlers         */
@@ -228,37 +267,31 @@ void DebugMon_Handler(void)
   /* USER CODE END DebugMonitor_IRQn 1 */
 }
 
-#ifdef SERIAL_USB 
-/** 
-* @brief This function handles USB low priority or CAN RX0 interrupts. 
-*/ 
-void USB_LP_CAN1_RX0_IRQHandler(void) 
-{ 
-  /* USER CODE BEGIN USB_LP_CAN1_RX0_IRQn 0 */ 
- 
-  /* USER CODE END USB_LP_CAN1_RX0_IRQn 0 */ 
-  HAL_PCD_IRQHandler(&hpcd_USB_FS); 
-  /* USER CODE BEGIN USB_LP_CAN1_RX0_IRQn 1 */ 
- 
-  /* USER CODE END USB_LP_CAN1_RX0_IRQn 1 */ 
-} 
- 
-#endif
-/** 
-  * @brief  This function is executed in case of error occurrence. 
-  * @param  None 
-  * @retval None 
-  */ 
-void Error_Handler(void) 
-{ 
-  /* Turn LED on */ 
-  while(1) 
-  { 
-    /* Error if LED3 is slowly blinking (1 sec. period) */ 
-    //HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13); 
-    //HAL_Delay(1000); 
-  } 
-} 
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @param  None
+  * @retval None
+  */
+void Error_Handler(void)
+{
+  /* Turn LED on */
+  while(1)
+  {
+    /* Error if LED3 is slowly blinking (1 sec. period) */
+    //HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+    //HAL_Delay(1000);
+  }
+}
+
+/**
+  * @brief  Function called when the tick interruption falls
+  * @param  None
+  * @retval None
+  */
+void SysTick_Handler(void)
+{
+  HAL_IncTick();
+}
 
 /**
   * @}

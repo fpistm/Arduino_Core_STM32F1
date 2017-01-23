@@ -51,6 +51,7 @@
 #include "analog.h"
 #include "timer.h"
 #include "variant.h"
+#include "variant_hal_config.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -63,6 +64,61 @@
 /** @addtogroup STM32F1xx_System_Private_TypesDefinitions
   * @{
   */
+#ifdef TIM1
+static void TIM1_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM1_ENABLE();}
+static void TIM1_AF_PartialRemap(void)  {__HAL_AFIO_REMAP_TIM1_PARTIAL();}
+static void TIM1_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM1_DISABLE();}
+#endif /* TIM1 */
+
+static void TIM2_AF_FullRemap(void)       {__HAL_AFIO_REMAP_TIM2_ENABLE();}
+static void TIM2_AF_PartialRemap_1(void)  {__HAL_AFIO_REMAP_TIM2_PARTIAL_1();}
+static void TIM2_AF_PartialRemap_2(void)  {__HAL_AFIO_REMAP_TIM2_PARTIAL_2();}
+static void TIM2_AF_NoRemap(void)         {__HAL_AFIO_REMAP_TIM2_DISABLE();}
+
+static void TIM3_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM3_ENABLE();}
+static void TIM3_AF_PartialRemap(void)  {__HAL_AFIO_REMAP_TIM3_PARTIAL();}
+static void TIM3_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM3_DISABLE();}
+
+#ifdef TIM4
+static void TIM4_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM4_ENABLE();}
+static void TIM4_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM4_DISABLE();}
+#endif /* TIM4 */
+
+#ifdef TIM5
+static void TIM5_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM5CH4_ENABLE();}
+static void TIM5_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM5CH4_DISABLE();}
+#endif /* TIM5 */
+
+#ifdef TIM9
+static void TIM9_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM9_ENABLE();}
+static void TIM9_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM9_DISABLE();}
+#endif /* TIM9 */
+
+#ifdef TIM10
+static void TIM10_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM10_ENABLE();}
+static void TIM10_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM10_DISABLE();}
+#endif /* TIM10 */
+
+#ifdef TIM11
+static void TIM11_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM11_ENABLE();}
+static void TIM11_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM11_DISABLE();}
+#endif /* TIM11 */
+
+#ifdef TIM12
+static void TIM12_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM12_ENABLE();}
+static void TIM12_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM12_DISABLE();}
+#endif /* TIM12 */
+
+#ifdef TIM13
+static void TIM13_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM13_ENABLE();}
+static void TIM13_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM13_DISABLE();}
+#endif /* TIM13 */
+
+#ifdef TIM14
+static void TIM14_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM14_ENABLE();}
+static void TIM14_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM14_DISABLE();}
+#endif /* TIM14 */
+
 /**
   * @}
   */
@@ -81,17 +137,6 @@
   * @{
   */
 
-static void TIM1_AF_PartialRemap(void)  { __HAL_RCC_AFIO_CLK_ENABLE();
-                                          __HAL_AFIO_REMAP_TIM1_PARTIAL();}  // CH1N/A7
-static void TIM2_AF_FullRemap(void)     { __HAL_RCC_AFIO_CLK_ENABLE();
-                                          __HAL_AFIO_REMAP_TIM2_ENABLE();}   // CH2/B3 CH3/B10
-static void TIM3_AF_FullRemap(void)     { __HAL_RCC_AFIO_CLK_ENABLE();
-                                          __HAL_AFIO_REMAP_TIM3_ENABLE();}   // CH2/C7
-static void TIM3_AF_PartialRemap(void)  { __HAL_RCC_AFIO_CLK_ENABLE();
-                                          __HAL_AFIO_REMAP_TIM3_PARTIAL();}  // CH1/B4
-static void TIM4_AF_NoRemap(void)       { __HAL_RCC_AFIO_CLK_ENABLE();
-                                          __HAL_AFIO_REMAP_TIM4_DISABLE();}  // CH1/B6
-
 /**
   * @}
   */
@@ -105,250 +150,7 @@ static uint8_t g_current_init_id = 0;
 
 
 //Give details about the analog pins.
-const analog_config_str g_analog_init_config[NB_ANALOG_CHANNELS] = {
-  {
-    .port = GPIOA,
-    .pin = GPIO_PIN_0,
-    .adcInstance = ADC1,
-    .adcChannelConf = {
-      .Channel = ADC_CHANNEL_0,
-      .Rank = ADC_REGULAR_RANK_1,
-      .SamplingTime = SAMPLINGTIME
-    },
-    #if defined (STM32F100xB) || defined (STM32F100xE) || defined (STM32F101xE) || defined (STM32F101xG) || defined (STM32F103xE) || defined (STM32F103xG) || defined (STM32F105xC) || defined (STM32F107xC)
-    .dacInstance = NULL,
-    #endif
-    .timInstance = NULL
-  },
-  {
-    .port = GPIOA,
-    .pin = GPIO_PIN_1,
-    .adcInstance = ADC1,
-    .adcChannelConf = {
-      .Channel = ADC_CHANNEL_1,
-      .Rank = ADC_REGULAR_RANK_1,
-      .SamplingTime = SAMPLINGTIME
-    },
-    #if defined (STM32F100xB) || defined (STM32F100xE) || defined (STM32F101xE) || defined (STM32F101xG) || defined (STM32F103xE) || defined (STM32F103xG) || defined (STM32F105xC) || defined (STM32F107xC)
-    .dacInstance = NULL,
-    #endif
-    .timInstance = NULL
-  },
-  {
-    .port = GPIOA,
-    .pin = GPIO_PIN_4,
-    .adcInstance = ADC1,
-    .adcChannelConf = {
-      .Channel = ADC_CHANNEL_4,
-      .Rank = ADC_REGULAR_RANK_1,
-      .SamplingTime = SAMPLINGTIME
-    },
-    #if defined (STM32F100xB) || defined (STM32F100xE) || defined (STM32F101xE) || defined (STM32F101xG) || defined (STM32F103xE) || defined (STM32F103xG) || defined (STM32F105xC) || defined (STM32F107xC)
-    .dacInstance = NULL,
-    #endif
-    .timInstance = NULL
-  },
-  {
-    .port = GPIOA,
-    .pin = GPIO_PIN_5,
-    .adcInstance = ADC1,
-    .adcChannelConf = {
-      .Channel = ADC_CHANNEL_5,
-      .Rank = ADC_REGULAR_RANK_1,
-      .SamplingTime = SAMPLINGTIME
-    },
-    #if defined (STM32F100xB) || defined (STM32F100xE) || defined (STM32F101xE) || defined (STM32F101xG) || defined (STM32F103xE) || defined (STM32F103xG) || defined (STM32F105xC) || defined (STM32F107xC)
-    .dacInstance = NULL,
-    #endif
-    .timInstance = NULL
-  },
-  {
-    .port = GPIOA,
-    .pin = GPIO_PIN_7,
-    .alFunction = TIM1_AF_PartialRemap,
-    .adcInstance = NULL,
-    #if defined (STM32F100xB) || defined (STM32F100xE) || defined (STM32F101xE) || defined (STM32F101xG) || defined (STM32F103xE) || defined (STM32F103xG) || defined (STM32F105xC) || defined (STM32F107xC)
-    .dacInstance = NULL,
-    #endif
-    .timInstance = TIM1,
-    .timChannel = TIM_CHANNEL_1,
-    .useNchannel = 1,
-    .timConfig = {
-      .OCMode       = TIM_OCMODE_PWM1,
-      .OCPolarity   = TIM_OCPOLARITY_HIGH,
-      .OCFastMode   = TIM_OCFAST_DISABLE,
-      .OCNPolarity  = TIM_OCNPOLARITY_HIGH,
-      .OCNIdleState = TIM_OCNIDLESTATE_RESET,
-      .OCIdleState  = TIM_OCIDLESTATE_RESET
-     },
-     .timHandle = {}
-  },
-  {
-    .port = GPIOA,
-    .pin = GPIO_PIN_10,
-    .alFunction = NULL,
-    .adcInstance = NULL,
-    #if defined (STM32F100xB) || defined (STM32F100xE) || defined (STM32F101xE) || defined (STM32F101xG) || defined (STM32F103xE) || defined (STM32F103xG) || defined (STM32F105xC) || defined (STM32F107xC)
-    .dacInstance = NULL,
-    #endif
-    .timInstance = NULL,
-  },
-  {
-    .port = GPIOB,
-    .pin = GPIO_PIN_0,
-    .adcInstance = ADC1,
-    .adcChannelConf = {
-      .Channel = ADC_CHANNEL_8,
-      .Rank = ADC_REGULAR_RANK_1,
-      .SamplingTime = SAMPLINGTIME
-    },
-    #if defined (STM32F100xB) || defined (STM32F100xE) || defined (STM32F101xE) || defined (STM32F101xG) || defined (STM32F103xE) || defined (STM32F103xG) || defined (STM32F105xC) || defined (STM32F107xC)
-    .dacInstance = NULL,
-    #endif
-    .timInstance = NULL
-  },
-  {
-    .port = GPIOB,
-    .pin = GPIO_PIN_3,
-    .alFunction = TIM2_AF_FullRemap,
-    .adcInstance = NULL,
-    #if defined (STM32F100xB) || defined (STM32F100xE) || defined (STM32F101xE) || defined (STM32F101xG) || defined (STM32F103xE) || defined (STM32F103xG) || defined (STM32F105xC) || defined (STM32F107xC)
-    .dacInstance = NULL,
-    #endif
-    .timInstance = TIM2,
-    .timChannel = TIM_CHANNEL_2,
-    .useNchannel = 0,
-    .timConfig = {
-      .OCMode       = TIM_OCMODE_PWM1,
-      .OCPolarity   = TIM_OCPOLARITY_HIGH,
-      .OCFastMode   = TIM_OCFAST_DISABLE,
-      .OCNPolarity  = TIM_OCNPOLARITY_HIGH,
-      .OCNIdleState = TIM_OCNIDLESTATE_RESET,
-      .OCIdleState  = TIM_OCIDLESTATE_RESET
-     },
-     .timHandle = {}
-  },
-  {
-    .port = GPIOB,
-    .pin = GPIO_PIN_4,
-    .alFunction = TIM3_AF_PartialRemap,
-    .adcInstance = NULL,
-    #if defined (STM32F100xB) || defined (STM32F100xE) || defined (STM32F101xE) || defined (STM32F101xG) || defined (STM32F103xE) || defined (STM32F103xG) || defined (STM32F105xC) || defined (STM32F107xC)
-    .dacInstance = NULL,
-    #endif
-    .timInstance = TIM3,
-    .timChannel = TIM_CHANNEL_1,
-    .useNchannel = 0,
-    .timConfig = {
-      .OCMode       = TIM_OCMODE_PWM1,
-      .OCPolarity   = TIM_OCPOLARITY_HIGH,
-      .OCFastMode   = TIM_OCFAST_DISABLE,
-      .OCNPolarity  = TIM_OCNPOLARITY_HIGH,
-      .OCNIdleState = TIM_OCNIDLESTATE_RESET,
-      .OCIdleState  = TIM_OCIDLESTATE_RESET
-     },
-     .timHandle = {}
-  },
-  {
-    .port = GPIOB,
-    .pin = GPIO_PIN_5,
-    .adcInstance = NULL,
-    #if defined (STM32F100xB) || defined (STM32F100xE) || defined (STM32F101xE) || defined (STM32F101xG) || defined (STM32F103xE) || defined (STM32F103xG) || defined (STM32F105xC) || defined (STM32F107xC)
-    .dacInstance = NULL,
-    #endif
-    .timInstance = NULL
-  },
-  {
-    .port = GPIOB,
-    .pin = GPIO_PIN_6,
-    .alFunction = TIM4_AF_NoRemap,
-    .adcInstance = NULL,
-    #if defined (STM32F100xB) || defined (STM32F100xE) || defined (STM32F101xE) || defined (STM32F101xG) || defined (STM32F103xE) || defined (STM32F103xG) || defined (STM32F105xC) || defined (STM32F107xC)
-    .dacInstance = NULL,
-    #endif
-    .timInstance = TIM4,
-    .timChannel = TIM_CHANNEL_1,
-    .useNchannel = 0,
-    .timConfig = {
-      .OCMode       = TIM_OCMODE_PWM1,
-      .OCPolarity   = TIM_OCPOLARITY_HIGH,
-      .OCFastMode   = TIM_OCFAST_DISABLE,
-      .OCNPolarity  = TIM_OCNPOLARITY_HIGH,
-      .OCNIdleState = TIM_OCNIDLESTATE_RESET,
-      .OCIdleState  = TIM_OCIDLESTATE_RESET
-     },
-     .timHandle = {}
-  },
-  {
-    .port = GPIOB,
-    .pin = GPIO_PIN_10,
-    .alFunction = TIM2_AF_FullRemap,
-    .adcInstance = NULL,
-    #if defined (STM32F100xB) || defined (STM32F100xE) || defined (STM32F101xE) || defined (STM32F101xG) || defined (STM32F103xE) || defined (STM32F103xG) || defined (STM32F105xC) || defined (STM32F107xC)
-    .dacInstance = NULL,
-    #endif
-    .timInstance = TIM2,
-    .timChannel = TIM_CHANNEL_3,
-    .useNchannel = 0,
-    .timConfig = {
-      .OCMode       = TIM_OCMODE_PWM1,
-      .OCPolarity   = TIM_OCPOLARITY_HIGH,
-      .OCFastMode   = TIM_OCFAST_DISABLE,
-      .OCNPolarity  = TIM_OCNPOLARITY_HIGH,
-      .OCNIdleState = TIM_OCNIDLESTATE_RESET,
-      .OCIdleState  = TIM_OCIDLESTATE_RESET
-     }
-  },
-  {
-    .port = GPIOC,
-    .pin = GPIO_PIN_0,
-    .adcInstance = ADC1,
-    .adcChannelConf = {
-      .Channel = ADC_CHANNEL_10,
-      .Rank = ADC_REGULAR_RANK_1,
-      .SamplingTime = SAMPLINGTIME
-    },
-    #if defined (STM32F100xB) || defined (STM32F100xE) || defined (STM32F101xE) || defined (STM32F101xG) || defined (STM32F103xE) || defined (STM32F103xG) || defined (STM32F105xC) || defined (STM32F107xC)
-    .dacInstance = NULL,
-    #endif
-    .timInstance = NULL
-  },
-  {
-    .port = GPIOC,
-    .pin = GPIO_PIN_1,
-    .adcInstance = ADC1,
-    .adcChannelConf = {
-      .Channel = ADC_CHANNEL_11,
-      .Rank = ADC_REGULAR_RANK_1,
-      .SamplingTime = SAMPLINGTIME
-    },
-    #if defined (STM32F100xB) || defined (STM32F100xE) || defined (STM32F101xE) || defined (STM32F101xG) || defined (STM32F103xE) || defined (STM32F103xG) || defined (STM32F105xC) || defined (STM32F107xC)
-    .dacInstance = NULL,
-    #endif
-    .timInstance = NULL
-  },
-  {
-    .port = GPIOC,
-    .pin = GPIO_PIN_7,
-    .alFunction = TIM3_AF_FullRemap,
-    .adcInstance = NULL,
-    #if defined (STM32F100xB) || defined (STM32F100xE) || defined (STM32F101xE) || defined (STM32F101xG) || defined (STM32F103xE) || defined (STM32F103xG) || defined (STM32F105xC) || defined (STM32F107xC)
-    .dacInstance = NULL,
-    #endif
-    .timInstance = TIM3,
-    .timChannel = TIM_CHANNEL_2,
-    .useNchannel = 0,
-    .timConfig = {
-      .OCMode       = TIM_OCMODE_PWM1,
-      .OCPolarity   = TIM_OCPOLARITY_HIGH,
-      .OCFastMode   = TIM_OCFAST_DISABLE,
-      .OCNPolarity  = TIM_OCNPOLARITY_HIGH,
-      .OCNIdleState = TIM_OCNIDLESTATE_RESET,
-      .OCIdleState  = TIM_OCIDLESTATE_RESET
-     },
-     .timHandle = {}
-  },
-};
+const analog_config_str g_analog_init_config[NB_ANALOG_CHANNELS] = ANALOG_PARAM;
 
 /**
   * @}
@@ -365,7 +167,7 @@ const analog_config_str g_analog_init_config[NB_ANALOG_CHANNELS] = {
   * @param  pin : the gpio pin to use
   * @retval None
   */
-int8_t get_analog_instance(GPIO_TypeDef  *port, uint32_t pin)
+static int8_t get_analog_instance(GPIO_TypeDef  *port, uint32_t pin)
 {
   int8_t i;
 
@@ -396,13 +198,7 @@ void HAL_DAC_MspInit(DAC_HandleTypeDef *hdac)
 
   /*##-1- Enable peripherals and GPIO Clocks #################################*/
   /* Enable GPIO clock ****************************************/
-  if(g_analog_init_config[g_current_init_id].port == GPIOA) {
-    __GPIOA_CLK_ENABLE();
-  } else if(g_analog_init_config[g_current_init_id].port == GPIOB){
-    __GPIOB_CLK_ENABLE();
-  } else if(g_analog_init_config[g_current_init_id].port == GPIOC){
-    __GPIOC_CLK_ENABLE();
-  }
+  set_gpio_clk(g_analog_init_config[g_current_init_id].port);
 
   /* DAC Periph clock enable */
   __HAL_RCC_DAC_CLK_ENABLE();
@@ -477,6 +273,11 @@ void dac_write_value(GPIO_TypeDef  *port, uint32_t pin, uint32_t value, uint8_t 
   /*##-4- Enable DAC Channel1 ################################################*/
   HAL_DAC_Start(&DacHandle, g_analog_init_config[id].dacChannel);
 
+#else
+  UNUSED(port);
+  UNUSED(pin);
+  UNUSED(value);
+  UNUSED(do_init);
   #endif
 }
 
@@ -526,6 +327,9 @@ void dac_stop(GPIO_TypeDef  *port, uint32_t pin)
     return;
   }
 
+#else
+UNUSED(port);
+UNUSED(pin);
   #endif
 }
 
@@ -546,16 +350,22 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef *hadc)
 
   /*##-1- Enable peripherals and GPIO Clocks #################################*/
   /* ADC Periph clock enable */
-  __HAL_RCC_ADC1_CLK_ENABLE();
+  if((hadc->Instance) == ADC1) {
+    __HAL_RCC_ADC1_CLK_ENABLE();
+  }
+#ifdef ADC2
+  else if((hadc->Instance) == ADC2) {
+    __HAL_RCC_ADC2_CLK_ENABLE();
+  }
+#endif /* ADC2 */
+#ifdef ADC3
+  else if((hadc->Instance) == ADC3) {
+    __HAL_RCC_ADC3_CLK_ENABLE();
+  }
+#endif /* ADC3 */
 
   /* Enable GPIO clock ****************************************/
-  if(g_analog_init_config[g_current_init_id].port == GPIOA) {
-    __GPIOA_CLK_ENABLE();
-  } else if(g_analog_init_config[g_current_init_id].port == GPIOB){
-    __GPIOB_CLK_ENABLE();
-  } else if(g_analog_init_config[g_current_init_id].port == GPIOC){
-    __GPIOC_CLK_ENABLE();
-  }
+  set_gpio_clk(g_analog_init_config[g_current_init_id].port);
 
   /*##-2- Configure peripheral GPIO ##########################################*/
   /* ADC Channel GPIO pin configuration */
@@ -572,7 +382,19 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef *hadc)
   */
 __weak void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
 {
-  __HAL_RCC_ADC1_CLK_DISABLE();
+  if((hadc->Instance) == ADC1) {
+    __HAL_RCC_ADC1_CLK_DISABLE();
+  }
+#ifdef ADC2
+  else if((hadc->Instance) == ADC2) {
+    __HAL_RCC_ADC2_CLK_DISABLE();
+  }
+#endif /* ADC2 */
+#ifdef ADC3
+  else if((hadc->Instance) == ADC3) {
+    __HAL_RCC_ADC3_CLK_DISABLE();
+  }
+#endif /* ADC3 */
 }
 
 /**
@@ -585,14 +407,15 @@ __weak void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
 uint16_t adc_read_value(GPIO_TypeDef  *port, uint32_t pin, uint8_t do_init)
 {
   ADC_HandleTypeDef    AdcHandle;
+  ADC_ChannelConfTypeDef  AdcChannelConf;
+  __IO uint16_t uhADCxConvertedValue = 0;
 
   //find the instance in the global
   int8_t id = get_analog_instance(port, pin);
   if(id < 0 ) return 0;
-  __IO uint16_t uhADCxConvertedValue = 0;
 
   AdcHandle.Instance = g_analog_init_config[id].adcInstance;
-  
+
   if (AdcHandle.Instance == NULL) {
       return 0;
   }
@@ -613,8 +436,12 @@ uint16_t adc_read_value(GPIO_TypeDef  *port, uint32_t pin, uint8_t do_init)
     }
   }
 
+  AdcChannelConf.Channel      = g_analog_init_config[id].Channel; /* Specifies the channel to configure into ADC */
+  AdcChannelConf.Rank         = ADC_REGULAR_RANK_1;               /* Specifies the rank in the regular group sequencer */
+  AdcChannelConf.SamplingTime = SAMPLINGTIME;                     /* Sampling time value to be set for the selected channel */
+
   /*##-2- Configure ADC regular channel ######################################*/
-  if (HAL_ADC_ConfigChannel(&AdcHandle, &g_analog_init_config[id].adcChannelConf) != HAL_OK)
+  if (HAL_ADC_ConfigChannel(&AdcHandle, &AdcChannelConf) != HAL_OK)
   {
     /* Channel Configuration Error */
     return 0;
@@ -679,13 +506,7 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim)
 
   /* Enable GPIO Channels Clock */
   /* Enable GPIO clock ****************************************/
-  if(g_analog_init_config[g_current_init_id].port == GPIOA) {
-    __GPIOA_CLK_ENABLE();
-  } else if(g_analog_init_config[g_current_init_id].port == GPIOB){
-    __GPIOB_CLK_ENABLE();
-  } else if(g_analog_init_config[g_current_init_id].port == GPIOC){
-    __GPIOC_CLK_ENABLE();
-  }
+  set_gpio_clk(g_analog_init_config[g_current_init_id].port);
 
   /* Common configuration for all channels */
   GPIO_InitStruct.Pin = g_analog_init_config[g_current_init_id].pin;
@@ -693,7 +514,10 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 
-  g_analog_init_config[g_current_init_id].alFunction();
+  if(g_analog_init_config[g_current_init_id].alFunction != NULL) {
+    __HAL_RCC_AFIO_CLK_ENABLE();
+    g_analog_init_config[g_current_init_id].alFunction();
+  }
 
   HAL_GPIO_Init(g_analog_init_config[g_current_init_id].port, &GPIO_InitStruct);
 }
@@ -722,29 +546,27 @@ void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef *htim)
 void pwm_start(GPIO_TypeDef  *port, uint32_t pin, uint32_t clock_freq,
                 uint32_t period, uint32_t value, uint8_t do_init)
 {
+  TIM_HandleTypeDef analog_timer_config;
+  TIM_OC_InitTypeDef timConfig;
 
   //find the instance in the global
   int8_t id = get_analog_instance(port, pin);
   if(id < 0) return;
-  
-  TIM_HandleTypeDef analog_timer_config;
-  
+
   analog_timer_config.State = HAL_TIM_STATE_RESET;
   analog_timer_config.Init.ClockDivision     = 0;
   analog_timer_config.Init.CounterMode       = TIM_COUNTERMODE_UP;
-  analog_timer_config.Init.RepetitionCounter = 0;	  
-
+  analog_timer_config.Init.RepetitionCounter = 0;
 
   /* Compute the prescaler value to have TIM counter clock equal to clock_freq Hz */
   analog_timer_config.Instance               = g_analog_init_config[id].timInstance;
   analog_timer_config.Init.Prescaler         = (uint32_t)(SystemCoreClock / clock_freq) - 1;
   analog_timer_config.Init.Period            = period;
 
-  
-  if(do_init == 1) 
+  if(do_init == 1)
   {
     g_current_init_id = id;
-    if (HAL_TIM_PWM_Init(&analog_timer_config) != HAL_OK) 
+    if (HAL_TIM_PWM_Init(&analog_timer_config) != HAL_OK)
 	{
 			  digitalWrite(13,HIGH);
       return;
@@ -753,12 +575,8 @@ void pwm_start(GPIO_TypeDef  *port, uint32_t pin, uint32_t clock_freq,
 
   HAL_TIM_PWM_Stop(&analog_timer_config, g_analog_init_config[id].timChannel);
 
-  
   /*##-2- Configure the PWM channels #########################################*/
   /* Common configuration for all channels */
-  
-	TIM_OC_InitTypeDef timConfig;
-	
 	timConfig.OCMode       = TIM_OCMODE_PWM1;
 	timConfig.OCPolarity   = TIM_OCPOLARITY_HIGH;
 	timConfig.OCFastMode   = TIM_OCFAST_DISABLE;
@@ -766,9 +584,7 @@ void pwm_start(GPIO_TypeDef  *port, uint32_t pin, uint32_t clock_freq,
 	timConfig.OCNIdleState = TIM_OCNIDLESTATE_RESET;
 	timConfig.OCIdleState  = TIM_OCIDLESTATE_RESET;
 	timConfig.Pulse = value;
-	 
-	
-	 
+
   if (HAL_TIM_PWM_ConfigChannel(&analog_timer_config, &timConfig,
                                   g_analog_init_config[id].timChannel) != HAL_OK)
   {
@@ -777,13 +593,11 @@ void pwm_start(GPIO_TypeDef  *port, uint32_t pin, uint32_t clock_freq,
     return;
   }
 
-  
   if(g_analog_init_config[id].useNchannel) {
     HAL_TIMEx_PWMN_Start(&analog_timer_config, g_analog_init_config[id].timChannel);
   } else {
     HAL_TIM_PWM_Start(&analog_timer_config, g_analog_init_config[id].timChannel);
   }
-
 }
 
 /**
@@ -794,15 +608,14 @@ void pwm_start(GPIO_TypeDef  *port, uint32_t pin, uint32_t clock_freq,
   */
 void pwm_stop(GPIO_TypeDef  *port, uint32_t pin)
 {
+  TIM_HandleTypeDef analog_timer_config;
 
   //find the instance in the global
   int8_t id = get_analog_instance(port, pin);
   if(id < 0) return;
 
-  TIM_HandleTypeDef analog_timer_config;
-  
-  analog_timer_config.Instance               = g_analog_init_config[id].timInstance;	
-	
+  analog_timer_config.Instance               = g_analog_init_config[id].timInstance;
+
   if(g_analog_init_config[id].useNchannel) {
     HAL_TIMEx_PWMN_Stop(&analog_timer_config, g_analog_init_config[id].timChannel);
   } else {
@@ -810,7 +623,6 @@ void pwm_stop(GPIO_TypeDef  *port, uint32_t pin)
   }
 
   HAL_TIM_PWM_DeInit(&analog_timer_config);
-	 
 }
 
 
