@@ -153,7 +153,7 @@ void HAL_DAC_MspInit(DAC_HandleTypeDef *hdac)
 
   /*##-1- Enable peripherals and GPIO Clocks #################################*/
   /* Enable GPIO clock ****************************************/
-  SET_GPIO_CLK(g_analog_init_config[g_current_init_id].port);
+  set_gpio_clk(g_analog_init_config[g_current_init_id].port);
 
   /* DAC Periph clock enable */
   __HAL_RCC_DAC_CLK_ENABLE();
@@ -305,10 +305,22 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef *hadc)
 
   /*##-1- Enable peripherals and GPIO Clocks #################################*/
   /* ADC Periph clock enable */
-  SET_ADC_CLK(hadc->Instance);
+  if((hadc->Instance) == ADC1) {
+    __HAL_RCC_ADC1_CLK_ENABLE();
+  }
+#ifdef ADC2
+  else if((hadc->Instance) == ADC2) {
+    __HAL_RCC_ADC2_CLK_ENABLE();
+  }
+#endif /* ADC2 */
+#ifdef ADC3
+  else if((hadc->Instance) == ADC3) {
+    __HAL_RCC_ADC3_CLK_ENABLE();
+  }
+#endif /* ADC3 */
 
   /* Enable GPIO clock ****************************************/
-  SET_GPIO_CLK(g_analog_init_config[g_current_init_id].port);
+  set_gpio_clk(g_analog_init_config[g_current_init_id].port);
 
   /*##-2- Configure peripheral GPIO ##########################################*/
   /* ADC Channel GPIO pin configuration */
@@ -325,7 +337,19 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef *hadc)
   */
 __weak void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
 {
-  RESET_ADC_CLK(hadc->Instance);
+  if((hadc->Instance) == ADC1) {
+    __HAL_RCC_ADC1_CLK_DISABLE();
+  }
+#ifdef ADC2
+  else if((hadc->Instance) == ADC2) {
+    __HAL_RCC_ADC2_CLK_DISABLE();
+  }
+#endif /* ADC2 */
+#ifdef ADC3
+  else if((hadc->Instance) == ADC3) {
+    __HAL_RCC_ADC3_CLK_DISABLE();
+  }
+#endif /* ADC3 */
 }
 
 /**
@@ -346,7 +370,7 @@ uint16_t adc_read_value(GPIO_TypeDef  *port, uint32_t pin, uint8_t do_init)
   if(id < 0 ) return 0;
 
   AdcHandle.Instance = g_analog_init_config[id].adcInstance;
-  
+
   if (AdcHandle.Instance == NULL) {
       return 0;
   }
@@ -437,7 +461,7 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim)
 
   /* Enable GPIO Channels Clock */
   /* Enable GPIO clock ****************************************/
-  SET_GPIO_CLK(g_analog_init_config[g_current_init_id].port);
+  set_gpio_clk(g_analog_init_config[g_current_init_id].port);
 
   /* Common configuration for all channels */
   GPIO_InitStruct.Pin = g_analog_init_config[g_current_init_id].pin;
@@ -480,21 +504,21 @@ void pwm_start(GPIO_TypeDef  *port, uint32_t pin, uint32_t clock_freq,
   //find the instance in the global
   int8_t id = get_analog_instance(port, pin);
   if(id < 0) return;
-  
+
   analog_timer_config.State = HAL_TIM_STATE_RESET;
   analog_timer_config.Init.ClockDivision     = 0;
   analog_timer_config.Init.CounterMode       = TIM_COUNTERMODE_UP;
-  analog_timer_config.Init.RepetitionCounter = 0;	  
+  analog_timer_config.Init.RepetitionCounter = 0;
 
   /* Compute the prescaler value to have TIM counter clock equal to clock_freq Hz */
   analog_timer_config.Instance               = g_analog_init_config[id].timInstance;
   analog_timer_config.Init.Prescaler         = (uint32_t)(SystemCoreClock / clock_freq) - 1;
   analog_timer_config.Init.Period            = period;
-  
-  if(do_init == 1) 
+
+  if(do_init == 1)
   {
     g_current_init_id = id;
-    if (HAL_TIM_PWM_Init(&analog_timer_config) != HAL_OK) 
+    if (HAL_TIM_PWM_Init(&analog_timer_config) != HAL_OK)
 	{
 			  digitalWrite(13,HIGH);
       return;
@@ -512,7 +536,7 @@ void pwm_start(GPIO_TypeDef  *port, uint32_t pin, uint32_t clock_freq,
 	timConfig.OCNIdleState = TIM_OCNIDLESTATE_RESET;
 	timConfig.OCIdleState  = TIM_OCIDLESTATE_RESET;
 	timConfig.Pulse = value;
-	 
+
   if (HAL_TIM_PWM_ConfigChannel(&analog_timer_config, &timConfig,
                                   g_analog_init_config[id].timChannel) != HAL_OK)
   {
@@ -542,8 +566,8 @@ void pwm_stop(GPIO_TypeDef  *port, uint32_t pin)
   int8_t id = get_analog_instance(port, pin);
   if(id < 0) return;
 
-  analog_timer_config.Instance               = g_analog_init_config[id].timInstance;	
-	
+  analog_timer_config.Instance               = g_analog_init_config[id].timInstance;
+
   if(g_analog_init_config[id].useNchannel) {
     HAL_TIMEx_PWMN_Stop(&analog_timer_config, g_analog_init_config[id].timChannel);
   } else {

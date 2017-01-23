@@ -141,7 +141,93 @@ void timer_enable_clock(TIM_HandleTypeDef *htim)
   uint8_t i = 0;
   for(i = 0; i < NB_TIMER_MANAGED; i++) {
     if(g_timer_config[i].timInstance == htim->Instance) {
-      ENABLE_TIMER_CLK(htim->Instance);
+
+#ifdef TIM2
+      if(htim->Instance == TIM2) {
+        __TIM2_CLK_ENABLE();
+      }
+#endif /* TIM2 */
+#ifdef TIM1
+      else if(htim->Instance == TIM1) {
+        __TIM1_CLK_ENABLE();
+      }
+#endif /* TIM1 */
+#ifdef TIM3
+      else if(htim->Instance == TIM3) {
+        __TIM3_CLK_ENABLE();
+      }
+#endif /* TIM3 */
+#ifdef TIM4
+      else if(htim->Instance == TIM4) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM4 */
+#ifdef TIM5
+      else if(htim->Instance == TIM5) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM5 */
+#ifdef TIM6
+      else if(htim->Instance == TIM6) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM6 */
+#ifdef TIM7
+      else if(htim->Instance == TIM7) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM7 */
+#ifdef TIM8
+      else if(htim->Instance == TIM8) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM8 */
+#ifdef TIM9
+      else if(htim->Instance == TIM9) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM9 */
+#ifdef TIM10
+      else if(htim->Instance == TIM10) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM10 */
+#ifdef TIM11
+      else if(htim->Instance == TIM11) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM11 */
+#ifdef TIM12
+      else if(htim->Instance == TIM12) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM12 */
+#ifdef TIM13
+      else if(htim->Instance == TIM13) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM13 */
+#ifdef TIM14
+      else if(htim->Instance == TIM14) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM14 */
+#ifdef TIM15
+      else if(htim->Instance == TIM15) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM15 */
+#ifdef TIM16
+      else if(htim->Instance == TIM16) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM16 */
+#ifdef TIM17
+      else if(htim->Instance == TIM17) {
+        __TIM4_CLK_ENABLE();
+      }
+#endif /* TIM17 */
+
       g_timer_param[i].configured = 1;
       break;
     }
@@ -158,7 +244,88 @@ void timer_disable_clock(TIM_HandleTypeDef *htim)
   uint8_t i = 0;
   for(i = 0; i < NB_TIMER_MANAGED; i++) {
     if(g_timer_config[i].timInstance == htim->Instance) {
-      DISABLE_TIMER_CLK(htim->Instance);
+
+#ifdef TIM2
+      if(htim->Instance == TIM2) {
+        __TIM2_CLK_DISABLE();
+      }
+#endif /* TIM2 */
+#ifdef TIM3
+      else if(htim->Instance == TIM3) {
+        __TIM3_CLK_DISABLE();
+      }
+#endif /* TIM3 */
+#ifdef TIM4
+      else if(htim->Instance == TIM4) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM4 */
+#ifdef TIM5
+      else if(htim->Instance == TIM5) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM5 */
+#ifdef TIM6
+      else if(htim->Instance == TIM6) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM6 */
+#ifdef TIM7
+      else if(htim->Instance == TIM7) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM7 */
+#ifdef TIM8
+      else if(htim->Instance == TIM8) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM8 */
+#ifdef TIM9
+      else if(htim->Instance == TIM9) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM9 */
+#ifdef TIM10
+      else if(htim->Instance == TIM10) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM10 */
+#ifdef TIM11
+      else if(htim->Instance == TIM11) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM11 */
+#ifdef TIM12
+      else if(htim->Instance == TIM12) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM12 */
+#ifdef TIM13
+      else if(htim->Instance == TIM13) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM13 */
+#ifdef TIM14
+      else if(htim->Instance == TIM14) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM14 */
+#ifdef TIM15
+      else if(htim->Instance == TIM15) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM15 */
+#ifdef TIM16
+      else if(htim->Instance == TIM16) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM16 */
+#ifdef TIM17
+      else if(htim->Instance == TIM17) {
+        __TIM4_CLK_DISABLE();
+      }
+#endif /* TIM17 */
+
       g_timer_param[i].configured = 0;
       break;
     }

@@ -109,7 +109,7 @@ void digital_io_init(GPIO_TypeDef  *port, uint32_t pin, uint32_t mode, uint32_t 
 {
   GPIO_InitTypeDef GPIO_InitStructure;
 
-  SET_GPIO_CLK(port);
+  set_gpio_clk(port);
   GPIO_InitStructure.Pin = pin;
   GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_HIGH;
   GPIO_InitStructure.Mode = mode;

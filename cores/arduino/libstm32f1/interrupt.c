@@ -69,7 +69,8 @@ typedef void (*callback_t)(void);
 /** @addtogroup STM32F1xx_System_Private_Defines
   * @{
   */
-
+/* Number of pin connected to an external interrupt by port */
+#define NB_GPIO_EXTI   16
 
 #define GPIO_NUMBER ((uint32_t)16)
 /**
@@ -87,7 +88,25 @@ typedef void (*callback_t)(void);
 /** @addtogroup STM32F1xx_System_Private_Variables
   * @{
   */
-static uint32_t g_EXTIx_IRQn[NB_GPIO_EXTI] = GPIO_EXTI_PARAM;
+/* List of EXTI connected to pin 0 to 15 */
+static const uint32_t g_EXTIx_IRQn[NB_GPIO_EXTI] = {
+  EXTI0_IRQn,
+  EXTI1_IRQn,
+  EXTI2_IRQn,
+  EXTI3_IRQn,
+  EXTI4_IRQn,
+  EXTI9_5_IRQn,
+  EXTI9_5_IRQn,
+  EXTI9_5_IRQn,
+  EXTI9_5_IRQn,
+  EXTI9_5_IRQn,
+  EXTI15_10_IRQn,
+  EXTI15_10_IRQn,
+  EXTI15_10_IRQn,
+  EXTI15_10_IRQn,
+  EXTI15_10_IRQn,
+  EXTI15_10_IRQn
+};
 
 static callback_t g_callback_ptr[NB_GPIO_EXTI] = {NULL};
 

@@ -173,73 +173,12 @@ PWM option: .timInstance=TIMx
   }                                   \
 }
 
-//Enable GPIO port clock
-#define SET_GPIO_CLK(gpiox) do {  \
-  if((gpiox) == GPIOA) {          \
-    __GPIOA_CLK_ENABLE();         \
-  } else if((gpiox) == GPIOB){    \
-    __GPIOB_CLK_ENABLE();         \
-  } else if((gpiox) == GPIOC){    \
-    __GPIOC_CLK_ENABLE();         \
-  }                               \
-} while(0)
-
-//Enable ADC clock
-#define SET_ADC_CLK(adc) do {       \
-  if((adc) == ADC1) {               \
-    __HAL_RCC_ADC1_CLK_ENABLE();    \
-  }                                 \
-  /*else if((adc) == ADC2) {        \
-    __HAL_RCC_ADC2_CLK_ENABLE();    \
-  } else if((adc) == ADC3) {        \
-    __HAL_RCC_ADC3_CLK_ENABLE();    \
-  }                                */ \
-} while(0)
-
-//Disable ADC clock
-#define RESET_ADC_CLK(adc) do {     \
-  if((adc) == ADC1) {               \
-    __HAL_RCC_ADC1_CLK_DISABLE();   \
-  }                                 \
-  /*else if((adc) == ADC2) {        \
-    __HAL_RCC_ADC2_CLK_DISABLE();   \
-  } else if((adc) == ADC3) {        \
-    __HAL_RCC_ADC3_CLK_DISABLE();   \
-  }                                 */\
-} while(0)
-
-/******************************************************************************/
-/* GPIO external interrupt configuration */
-/* Number of pin connected to an external interrupt by port */
-#define NB_GPIO_EXTI   16
-
-/* List of EXTI connected to pin 0 to 15 */
-#define GPIO_EXTI_PARAM {   \
-  EXTI0_IRQn,               \
-  EXTI1_IRQn,               \
-  EXTI2_IRQn,               \
-  EXTI3_IRQn,               \
-  EXTI4_IRQn,               \
-  EXTI9_5_IRQn,             \
-  EXTI9_5_IRQn,             \
-  EXTI9_5_IRQn,             \
-  EXTI9_5_IRQn,             \
-  EXTI9_5_IRQn,             \
-  EXTI15_10_IRQn,           \
-  EXTI15_10_IRQn,           \
-  EXTI15_10_IRQn,           \
-  EXTI15_10_IRQn,           \
-  EXTI15_10_IRQn,           \
-  EXTI15_10_IRQn            \
-}
-
 /******************************************************************************/
 /* I2C configuration */
 /* I2C instance_e available. Number of I2C instance configured. */
 typedef enum {
   I2C_1,
   //I2C_2,
-  //I2C_3,
   NB_I2C_INSTANCES
 }i2c_instance_e;
 
@@ -265,20 +204,6 @@ typedef enum {
     .scl_pin = GPIO_PIN_8             \
   }                                   \
 }
-
-//Enable I2C clock
-#define ENABLE_I2C_CLK(I2Cx) do {   \
-  if((I2Cx) == I2C1) {              \
-    __HAL_RCC_I2C1_CLK_ENABLE();    \
-  }                                 \
-} while(0)
-
-//Disable I2C clock
-#define DISABLE_I2C_CLK(I2Cx) do {  \
-  if((I2Cx) == I2C1) {              \
-    __HAL_RCC_I2C1_CLK_DISABLE();   \
-  }                                 \
-} while(0)
 
 /*TBD: Wire library must be rework to accept more than one I2C without use this macro. */
 #define LINK_I2C_INSTANCE_OBJ case I2C_1: ptr = &Wire; break; \
@@ -328,32 +253,6 @@ typedef enum {
   }                             \
 }
 
-//Enable timer clock
-#define ENABLE_TIMER_CLK(TIMx) do {   \
-  if((TIMx) == TIM1) {                \
-    __TIM1_CLK_ENABLE();              \
-  } else if((TIMx) == TIM2) {         \
-    __TIM2_CLK_ENABLE();              \
-  } else if((TIMx) == TIM3) {         \
-    __TIM3_CLK_ENABLE();              \
-  } else if((TIMx) == TIM4) {         \
-    __TIM4_CLK_ENABLE();              \
-  }                                   \
-} while(0)
-
-//Disable timer clock
-#define DISABLE_TIMER_CLK(TIMx) do {  \
-  if((TIMx) == TIM1) {                \
-    __TIM1_CLK_DISABLE();             \
-  } else if((TIMx) == TIM2) {         \
-    __TIM2_CLK_DISABLE();             \
-  } else if((TIMx) == TIM3) {         \
-    __TIM3_CLK_DISABLE();             \
-  } else if((TIMx) == TIM4) {         \
-    __TIM4_CLK_DISABLE();             \
-  }                                   \
-} while(0)
-
 /******************************************************************************/
 /* Uart configuration */
 /* UART instance_e available. Number of UART instance configured. */
@@ -392,24 +291,6 @@ typedef enum {
     .uart_af_remap = USART2_AF_Remap                                            \
   }                                                                             \
 }
-
-//Enable uart clock
-#define ENABLE_UART_CLK(UARTx) do {   \
-  if((UARTx) == USART1) {             \
-    __HAL_RCC_USART1_CLK_ENABLE();    \
-  } else if((UARTx) == USART2) {      \
-    __HAL_RCC_USART2_CLK_ENABLE();    \
-  }                                   \
-} while(0)
-
-//Disable uart clock
-#define DISABLE_UART_CLK(UARTx) do {  \
-  if((UARTx) == USART1) {             \
-    __HAL_RCC_USART1_CLK_DISABLE();   \
-  } else if((UARTx) == USART2) {      \
-    __HAL_RCC_USART2_CLK_DISABLE();   \
-  }                                   \
-} while(0)
 
 /* Emulated uart configuration */
 #define UART_EMUL_PARAM {                                                           \
@@ -454,20 +335,6 @@ typedef enum {
     .sck_pin = GPIO_PIN_5,            \
   }                                   \
 }
-
-//Enable spi clock
-#define ENABLE_SPI_CLK(SPIx) do {     \
-  if((SPIx) == SPI1) {                \
-    __HAL_RCC_SPI1_CLK_ENABLE();      \
-  }                                   \
-} while(0)
-
-//Disable spi clock
-#define DISABLE_SPI_CLK(SPIx) do {    \
-  if((SPIx) == SPI1) {                \
-    __HAL_RCC_SPI1_CLK_DISABLE();     \
-  }                                   \
-} while(0)
 
 #ifdef __cplusplus
 }

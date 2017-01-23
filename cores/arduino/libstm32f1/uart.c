@@ -161,11 +161,31 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
   }
 
   // Enable GPIO TX/RX clock
-  SET_GPIO_CLK(g_uart_config[uart_id].tx_port);
-  SET_GPIO_CLK(g_uart_config[uart_id].rx_port);
+  set_gpio_clk(g_uart_config[uart_id].tx_port);
+  set_gpio_clk(g_uart_config[uart_id].rx_port);
 
   // Enable USART clock
-  ENABLE_UART_CLK(huart->Instance);
+  if(huart->Instance == USART1) {
+    __HAL_RCC_USART1_CLK_ENABLE();
+  }
+  else if(huart->Instance == USART2) {
+    __HAL_RCC_USART2_CLK_ENABLE();
+  }
+#ifdef USART3
+  else if(huart->Instance == USART3) {
+    __HAL_RCC_USART3_CLK_ENABLE();
+  }
+#endif /* USART3 */
+#ifdef UART4
+  else if(huart->Instance == UART4) {
+    __HAL_RCC_UART4_CLK_ENABLE();
+  }
+#endif /* UART4 */
+#ifdef UART5
+  else if(huart->Instance == UART5) {
+    __HAL_RCC_UART5_CLK_ENABLE();
+  }
+#endif /* UART5 */
 
   g_uart_config[uart_id].uart_af_remap();
 
@@ -197,7 +217,27 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef *huart)
     return;
   }
 
-  DISABLE_UART_CLK(huart->Instance);
+  if(huart->Instance == USART1) {
+    __HAL_RCC_USART1_CLK_DISABLE();
+  }
+  else if(huart->Instance == USART2) {
+    __HAL_RCC_USART2_CLK_DISABLE();
+  }
+#ifdef USART3
+  else if(huart->Instance == USART3) {
+    __HAL_RCC_USART3_CLK_DISABLE();
+  }
+#endif /* USART3 */
+#ifdef UART4
+  else if(huart->Instance == UART4) {
+    __HAL_RCC_UART4_CLK_DISABLE();
+  }
+#endif /* UART4 */
+#ifdef UART5
+  else if(huart->Instance == UART5) {
+    __HAL_RCC_UART5_CLK_DISABLE();
+  }
+#endif /* UART5 */
 
   HAL_GPIO_DeInit(g_uart_config[uart_id].tx_port, g_uart_config[uart_id].tx_pin.Pin);
   HAL_GPIO_DeInit(g_uart_config[uart_id].rx_port, g_uart_config[uart_id].rx_pin.Pin);
@@ -234,7 +274,7 @@ void uart_init(uart_id_e uart_id, uint32_t baudRate)
   if(HAL_UART_DeInit(&g_UartHandle[uart_id]) != HAL_OK)
   {
     return;
-  }  
+  }
   if(HAL_UART_Init(&g_UartHandle[uart_id])!= HAL_OK) {
     return;
   }
@@ -405,8 +445,8 @@ void HAL_UART_Emul_MspInit(UART_Emul_HandleTypeDef *huart)
   UNUSED(huart);
 
   // Enable GPIO TX/RX clock
-  SET_GPIO_CLK(g_uartEmul_config[UART1_EMUL_E].tx_port);
-  SET_GPIO_CLK(g_uartEmul_config[UART1_EMUL_E].rx_port);
+  set_gpio_clk(g_uartEmul_config[UART1_EMUL_E].tx_port);
+  set_gpio_clk(g_uartEmul_config[UART1_EMUL_E].rx_port);
 
   // UART TX GPIO pin configuration
   HAL_GPIO_Init(g_uartEmul_config[UART1_EMUL_E].tx_port,

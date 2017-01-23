@@ -156,9 +156,17 @@ void i2c_custom_init(i2c_instance_e i2c_id, uint32_t timing, uint32_t addressing
     }
 
     //Enable Clocks
-    SET_GPIO_CLK(g_i2c_init_info[i2c_id].sda_port);
-    SET_GPIO_CLK(g_i2c_init_info[i2c_id].scl_port);
-    ENABLE_I2C_CLK(g_i2c_init_info[i2c_id].i2c_instance);
+    set_gpio_clk(g_i2c_init_info[i2c_id].sda_port);
+    set_gpio_clk(g_i2c_init_info[i2c_id].scl_port);
+
+    if(g_i2c_init_info[i2c_id].i2c_instance == I2C1) {
+      __HAL_RCC_I2C1_CLK_ENABLE();
+    }
+#ifdef I2C2
+    else if (g_i2c_init_info[i2c_id].i2c_instance == I2C2) {
+      __HAL_RCC_I2C2_CLK_ENABLE();
+    }
+#endif /* I2C2 */
 
     //SCL
     GPIO_InitStruct.Pin = g_i2c_init_info[i2c_id].scl_pin;
@@ -212,7 +220,14 @@ void i2c_deinit(i2c_instance_e i2c_id)
 {
   if(g_i2c_param[i2c_id].init_done == 1) {
 
-    DISABLE_I2C_CLK(g_i2c_init_info[i2c_id].i2c_instance);
+    if(g_i2c_init_info[i2c_id].i2c_instance == I2C1) {
+      __HAL_RCC_I2C1_CLK_DISABLE();
+    }
+#ifdef I2C2
+    else if (g_i2c_init_info[i2c_id].i2c_instance == I2C2) {
+      __HAL_RCC_I2C2_CLK_DISABLE();
+    }
+#endif /* I2C2 */
 
     HAL_NVIC_DisableIRQ(g_i2c_init_info[i2c_id].ev_irq);
     HAL_NVIC_DisableIRQ(g_i2c_init_info[i2c_id].er_irq);

@@ -50,8 +50,8 @@
 #include "hw_config.h"
 #include "variant_hal_config.h"
 
-#ifdef SERIAL_USB 
-extern PCD_HandleTypeDef hpcd_USB_FS; 
+#ifdef SERIAL_USB
+extern PCD_HandleTypeDef hpcd_USB_FS;
 #endif
 
 #ifdef __cplusplus
@@ -129,6 +129,43 @@ void hw_config_init(void)
 
   // Configure the system clock
   SystemClock_Config();
+}
+
+/**
+  * @brief  This function enable the GPIO clock
+  * @param  GPIO_TypeDef GPIOx
+  * @retval None
+  */
+
+//Enable GPIO port clock
+void set_gpio_clk(GPIO_TypeDef *GPIOx) {
+  if(GPIOx == NULL)
+    return;
+
+  if(GPIOx == GPIOA) {
+    __GPIOA_CLK_ENABLE();
+  } else if(GPIOx == GPIOB){
+    __GPIOB_CLK_ENABLE();
+  } else if(GPIOx == GPIOC){
+    __GPIOC_CLK_ENABLE();
+  } else if(GPIOx == GPIOD){
+    __GPIOD_CLK_ENABLE();
+  }
+#ifdef GPIOE
+  else if(GPIOx == GPIOE){
+    __GPIOE_CLK_ENABLE();
+  }
+#endif /* GPIOE */
+#ifdef GPIOF
+  else if(GPIOx == GPIOF){
+    __GPIOF_CLK_ENABLE();
+  }
+#endif /* GPIOF */
+#ifdef GPIOG
+  else if(GPIOx == GPIOG){
+    __GPIOG_CLK_ENABLE();
+  }
+#endif /* GPIOG */
 }
 
 /**

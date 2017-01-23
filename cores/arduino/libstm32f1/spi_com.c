@@ -203,12 +203,24 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef *hspi)
   if(g_spi_param[spi_id].init_done == 0) {
 
     //##-1- Enable peripherals and GPIO Clocks #################################
-    SET_GPIO_CLK(g_spi_init_info[spi_id].mosi_port);
-    SET_GPIO_CLK(g_spi_init_info[spi_id].miso_port);
-    SET_GPIO_CLK(g_spi_init_info[spi_id].sck_port);
+    set_gpio_clk(g_spi_init_info[spi_id].mosi_port);
+    set_gpio_clk(g_spi_init_info[spi_id].miso_port);
+    set_gpio_clk(g_spi_init_info[spi_id].sck_port);
 
     // Enable SPI clock
-    ENABLE_SPI_CLK(hspi->Instance);
+    if(hspi->Instance == SPI1) {
+      __HAL_RCC_SPI1_CLK_ENABLE();
+    }
+#ifdef SPI2
+    else if(hspi->Instance == SPI2) {
+      __HAL_RCC_SPI2_CLK_ENABLE();
+    }
+#endif /* SPI2 */
+#ifdef SPI3
+    else if(hspi->Instance == SPI3) {
+      __HAL_RCC_SPI3_CLK_ENABLE();
+    }
+#endif /* SPI3 */
 
     //##-2- Configure peripheral GPIO ##########################################
 
@@ -252,7 +264,20 @@ void spi_deinit(spi_instance_e spi_id)
   }
 
   HAL_SPI_DeInit(&g_spi_param[spi_id].spiHandle);
-  DISABLE_SPI_CLK(g_spi_init_info[spi_id].spi_instance);
+
+  if(g_spi_init_info[spi_id].spi_instance == SPI1) {
+    __HAL_RCC_SPI1_CLK_DISABLE();
+  }
+#ifdef SPI2
+  else if(g_spi_init_info[spi_id].spi_instance == SPI2) {
+    __HAL_RCC_SPI2_CLK_DISABLE();
+  }
+#endif /* SPI2 */
+#ifdef SPI3
+  else if(g_spi_init_info[spi_id].spi_instance == SPI3) {
+    __HAL_RCC_SPI3_CLK_DISABLE();
+  }
+#endif /* SPI3 */
 
   HAL_GPIO_DeInit(g_spi_init_info[spi_id].sck_port,g_spi_init_info[spi_id].sck_pin);
   HAL_GPIO_DeInit(g_spi_init_info[spi_id].miso_port,g_spi_init_info[spi_id].miso_pin);
