@@ -100,8 +100,8 @@
 /** @addtogroup STM32F1xx_System_Private_Variables
   * @{
   */
-static void i2c1_alternate(void)       {  __HAL_RCC_AFIO_CLK_ENABLE();
-                                          __HAL_AFIO_REMAP_I2C1_ENABLE(); }
+static void I2C1_AF_FullRemap(void) {__HAL_AFIO_REMAP_I2C1_ENABLE();}
+static void I2C1_AF_NoRemap(void)   {__HAL_AFIO_REMAP_I2C1_DISABLE();}
 
 static const i2c_init_info_t g_i2c_init_info[NB_I2C_INSTANCES] = I2C_PARAM;
 
@@ -183,6 +183,7 @@ void i2c_custom_init(i2c_instance_e i2c_id, uint32_t timing, uint32_t addressing
     HAL_GPIO_Init(g_i2c_init_info[i2c_id].sda_port, &GPIO_InitStruct);
 
     if(g_i2c_init_info[i2c_id].i2c_alternate != NULL) {
+      __HAL_RCC_AFIO_CLK_ENABLE();
       g_i2c_init_info[i2c_id].i2c_alternate();
     }
 

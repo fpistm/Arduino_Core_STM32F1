@@ -64,16 +64,61 @@
 /** @addtogroup STM32F1xx_System_Private_TypesDefinitions
   * @{
   */
-void TIM1_AF_PartialRemap(void)  { __HAL_RCC_AFIO_CLK_ENABLE();
-                                          __HAL_AFIO_REMAP_TIM1_PARTIAL();}  // CH1N/A7
-void TIM2_AF_FullRemap(void)     { __HAL_RCC_AFIO_CLK_ENABLE();
-                                          __HAL_AFIO_REMAP_TIM2_ENABLE();}   // CH2/B3 CH3/B10
-void TIM3_AF_FullRemap(void)     { __HAL_RCC_AFIO_CLK_ENABLE();
-                                          __HAL_AFIO_REMAP_TIM3_ENABLE();}   // CH2/C7
-void TIM3_AF_PartialRemap(void)  { __HAL_RCC_AFIO_CLK_ENABLE();
-                                          __HAL_AFIO_REMAP_TIM3_PARTIAL();}  // CH1/B4
-void TIM4_AF_NoRemap(void)       { __HAL_RCC_AFIO_CLK_ENABLE();
-                                          __HAL_AFIO_REMAP_TIM4_DISABLE();}  // CH1/B6
+#ifdef TIM1
+static void TIM1_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM1_ENABLE();}
+static void TIM1_AF_PartialRemap(void)  {__HAL_AFIO_REMAP_TIM1_PARTIAL();}
+static void TIM1_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM1_DISABLE();}
+#endif /* TIM1 */
+
+static void TIM2_AF_FullRemap(void)       {__HAL_AFIO_REMAP_TIM2_ENABLE();}
+static void TIM2_AF_PartialRemap_1(void)  {__HAL_AFIO_REMAP_TIM2_PARTIAL_1();}
+static void TIM2_AF_PartialRemap_2(void)  {__HAL_AFIO_REMAP_TIM2_PARTIAL_2();}
+static void TIM2_AF_NoRemap(void)         {__HAL_AFIO_REMAP_TIM2_DISABLE();}
+
+static void TIM3_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM3_ENABLE();}
+static void TIM3_AF_PartialRemap(void)  {__HAL_AFIO_REMAP_TIM3_PARTIAL();}
+static void TIM3_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM3_DISABLE();}
+
+#ifdef TIM4
+static void TIM4_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM4_ENABLE();}
+static void TIM4_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM4_DISABLE();}
+#endif /* TIM4 */
+
+#ifdef TIM5
+static void TIM5_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM5CH4_ENABLE();}
+static void TIM5_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM5CH4_DISABLE();}
+#endif /* TIM5 */
+
+#ifdef TIM9
+static void TIM9_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM9_ENABLE();}
+static void TIM9_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM9_DISABLE();}
+#endif /* TIM9 */
+
+#ifdef TIM10
+static void TIM10_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM10_ENABLE();}
+static void TIM10_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM10_DISABLE();}
+#endif /* TIM10 */
+
+#ifdef TIM11
+static void TIM11_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM11_ENABLE();}
+static void TIM11_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM11_DISABLE();}
+#endif /* TIM11 */
+
+#ifdef TIM12
+static void TIM12_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM12_ENABLE();}
+static void TIM12_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM12_DISABLE();}
+#endif /* TIM12 */
+
+#ifdef TIM13
+static void TIM13_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM13_ENABLE();}
+static void TIM13_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM13_DISABLE();}
+#endif /* TIM13 */
+
+#ifdef TIM14
+static void TIM14_AF_FullRemap(void)     {__HAL_AFIO_REMAP_TIM14_ENABLE();}
+static void TIM14_AF_NoRemap(void)       {__HAL_AFIO_REMAP_TIM14_DISABLE();}
+#endif /* TIM14 */
+
 /**
   * @}
   */
@@ -469,7 +514,10 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 
-  g_analog_init_config[g_current_init_id].alFunction();
+  if(g_analog_init_config[g_current_init_id].alFunction != NULL) {
+    __HAL_RCC_AFIO_CLK_ENABLE();
+    g_analog_init_config[g_current_init_id].alFunction();
+  }
 
   HAL_GPIO_Init(g_analog_init_config[g_current_init_id].port, &GPIO_InitStruct);
 }

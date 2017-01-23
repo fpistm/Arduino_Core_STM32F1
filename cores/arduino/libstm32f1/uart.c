@@ -86,8 +86,17 @@
 /** @addtogroup STM32F1xx_System_Private_Macros
   * @{
   */
-static void USART1_AF_Remap(void)       {__HAL_RCC_AFIO_CLK_ENABLE(); __HAL_AFIO_REMAP_USART1_DISABLE();}
-static void USART2_AF_Remap(void)       {__HAL_RCC_AFIO_CLK_ENABLE(); __HAL_AFIO_REMAP_USART2_DISABLE();}
+static void USART1_AF_FullRemap(void)     {__HAL_AFIO_REMAP_USART1_ENABLE();}
+static void USART1_AF_NoRemap(void)       {__HAL_AFIO_REMAP_USART1_DISABLE();}
+
+static void USART2_AF_FullRemap(void)     {__HAL_AFIO_REMAP_USART2_ENABLE();}
+static void USART2_AF_NoRemap(void)       {__HAL_AFIO_REMAP_USART2_DISABLE();}
+
+#ifdef USART3
+static void USART3_AF_FullRemap(void)     {__HAL_AFIO_REMAP_USART3_ENABLE();}
+static void USART3_AF_PartialRemap(void)  {__HAL_AFIO_REMAP_USART3_PARTIAL();}
+static void USART3_AF_NoRemap(void)       {__HAL_AFIO_REMAP_USART3_DISABLE();}
+#endif /* USART 3 */
 
 /**
   * @}
@@ -187,7 +196,10 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
   }
 #endif /* UART5 */
 
-  g_uart_config[uart_id].uart_af_remap();
+  if(g_uart_config[uart_id].uart_af_remap != NULL) {
+    __HAL_RCC_AFIO_CLK_ENABLE();
+    g_uart_config[uart_id].uart_af_remap();
+  }
 
   //##-2- Configure peripheral GPIO ##########################################
 

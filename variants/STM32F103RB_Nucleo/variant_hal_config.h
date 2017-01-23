@@ -65,6 +65,10 @@ mapping of the STM32F103.
 /* Analog pin configuration:
 Global: .port=GPIOx
         .pin=GPIO_PIN_x
+Alternate function: .alFunction= TIMx_AF_NoRemap, TIMx_AF_FullRemap,
+                                  TIMx_AF_PartialRemap,
+                                  TIMx_AF_PartialRemap_1 or
+                                  TIMx_AF_PartialRemap_2
 ADC option: .adcInstance=ADCx
             .Channel=ADC_CHANNEL_x
 DAC option: .dacInstance=DACx
@@ -186,7 +190,8 @@ typedef enum {
   .i2c_instance=I2Cx
   .ev_irq : I2C Event interrupt handler
   .er_irq : I2C Error interrupt handler
-  .i2c_alternate : enable I2Cx alternate function //TDB: option not fully implemented
+  .i2c_alternate : enable I2C1 alternate function
+                    Can be I2C1_AF_FullRemap or I2C1_AF_NoRemap
   .sda_port = GPIOx,
   .sda_pin = GPIO_PIN_x,
   .scl_port = GPIOx,
@@ -197,7 +202,7 @@ typedef enum {
     .i2c_instance = I2C1,             \
     .ev_irq = I2C1_EV_IRQn,           \
     .er_irq = I2C1_ER_IRQn,           \
-    .i2c_alternate = i2c1_alternate,  \
+    .i2c_alternate = I2C1_AF_FullRemap,\
     .sda_port = GPIOB,                \
     .sda_pin = GPIO_PIN_9,            \
     .scl_port = GPIOB,                \
@@ -269,7 +274,8 @@ typedef enum {
 .tx_pin : GPIO_InitTypeDef
 .rx_port = GPIOx
 .rx_pin : GPIO_InitTypeDef
-.uart_af_remap : alternate function remapping //TDB: option not fully implemented
+.uart_af_remap : alternate function remapping
+                Can be: USARTx_AF_NoRemap, USARTx_AF_FullRemap or USARTx_AF_PartialRemap
 */
 #define UART_PARAM {                                                            \
   {                                                                             \
@@ -279,7 +285,7 @@ typedef enum {
     .tx_pin = {GPIO_PIN_9, GPIO_MODE_AF_PP, GPIO_PULLUP, GPIO_SPEED_FREQ_HIGH}, \
     .rx_port = GPIOA,                                                           \
     .rx_pin = {GPIO_PIN_10, GPIO_MODE_INPUT, GPIO_PULLUP, GPIO_SPEED_FREQ_HIGH},\
-    .uart_af_remap = USART1_AF_Remap                                            \
+    .uart_af_remap = USART1_AF_NoRemap                                          \
   },                                                                            \
   {                                                                             \
     .usart_typedef = USART2,                                                    \
@@ -288,7 +294,7 @@ typedef enum {
     .tx_pin = {GPIO_PIN_2, GPIO_MODE_AF_PP, GPIO_PULLUP, GPIO_SPEED_FREQ_HIGH}, \
     .rx_port = GPIOA,                                                           \
     .rx_pin = {GPIO_PIN_3, GPIO_MODE_AF_PP, GPIO_PULLUP, GPIO_SPEED_FREQ_HIGH}, \
-    .uart_af_remap = USART2_AF_Remap                                            \
+    .uart_af_remap = USART2_AF_NoRemap                                          \
   }                                                                             \
 }
 
@@ -315,7 +321,8 @@ typedef enum {
 
 /* SPI configuration:
 .spi_instance = SPIx
-.spi_alternate : SPI alternate function //TDB: option not fully implemented
+.spi_alternate : SPI alternate function
+                Can be: SPIx_AF_NoRemap or SPIx_AF_FullRemap
 .mosi_port = GPIOx
 .mosi_pin =  GPIO_PIN_x
 .miso_port = GPIOx
@@ -326,7 +333,7 @@ typedef enum {
 #define SPI_PARAM {                   \
   {                                   \
     .spi_instance = SPI1,             \
-    .spi_alternate = SPI1_Alternate,  \
+    .spi_alternate = SPI1_AF_NoRemap, \
     .mosi_port = GPIOA,               \
     .mosi_pin =  GPIO_PIN_7,          \
     .miso_port = GPIOA,               \

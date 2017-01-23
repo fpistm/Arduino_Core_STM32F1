@@ -77,8 +77,14 @@
 /** @addtogroup STM32F1xx_System_Private_Macros
   * @{
   */
+static void SPI1_AF_FullRemap(void) {__HAL_AFIO_REMAP_SPI1_ENABLE();}
+static void SPI1_AF_NoRemap(void)   {__HAL_AFIO_REMAP_SPI1_DISABLE();}
 
-static void SPI1_Alternate(void)                { __HAL_AFIO_REMAP_SPI1_DISABLE(); }
+#ifdef SPI3
+static void SPI3_AF_FullRemap(void) {__HAL_AFIO_REMAP_SPI3_ENABLE();}
+static void SPI3_AF_NoRemap(void)   {__HAL_AFIO_REMAP_SPI3_DISABLE();}
+#endif /* SPI3 */
+
 
 /**
   * @}
@@ -223,8 +229,10 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef *hspi)
 #endif /* SPI3 */
 
     //##-2- Configure peripheral GPIO ##########################################
-
-    g_spi_init_info[spi_id].spi_alternate();
+    if(g_spi_init_info[spi_id].spi_alternate != NULL) {
+      __HAL_RCC_AFIO_CLK_ENABLE();
+      g_spi_init_info[spi_id].spi_alternate();
+    }
 
     // SPI SCK GPIO pin configuration
     GPIO_InitStructure.Pin       = g_spi_init_info[spi_id].sck_pin;
