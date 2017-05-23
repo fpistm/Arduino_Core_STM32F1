@@ -81,6 +81,10 @@ USBSerial Serial;    //available on PA9/PA10
 UARTClass Serial1(USART1_E);   //available on PA9/PA10
 USARTClass Serial2(USART2_E);  //available on PA2/PA3
 
+#ifdef USART3
+USARTClass Serial3(USART3_E);  //available on PA2/PA3
+#endif
+
 void serialEvent() __attribute__((weak));
 void serialEvent() { }
 
