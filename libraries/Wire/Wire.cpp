@@ -59,11 +59,6 @@ void TwoWire::begin(uint8_t address)
     master = false;
 
   i2c_custom_init(p_i2c_instance,I2C_100KHz,I2C_ADDRESSINGMODE_7BIT,ownAddress,master);
-
-  if(master == false){
-    i2c_attachSlaveTxEvent(p_i2c_instance, reinterpret_cast<void(*)(i2c_instance_e)>(&TwoWire::onRequestService));
-    i2c_attachSlaveRxEvent(p_i2c_instance, reinterpret_cast<void(*)(i2c_instance_e, uint8_t*, int)>(&TwoWire::onReceiveService));
-  }
 }
 
 void TwoWire::begin(int address)
@@ -84,23 +79,23 @@ void TwoWire::setClock(uint32_t frequency)
 uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint32_t iaddress, uint8_t isize, uint8_t sendStop)
 {
   if (master == true) {
-    if (isize > 0) {
+    // if (isize > 0) {
     // send internal address; this mode allows sending a repeated start to access
     // some devices' internal registers. This function is executed by the hardware
     // TWI module on other processors (for example Due's TWI_IADR and TWI_MMR registers)
 
-    beginTransmission(address);
-
-    // the maximum size of internal address is 3 bytes
-    if (isize > 3){
-      isize = 3;
-    }
-
-    // write internal register address - most significant byte first
-    while (isize-- > 0)
-      write((uint8_t)(iaddress >> (isize*8)));
-    endTransmission(false);
-    }
+    // beginTransmission(address);
+    //
+    // // the maximum size of internal address is 3 bytes
+    // if (isize > 3){
+    //   isize = 3;
+    // }
+    //
+    // // write internal register address - most significant byte first
+    // while (isize-- > 0)
+    //   write((uint8_t)(iaddress >> (isize*8)));
+    // endTransmission(false);
+    // }
 
     // clamp to buffer length
     if(quantity > BUFFER_LENGTH){
@@ -374,12 +369,16 @@ void TwoWire::onRequestService(i2c_instance_e p_i2c_instance)
 void TwoWire::onReceive( void (*function)(int) )
 {
   user_onReceive = function;
+  //Enable slave receive IT
+  i2c_attachSlaveRxEvent(p_i2c_instance, reinterpret_cast<void(*)(i2c_instance_e, uint8_t*, int)>(&TwoWire::onReceiveService));
 }
 
 // sets function called on slave read
 void TwoWire::onRequest( void (*function)(void) )
 {
   user_onRequest = function;
+  //Enable slave transmit IT
+  i2c_attachSlaveTxEvent(p_i2c_instance, reinterpret_cast<void(*)(i2c_instance_e)>(&TwoWire::onRequestService));
 }
 
 // Preinstantiate Objects //////////////////////////////////////////////////////
