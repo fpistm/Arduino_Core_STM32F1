@@ -67,6 +67,9 @@ typedef struct _PinDescription
 
 #define NB_PIN_DESCRIPTIONS (16*3)
 
+/* interrupts, Arduino compatible */
+#define digitalPinToInterrupt(P)   ( P )
+
 /* Pins table to be instanciated into variant.cpp */
 extern const PinDescription g_APinDescription[] ;
 
