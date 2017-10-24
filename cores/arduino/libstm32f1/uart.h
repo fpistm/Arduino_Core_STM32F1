@@ -50,6 +50,9 @@
 typedef enum {
   USART1_E = 0,
   USART2_E = 1,
+#ifdef USART3
+  USART3_E = 2,
+#endif
   NB_UART_MANAGED
 } uart_id_e;
 

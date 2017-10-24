@@ -179,6 +179,10 @@ static const uint8_t SCK  = 13;
 extern UARTClass  Serial1;
 extern USARTClass Serial2;
 
+#ifdef USART3
+extern USARTClass Serial3;
+#endif
+
 #ifdef SERIAL_USB 
 extern USBSerial Serial; 
 #else 

@@ -133,6 +133,14 @@ static void gpiob_clock_enable(void)    { __HAL_RCC_GPIOB_CLK_ENABLE(); }
 static void USART1_AF_Remap(void)       {__HAL_RCC_AFIO_CLK_ENABLE(); __HAL_AFIO_REMAP_USART1_DISABLE();}
 static void USART2_AF_Remap(void)       {__HAL_RCC_AFIO_CLK_ENABLE(); __HAL_AFIO_REMAP_USART2_DISABLE();}
 
+#ifdef USART3
+static void usart3_clock_enable(void)   { __HAL_RCC_USART3_CLK_ENABLE(); }
+static void usart3_force_reset(void)    { __HAL_RCC_USART3_FORCE_RESET(); }
+static void usart3_release_reset(void)  { __HAL_RCC_USART3_RELEASE_RESET(); }
+
+static void USART3_AF_Remap(void)       {__HAL_RCC_AFIO_CLK_ENABLE(); __HAL_AFIO_REMAP_USART3_DISABLE();}
+#endif
+
 /**
   * @}
   */
@@ -190,7 +198,32 @@ static uart_conf_t g_uart_config[NB_UART_MANAGED] = {
     .begin = 0,
     .end = 0,
     .uart_option = NATIVE_UART_E
+  },
+#ifdef USART3
+  //USART3 (PB10/PB11)
+  {
+    .usart_typedef = USART3, .irqtype = USART3_IRQn,
+    //tx pin configuration
+    .tx_port = GPIOB, .tx_pin = {GPIO_PIN_10, GPIO_MODE_AF_PP, GPIO_PULLUP, GPIO_SPEED_FREQ_HIGH},
+    //rx pin configuration
+    .rx_port = GPIOB, .rx_pin = {GPIO_PIN_11, GPIO_MODE_AF_PP, GPIO_PULLUP, GPIO_SPEED_FREQ_HIGH},
+    .uart_af_remap = USART3_AF_Remap,
+    //uart clock init
+    .uart_clock_init = usart3_clock_enable,
+    //uart force reset
+    .uart_force_reset = usart3_force_reset,
+    //uart release reset
+    .uart_release_reset = usart3_release_reset,
+    //TX gpio clock init
+    .gpio_tx_clock_init = gpiob_clock_enable,
+    //RX gpio clock init
+    .gpio_rx_clock_init = gpiob_clock_enable,
+    .data_available = 0,
+    .begin = 0,
+    .end = 0,
+    .uart_option = NATIVE_UART_E
   }
+#endif
 };
 
 static UART_Emul_HandleTypeDef g_UartEmulHandle[NB_UART_EMUL_MANAGED];
